@@ -1672,15 +1672,14 @@ const ROLES = ["Software Engineer", "AI Engineer", "Machine Learning Engineer", 
 
 </script>
 <script>
-/* ---------- stack: reveal only once the visitor has scrolled and it's in view ---------- */
+/* ---------- stack: shown only while the visitor has scrolled down to it; hides again on the way back up ---------- */
 (() => {
   const els = [...document.querySelectorAll("[data-after-scroll]")];
   const check = () => {
-    if (scrollY < 60) return;
-    for (const el of els) if (el.getBoundingClientRect().top < innerHeight * 0.88) el.classList.add("revealed");
-    if (els.every((el) => el.classList.contains("revealed"))) removeEventListener("scroll", check);
+    for (const el of els) el.classList.toggle("revealed", scrollY >= 60 && el.getBoundingClientRect().top < innerHeight * 0.88);
   };
   addEventListener("scroll", check, { passive: true });
+  addEventListener("resize", check);
 })();
 
 /* ---------- experience timeline: fill the path + move the soot sprite with scroll ---------- */
