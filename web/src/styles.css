@@ -238,13 +238,13 @@ body.night .skills img.dark-logo { filter: invert(1) hue-rotate(180deg) brightne
 .tl::before { content: ""; position: absolute; left: calc(var(--rail) - 1px); top: 0; bottom: 0; width: 2px; background: repeating-linear-gradient(180deg, var(--line-mid) 0 7px, transparent 7px 14px); }
 .tl-fill { position: absolute; left: calc(var(--rail) - 2px); top: 0; width: 4px; height: 100%; transform-origin: 50% 0; transform: scaleY(0); will-change: transform; border-radius: 4px; background: var(--ember); box-shadow: 0 0 10px color-mix(in srgb, var(--ember) 60%, transparent); pointer-events: none; }
 .tl-soot { position: absolute; left: var(--rail); top: 0; width: 46px; margin: -23px 0 0 -23px; z-index: 2; pointer-events: none; will-change: transform; } /* moved with transform by Experience.tsx */
-.tl-soot img { display: block; width: 100%; animation: sootRide 0.7s ease-in-out infinite alternate; }
+.tl-soot img { display: block; width: 100%; animation: sootRide 1.4s ease-in-out infinite alternate; }
 body.night .tl-soot img { filter: drop-shadow(0 0 8px rgba(255, 240, 190, 0.55)); }
-@keyframes sootRide { from { transform: translateY(-3px) rotate(-6deg); } to { transform: translateY(3px) rotate(6deg); } }
+@keyframes sootRide { from { transform: translateY(-2px); } to { transform: translateY(2px); } }
 
 .tl-item { display: grid; grid-template-columns: 320px 1fr; gap: 40px; padding-bottom: 80px; }
 .tl-item:last-child { padding-bottom: 20px; }
-.tl-when { position: sticky; top: 130px; align-self: start; padding-left: 60px; }
+.tl-when { position: relative; align-self: start; padding-left: 60px; } /* not sticky: markers stay put on the path */
 .tl-when .node { position: absolute; left: var(--rail); top: 0.55em; width: 14px; height: 14px; border-radius: 50%; transform: translate(-50%, -50%); background: var(--paper); border: 3px solid var(--ink); transition: background 0.3s, border-color 0.3s, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s; font-size: 40px; }
 .tl-item.passed .node { background: var(--ember); border-color: var(--ember); transform: translate(-50%, -50%) scale(1.25); box-shadow: 0 0 0 6px color-mix(in srgb, var(--ember) 25%, transparent); }
 .tl-when .date { display: block; font-size: 40px; font-weight: 500; line-height: 1.12; color: var(--muted); text-transform: capitalize; transition: color 0.3s; }

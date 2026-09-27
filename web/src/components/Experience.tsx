@@ -20,7 +20,7 @@ export default function Experience() {
     const frame = () => {
       const r = tl.getBoundingClientRect();
       const target = Math.min(1, Math.max(0, (innerHeight * 0.55 - r.top) / r.height));
-      shown = shown < 0 || reduce ? target : shown + (target - shown) * 0.18;
+      shown = shown < 0 || reduce ? target : shown + (target - shown) * 0.3;
       if (Math.abs(target - shown) < 0.0004) shown = target;
       fill.style.transform = `scaleY(${shown})`;
       soot.style.transform = `translate3d(0, ${shown * r.height}px, 0)`;
