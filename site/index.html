@@ -205,9 +205,9 @@
   /* no band behind it: a soft glow hugging each word keeps it readable over the painting */
   .stack-wrap { --halo: 0 0 2px var(--paper), 0 0 10px var(--paper), 0 0 22px color-mix(in srgb, var(--paper) 70%, transparent); }
   .stack-title h2 { text-shadow: var(--halo); }
-  /* a still grid of skills (5 x 3), each a big logo + name bobbing gently in place */
-  .skills { display: grid; grid-template-columns: repeat(5, 1fr); gap: 44px 20px; max-width: 1000px; margin: 20px auto 0; padding: 0 24px; list-style: none; }
-  .skills li { display: flex; flex-direction: column; align-items: center; gap: 12px; font-size: 17px; font-weight: 700; color: var(--ink); text-align: center; text-shadow: var(--halo); transition: color 0.25s; animation: skillBounce 2.4s ease-in-out infinite; }
+  /* a still grid of skills in two short rows (8 + 7, centred) so it clears the road and car in the painting; each logo + name bobs gently in place */
+  .skills { display: flex; flex-wrap: wrap; justify-content: center; gap: 36px 12px; max-width: 1180px; margin: 20px auto 0; padding: 0 24px; list-style: none; }
+  .skills li { width: 132px; display: flex; flex-direction: column; align-items: center; gap: 12px; font-size: 17px; font-weight: 700; color: var(--ink); text-align: center; text-shadow: var(--halo); transition: color 0.25s; animation: skillBounce 2.4s ease-in-out infinite; }
   .skills li:nth-child(4n+2) { animation-delay: -0.6s; }
   .skills li:nth-child(4n+3) { animation-delay: -1.2s; }
   .skills li:nth-child(4n+4) { animation-delay: -1.8s; }
@@ -475,9 +475,10 @@
     .tl-card h3 { font-size: 20px; }
     .tl-card .logo { width: 42px; height: 42px; }
     .stack-wrap { padding: 0 0 110px; margin-top: -30px; }
-    .skills { grid-template-columns: repeat(3, 1fr); gap: 30px 10px; padding: 0 12px; }
-    .skills li { font-size: 14px; gap: 8px; }
-    .skills img { width: 46px; height: 46px; }
+    .skills { gap: 22px 2px; padding: 0 6px; }
+    .skills li { width: 24%; }
+    .skills li { font-size: 12.5px; gap: 7px; }
+    .skills img { width: 40px; height: 40px; }
     .projects { grid-template-columns: 1fr; }
     .story { grid-template-columns: 1fr; }
     .fitting { grid-template-columns: 1fr; }
