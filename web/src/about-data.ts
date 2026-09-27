@@ -12,8 +12,7 @@ export const FITS = ["fit1.jpg", "fit2.jpg", "fit3.jpg"]; // in web/public/asset
 
 export type Interest = { key: string; title: string; caption: string; photo: string; photoNight?: string; focus?: string; credit?: { text: string; href: string }; link?: { href: string; text: string } };
 export const INTERESTS: Interest[] = [
-  { key: "marvel", title: "Marvel", caption: "I'm really into Marvel. My favorite character is Wanda.", photo: "/about/marvel.jpg",
-    credit: { text: "Scarlet Witch cosplay, NYCC 2021 · Romer Jed Medina · CC BY-SA 2.0", href: "https://commons.wikimedia.org/wiki/File:Cosplay_of_Scarlet_Witch_at_the_2021_New_York_Comic_Con_(51573134776).jpg" } },
+  { key: "marvel", title: "Marvel", caption: "I'm really into Marvel. My favorite character is Wanda.", photo: "/about/marvel.jpg" },
   { key: "ghibli", title: "Studio Ghibli", caption: "Ghibli movies are my comfort watch. They're the reason this site looks like this.", photo: "/about/ghibli-day.gif", photoNight: "/about/ghibli-night.gif", focus: "50% 80%" },
   { key: "cards", title: "Card collecting", caption: "I collect cards in my free time.", photo: "/about/cards.jpg" },
   { key: "travel", title: "Travel", caption: "I really love to travel.", photo: "/about/travel.jpg" },
