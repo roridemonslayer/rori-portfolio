@@ -1,7 +1,6 @@
 body {
   margin: 0;
   font-family: 'Space Grotesk', system-ui, sans-serif;
-  cursor: url('/assets/soot-rock-v5.png') 8 8, auto;
   --paper: #eef2ec;
   --paper-glass: rgba(238, 242, 236, 0.88);
   --ink: #1d2c26;
@@ -73,7 +72,11 @@ body.night {
   color-scheme: dark;
 }
 [hidden] { display: none !important; }
-a, button { cursor: url('/assets/soot-candy-v5.png') 8 8, pointer; }
+/* custom cursors: kept at 32x32 (Chrome drops bigger ones near the window edge, which made them flicker),
+   with a 2x version for retina screens; both are preloaded in the page head */
+html { cursor: -webkit-image-set(url('/assets/cursor-rock.png') 1x, url('/assets/cursor-rock@2x.png') 2x) 10 3, url('/assets/cursor-rock.png') 10 3, auto; cursor: image-set(url('/assets/cursor-rock.png') 1x, url('/assets/cursor-rock@2x.png') 2x) 10 3, url('/assets/cursor-rock.png') 10 3, auto; }
+a, button, [role="tab"], label { cursor: -webkit-image-set(url('/assets/cursor-candy.png') 1x, url('/assets/cursor-candy@2x.png') 2x) 10 3, url('/assets/cursor-candy.png') 10 3, pointer; cursor: image-set(url('/assets/cursor-candy.png') 1x, url('/assets/cursor-candy@2x.png') 2x) 10 3, url('/assets/cursor-candy.png') 10 3, pointer; }
+input, textarea { cursor: text; }
 a { color: var(--ink); text-decoration: none; }
 a:hover { color: var(--ember); }
 :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
