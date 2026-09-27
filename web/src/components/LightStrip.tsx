@@ -47,6 +47,7 @@ export default function LightStrip({ items, compact = false }: { items: Interest
                       {it.caption}
                       {it.link && <> <a href={it.link.href} target="_blank" rel="noopener">{it.link.text}</a></>}
                     </figcaption>
+                    {it.credit && <a className="credit-line mono" href={it.credit.href} target="_blank" rel="noopener">photo: {it.credit.text}</a>}
                   </figure>
                 </li>
               );

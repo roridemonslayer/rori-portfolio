@@ -582,6 +582,8 @@ body.night .pc-photo .night-only { display: block; }
 .pc-empty b { font: italic 500 22px/1.1 'EB Garamond', Georgia, serif; }
 .pc-empty small { font-size: 10px; opacity: 0.6; word-break: break-all; }
 .polaroid-card figcaption { margin-top: 10px; font: italic 16px/1.35 'EB Garamond', Georgia, serif; text-align: center; }
+.credit-line { display: block; margin-top: 6px; font-size: 9px; line-height: 1.3; color: #8a7d66; text-align: center; }
+.strip.compact .credit-line { font-size: 8px; }
 .polaroid-card figcaption a { color: #b86e1d; font-style: normal; font-family: 'IBM Plex Mono', monospace; font-size: 12px; white-space: nowrap; }
 
 /* ---------- string lights with hanging cards ---------- */
