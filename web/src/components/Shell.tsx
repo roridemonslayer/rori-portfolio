@@ -15,6 +15,7 @@ function useReveals() {
       els.forEach((el) => el.classList.add("revealed"));
       return;
     }
+    // threshold 0: very tall sections (my story on phones) never reach a percentage of visibility
     const io = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
@@ -23,7 +24,7 @@ function useReveals() {
         el.classList.add("revealed");
         io.unobserve(el);
       }
-    }, { threshold: 0.2, rootMargin: "0px 0px -10% 0px" });
+    }, { threshold: 0, rootMargin: "0px 0px -12% 0px" });
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);

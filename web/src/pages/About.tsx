@@ -1,5 +1,6 @@
 import { INTERESTS, OVERVIEW, STORY } from "../about-data";
 import LightStrip from "../components/LightStrip";
+import PhotoCard from "../components/PhotoCard";
 
 export default function About() {
   return (
@@ -19,6 +20,16 @@ export default function About() {
             <div className="story-part" key={part.label}>
               <h3>{part.label}</h3>
               {part.paras.map((t) => <p key={t}>{t}</p>)}
+              {part.photos && (
+                <div className="story-photos">
+                  {part.photos.map((ph, k) => (
+                    <figure className={"polaroid-card" + (ph.tall ? " tall" : "")} key={ph.src} style={{ rotate: `${[-3, 2.5, -1.5][k % 3]}deg` }}>
+                      <PhotoCard src={ph.src} srcNight={ph.srcNight} focus={ph.src.includes("ghibli-day") ? "50% 80%" : undefined} label={ph.caption} alt={ph.caption} />
+                      <figcaption>{ph.caption}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
