@@ -559,6 +559,13 @@
     <div class="loader-text mono">loading<span>.</span><span>.</span><span>.</span></div>
   </div>
 </div>
+<script>
+/* the hopping loader is a first-visit treat: skip it (before it paints) on later page loads this session */
+try {
+  if (sessionStorage.getItem("rori-seen-loader")) { document.getElementById("loader").remove(); document.body.classList.remove("loading"); }
+  else sessionStorage.setItem("rori-seen-loader", "1");
+} catch {}
+</script>
 <div class="page">
 
   <!-- day meadow / night castle -->
@@ -1710,6 +1717,7 @@ const ROLES = ["Software Engineer", "AI Engineer", "Machine Learning Engineer", 
 /* ---------- loading screen: hide once everything's loaded (min ~1.2s so the hop reads) ---------- */
 (() => {
   const loader = document.getElementById("loader");
+  if (!loader) return; // already skipped this session
   const shownAt = performance.now();
   const hide = () => {
     const wait = Math.max(0, 1200 - (performance.now() - shownAt));
