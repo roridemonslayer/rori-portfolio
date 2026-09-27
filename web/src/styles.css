@@ -302,11 +302,19 @@ body.night .tl-soot img { filter: drop-shadow(0 0 8px rgba(255, 240, 190, 0.55))
 /* closing slide: a dark card that opens GitHub */
 .more-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; height: 100%; color: #f0f6fc; text-decoration: none;
   background: radial-gradient(circle at 50% 35%, #2d333b, #0d1117 70%); }
-.more-slide svg { width: 84px; height: 84px; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.more-slide svg { display: block; width: 84px; height: 84px; color: #f0f6fc; transition: color 0.3s; }
+.more-slide:hover svg { color: #f0a35e; }
+/* the octocat paces back and forth, turning around at each end, with a little step bounce */
+.octo-walk { display: block; animation: octoPace 7s ease-in-out infinite; }
+.octo-turn { display: block; animation: octoTurn 7s step-end infinite; }
+.octo-turn svg { animation: octoStep 0.45s ease-in-out infinite alternate; }
+@keyframes octoPace { 0%, 100% { transform: translateX(calc(-1 * min(140px, 24vw))); } 50% { transform: translateX(min(140px, 24vw)); } }
+@keyframes octoTurn { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(-1); } }
+@keyframes octoStep { from { transform: translateY(0) rotate(-4deg); } to { transform: translateY(-6px) rotate(4deg); } }
+.more-slide:hover .octo-walk, .more-slide:hover .octo-turn, .more-slide:hover .octo-turn svg { animation-play-state: paused; }
 .more-slide b { font-size: clamp(24px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.01em; }
 .more-slide span { font-size: 15px; color: #f0a35e; }
 .more-slide:hover { color: #fff; }
-.more-slide:hover svg { transform: rotate(-8deg) scale(1.08); }
 .show-dots button.more { border-style: dashed; }
 .show-arrow.prev { left: 18px; } .show-arrow.next { right: 18px; }
 .show-timer { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; background: var(--ember); transform-origin: 0 50%; animation: showTimer linear forwards; }
