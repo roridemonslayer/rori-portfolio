@@ -194,47 +194,29 @@
   .sec-head .aside { font: italic 17px 'EB Garamond', Georgia, serif; color: var(--muted); }
 
   /* stack */
-  /* ---------- my stack: Calcifer's hearth, fed by the tools I use ---------- */
-  .stack-wrap { position: relative; isolation: isolate; padding: 40px 0 110px; text-align: center; }
-  .stack-wrap::before {   /* soft blur (no white wash), feathered so there's no edge */
-    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent), linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
-    -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent), linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent); mask-composite: intersect;
-  }
-  .stack-title { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 18px; }
+  /* ---------- my stack: two ribbons of logos gliding past on a band of mist ---------- */
+  .stack-wrap { padding: 40px 0 110px; }
+  .stack-title { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; }
   .stack-title .mark { color: var(--ember); font-size: 20px; }
   .stack-title h2 { margin: 0; font: 500 14px 'IBM Plex Mono', monospace; letter-spacing: 0.16em; color: var(--ink); }
-
-  .calcifer { position: relative; width: 170px; margin: 0 auto 26px; }
-  .calcifer::before {   /* warm glow on the painting behind him */
-    content: ""; position: absolute; left: 50%; top: 55%; width: 340px; height: 300px; translate: -50% -50%; z-index: -1; border-radius: 50%;
-    background: radial-gradient(closest-side, rgba(255, 150, 50, 0.55), rgba(255, 120, 40, 0.18) 55%, transparent);
-    animation: calcGlow 2.4s ease-in-out infinite alternate; transition: scale 0.4s;
+  .ribbon { position: relative; isolation: isolate; display: flex; flex-direction: column; gap: 22px; padding: 34px 0; }
+  .ribbon::before {   /* mist band, feathered on all sides so there's no edge */
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
+    -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent); mask-composite: intersect;
   }
-  .calcifer svg { display: block; width: 100%; height: auto; overflow: visible; }
-  .calcifer .flare { transform-origin: 100px 186px; transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .calcifer .outer { transform-origin: 100px 186px; animation: calcFlick 1.5s ease-in-out infinite alternate; }
-  .calcifer .inner { transform-origin: 100px 170px; animation: calcFlick 1.1s ease-in-out -0.4s infinite alternate-reverse; }
-  .calcifer .eyes { transform-origin: 100px 126px; animation: calcBlink 4.2s infinite; }
-  .calcifer .pupils { transition: transform 0.3s; }
-  .calcifer.fed .flare { transform: scale(1.22); }
-  .calcifer.fed .pupils { transform: translateY(-4px); }
-  .calcifer.fed::before { scale: 1.3; }
-  .calcifer .spark { position: absolute; left: 50%; bottom: 40%; width: 5px; height: 5px; border-radius: 50%; background: #ffb13b; box-shadow: 0 0 6px #ff8a2b; opacity: 0; animation: calcSpark 2.6s ease-out infinite; }
-  .calcifer .spark:nth-child(2) { margin-left: -30px; animation-delay: 0.7s; }
-  .calcifer .spark:nth-child(3) { margin-left: 26px; animation-delay: 1.4s; }
-  .calcifer .spark:nth-child(4) { margin-left: -8px; animation-delay: 2s; }
-  @keyframes calcFlick { 0% { transform: scale(1, 1) skewX(0deg); } 35% { transform: scale(1.03, 0.97) skewX(2.5deg); } 70% { transform: scale(0.97, 1.05) skewX(-2.5deg); } 100% { transform: scale(1.02, 1.01) skewX(1deg); } }
-  @keyframes calcBlink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.12); } }
-  @keyframes calcGlow { from { opacity: 0.75; } to { opacity: 1; } }
-  @keyframes calcSpark { 0% { opacity: 0; transform: translate(0, 0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(10px, -110px); } }
-
-  .fuel { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 38px; max-width: 900px; margin: 0 auto; padding: 0 20px; list-style: none; }
-  .fuel li { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 500; transition: color 0.25s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .fuel li:hover { color: var(--ember); transform: translateY(-3px); }
-  .fuel img { width: 28px; height: 28px; }
-  body.night .fuel img.dark-logo { filter: invert(1) brightness(1.4); }
+  .ribbon-row { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+  .ribbon-track { display: flex; width: max-content; margin: 0; padding: 0; list-style: none; animation: ribbonGlide 55s linear infinite reverse; /* reverse = drifts left to right */ }
+  .ribbon-row.rev .ribbon-track { animation-duration: 48s; }
+  .ribbon:hover .ribbon-track { animation-play-state: paused; }
+  .ribbon-track li { position: relative; display: flex; align-items: center; gap: 12px; margin-right: 64px; font-size: 21px; font-weight: 500; white-space: nowrap; transition: color 0.25s; }
+  .ribbon-track li::after { content: "✦"; position: absolute; right: -40px; font-size: 12px; color: var(--ember); }
+  .ribbon-track li:hover { color: var(--ember); }
+  .ribbon-track img { width: 30px; height: 30px; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .ribbon-track li:hover img { transform: scale(1.2) rotate(-8deg); }
+  body.night .ribbon img.dark-logo { filter: invert(1) brightness(1.4); }
+  @keyframes ribbonGlide { to { transform: translateX(-50%); } }
 
   /* frosted sheet behind projects → writing */
   .sheet {
@@ -493,10 +475,10 @@
     .tl-card h3 { font-size: 20px; }
     .tl-card .logo { width: 42px; height: 42px; }
     .stack-wrap { padding: 30px 0 70px; }
-    .calcifer { width: 140px; }
-    .fuel { gap: 12px 24px; }
-    .fuel li { font-size: 15px; }
-    .fuel img { width: 22px; height: 22px; }
+    .ribbon { gap: 16px; padding: 26px 0; }
+    .ribbon-track li { font-size: 17px; margin-right: 48px; }
+    .ribbon-track li::after { right: -31px; }
+    .ribbon-track img { width: 24px; height: 24px; }
     .projects { grid-template-columns: 1fr; }
     .story { grid-template-columns: 1fr; }
     .fitting { grid-template-columns: 1fr; }
@@ -559,6 +541,8 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     [data-reveal] { opacity: 1; transform: none; }
+    .ribbon-track { width: auto; flex-wrap: wrap; justify-content: center; row-gap: 14px; padding: 0 16px; }
+    .ribbon-track [aria-hidden="true"] { display: none; }
     .tl-item .tl-card, .tl-item .date, .tl-item .tl-when .badge { opacity: 1; translate: none; }
   }
 </style>
@@ -713,49 +697,80 @@
 
   <!-- ============ MY STACK ============ -->
   <section class="stack-wrap" id="stack" aria-labelledby="stack-t">
-    <div class="stack-title" data-reveal="0">
+    <div class="stack-title">
       <span class="mark" aria-hidden="true">✽</span>
       <h2 id="stack-t">MY STACK</h2>
     </div>
-    <div class="calcifer" id="calcifer" aria-hidden="true">
-      <span class="spark"></span><span class="spark"></span><span class="spark"></span><span class="spark"></span>
-      <svg viewBox="0 0 200 210">
-        <defs>
-          <linearGradient id="calc-o" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff4d1f"/><stop offset="0.6" stop-color="#ff8a2b"/><stop offset="1" stop-color="#ffb13b"/></linearGradient>
-          <linearGradient id="calc-i" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffb13b"/><stop offset="1" stop-color="#ffe7a0"/></linearGradient>
-        </defs>
-        <g fill="#5a3218">
-          <rect x="38" y="178" width="124" height="18" rx="9" transform="rotate(-9 100 187)"/>
-          <rect x="38" y="178" width="124" height="18" rx="9" transform="rotate(9 100 187)" fill="#6e3d1d"/>
-        </g>
-        <g class="flare">
-          <path class="outer" fill="url(#calc-o)" d="M100 14 C110 46 146 50 148 104 C166 92 166 70 160 56 C188 84 190 150 154 176 C132 192 68 192 46 176 C10 150 12 84 40 56 C34 70 34 92 52 104 C54 50 90 46 100 14 Z"/>
-          <path class="inner" fill="url(#calc-i)" d="M100 70 C110 92 136 98 136 132 C136 166 64 166 64 132 C64 100 90 92 100 70 Z"/>
-          <g class="eyes">
-            <ellipse cx="80" cy="124" rx="14" ry="16" fill="#fff"/><ellipse cx="120" cy="124" rx="14" ry="16" fill="#fff"/>
-            <g class="pupils" fill="#1a1a1a"><circle cx="82" cy="128" r="6.5"/><circle cx="118" cy="128" r="6.5"/></g>
-          </g>
-          <path d="M84 150 Q100 170 116 150 Q100 158 84 150 Z" fill="#7a1d0e"/>
-        </g>
-      </svg>
+    <div class="ribbon">
+      <div class="ribbon-row">
+        <ul class="ribbon-track">
+          <li><img src="assets/icons/javascript.svg" alt="">JavaScript</li>
+          <li><img src="assets/icons/typescript.svg" alt="">TypeScript</li>
+          <li><img src="assets/icons/react.svg" alt="">React</li>
+          <li><img src="assets/icons/nextdotjs.svg" alt="">Next.js</li>
+          <li><img src="assets/icons/tailwindcss.svg" alt="">Tailwind CSS</li>
+          <li><img src="assets/icons/git.svg" alt="">Git</li>
+          <li><img src="assets/icons/docker.svg" alt="">Docker</li>
+          <li><img class="dark-logo" src="assets/icons/aws.svg" alt="">AWS</li>
+          <li aria-hidden="true"><img src="assets/icons/javascript.svg" alt="">JavaScript</li>
+          <li aria-hidden="true"><img src="assets/icons/typescript.svg" alt="">TypeScript</li>
+          <li aria-hidden="true"><img src="assets/icons/react.svg" alt="">React</li>
+          <li aria-hidden="true"><img src="assets/icons/nextdotjs.svg" alt="">Next.js</li>
+          <li aria-hidden="true"><img src="assets/icons/tailwindcss.svg" alt="">Tailwind CSS</li>
+          <li aria-hidden="true"><img src="assets/icons/git.svg" alt="">Git</li>
+          <li aria-hidden="true"><img src="assets/icons/docker.svg" alt="">Docker</li>
+          <li aria-hidden="true"><img class="dark-logo" src="assets/icons/aws.svg" alt="">AWS</li>
+          <li aria-hidden="true"><img src="assets/icons/javascript.svg" alt="">JavaScript</li>
+          <li aria-hidden="true"><img src="assets/icons/typescript.svg" alt="">TypeScript</li>
+          <li aria-hidden="true"><img src="assets/icons/react.svg" alt="">React</li>
+          <li aria-hidden="true"><img src="assets/icons/nextdotjs.svg" alt="">Next.js</li>
+          <li aria-hidden="true"><img src="assets/icons/tailwindcss.svg" alt="">Tailwind CSS</li>
+          <li aria-hidden="true"><img src="assets/icons/git.svg" alt="">Git</li>
+          <li aria-hidden="true"><img src="assets/icons/docker.svg" alt="">Docker</li>
+          <li aria-hidden="true"><img class="dark-logo" src="assets/icons/aws.svg" alt="">AWS</li>
+          <li aria-hidden="true"><img src="assets/icons/javascript.svg" alt="">JavaScript</li>
+          <li aria-hidden="true"><img src="assets/icons/typescript.svg" alt="">TypeScript</li>
+          <li aria-hidden="true"><img src="assets/icons/react.svg" alt="">React</li>
+          <li aria-hidden="true"><img src="assets/icons/nextdotjs.svg" alt="">Next.js</li>
+          <li aria-hidden="true"><img src="assets/icons/tailwindcss.svg" alt="">Tailwind CSS</li>
+          <li aria-hidden="true"><img src="assets/icons/git.svg" alt="">Git</li>
+          <li aria-hidden="true"><img src="assets/icons/docker.svg" alt="">Docker</li>
+          <li aria-hidden="true"><img class="dark-logo" src="assets/icons/aws.svg" alt="">AWS</li>
+        </ul>
+      </div>
+      <div class="ribbon-row rev">
+        <ul class="ribbon-track">
+          <li><img src="assets/icons/python.svg" alt="">Python</li>
+          <li><img src="assets/icons/fastapi.svg" alt="">FastAPI</li>
+          <li><img src="assets/icons/nodedotjs.svg" alt="">Node.js</li>
+          <li><img class="dark-logo" src="assets/icons/langchain.svg" alt="">LangChain</li>
+          <li><img src="assets/icons/qiskit.svg" alt="">Qiskit</li>
+          <li><img src="assets/icons/postgresql.svg" alt="">PostgreSQL + pgvector</li>
+          <li><img src="assets/icons/mongodb.svg" alt="">MongoDB</li>
+          <li aria-hidden="true"><img src="assets/icons/python.svg" alt="">Python</li>
+          <li aria-hidden="true"><img src="assets/icons/fastapi.svg" alt="">FastAPI</li>
+          <li aria-hidden="true"><img src="assets/icons/nodedotjs.svg" alt="">Node.js</li>
+          <li aria-hidden="true"><img class="dark-logo" src="assets/icons/langchain.svg" alt="">LangChain</li>
+          <li aria-hidden="true"><img src="assets/icons/qiskit.svg" alt="">Qiskit</li>
+          <li aria-hidden="true"><img src="assets/icons/postgresql.svg" alt="">PostgreSQL + pgvector</li>
+          <li aria-hidden="true"><img src="assets/icons/mongodb.svg" alt="">MongoDB</li>
+          <li aria-hidden="true"><img src="assets/icons/python.svg" alt="">Python</li>
+          <li aria-hidden="true"><img src="assets/icons/fastapi.svg" alt="">FastAPI</li>
+          <li aria-hidden="true"><img src="assets/icons/nodedotjs.svg" alt="">Node.js</li>
+          <li aria-hidden="true"><img class="dark-logo" src="assets/icons/langchain.svg" alt="">LangChain</li>
+          <li aria-hidden="true"><img src="assets/icons/qiskit.svg" alt="">Qiskit</li>
+          <li aria-hidden="true"><img src="assets/icons/postgresql.svg" alt="">PostgreSQL + pgvector</li>
+          <li aria-hidden="true"><img src="assets/icons/mongodb.svg" alt="">MongoDB</li>
+          <li aria-hidden="true"><img src="assets/icons/python.svg" alt="">Python</li>
+          <li aria-hidden="true"><img src="assets/icons/fastapi.svg" alt="">FastAPI</li>
+          <li aria-hidden="true"><img src="assets/icons/nodedotjs.svg" alt="">Node.js</li>
+          <li aria-hidden="true"><img class="dark-logo" src="assets/icons/langchain.svg" alt="">LangChain</li>
+          <li aria-hidden="true"><img src="assets/icons/qiskit.svg" alt="">Qiskit</li>
+          <li aria-hidden="true"><img src="assets/icons/postgresql.svg" alt="">PostgreSQL + pgvector</li>
+          <li aria-hidden="true"><img src="assets/icons/mongodb.svg" alt="">MongoDB</li>
+        </ul>
+      </div>
     </div>
-    <ul class="fuel" data-reveal="1">
-      <li><img src="assets/icons/javascript.svg" alt="">JavaScript</li>
-      <li><img src="assets/icons/typescript.svg" alt="">TypeScript</li>
-      <li><img src="assets/icons/react.svg" alt="">React</li>
-      <li><img src="assets/icons/nextdotjs.svg" alt="">Next.js</li>
-      <li><img src="assets/icons/tailwindcss.svg" alt="">Tailwind CSS</li>
-      <li><img src="assets/icons/python.svg" alt="">Python</li>
-      <li><img src="assets/icons/fastapi.svg" alt="">FastAPI</li>
-      <li><img src="assets/icons/nodedotjs.svg" alt="">Node.js</li>
-      <li><img class="dark-logo" src="assets/icons/langchain.svg" alt="">LangChain</li>
-      <li><img src="assets/icons/qiskit.svg" alt="">Qiskit</li>
-      <li><img src="assets/icons/postgresql.svg" alt="">PostgreSQL + pgvector</li>
-      <li><img src="assets/icons/mongodb.svg" alt="">MongoDB</li>
-      <li><img src="assets/icons/git.svg" alt="">Git</li>
-      <li><img src="assets/icons/docker.svg" alt="">Docker</li>
-      <li><img class="dark-logo" src="assets/icons/aws.svg" alt="">AWS</li>
-    </ul>
   </section>
 
   <!-- projects → writing share one frosted sheet, same glass as the stack panel, so text stays readable over the painting -->
@@ -1714,15 +1729,6 @@ const ROLES = ["Software Engineer", "AI Engineer", "Machine Learning Engineer", 
 
 </script>
 <script>
-/* ---------- calcifer flares up when you hover (or focus) one of the tools he's burning ---------- */
-(() => {
-  const calc = document.getElementById("calcifer");
-  for (const li of document.querySelectorAll(".fuel li")) {
-    li.addEventListener("pointerenter", () => calc.classList.add("fed"));
-    li.addEventListener("pointerleave", () => calc.classList.remove("fed"));
-  }
-})();
-
 /* ---------- experience timeline: fill the path + move the soot sprite with scroll ---------- */
 (() => {
   const tl = document.getElementById("tl");
