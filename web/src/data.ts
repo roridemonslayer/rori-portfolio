@@ -74,14 +74,14 @@ export const EXTRAS = ["✦ president — NSBE @ NYIT", "microsoft ECLSP fellow"
 export type Project = { slug: string; kind: string; title: string; line: string; body: string; tags: string[]; link: string };
 export const PROJECTS: Project[] = [
   {
-    slug: "pathful", kind: "in progress", title: "Pathful", line: "Internships that usually live in insider networks, out in the open.",
-    body: "Surfaces 500+ internships usually locked inside insider networks. A scheduled Playwright pipeline crawls and dedupes dozens of sources, and Claude API enrichment makes every listing searchable. Manual search time down 70%.",
-    tags: ["python", "playwright", "claude api", "react"], link: LINKS.github,
-  },
-  {
     slug: "vector-search", kind: "from scratch", title: "Vector Search Engine", line: "Search by meaning, with an HNSW index written by hand.",
     body: "Search that matches text by meaning, not keywords. HNSW written by hand (probabilistic layers, greedy layered traversal) with no FAISS or Chroma. Lookups 3–4× faster than brute force: 0.4ms → 0.1ms.",
     tags: ["python", "numpy", "sentence-transformers"], link: "https://github.com/roridemonslayer/vector-search-engine",
+  },
+  {
+    slug: "pathful", kind: "in progress", title: "Pathful", line: "Internships that usually live in insider networks, out in the open.",
+    body: "Surfaces 500+ internships usually locked inside insider networks. A scheduled Playwright pipeline crawls and dedupes dozens of sources, and Claude API enrichment makes every listing searchable. Manual search time down 70%.",
+    tags: ["python", "playwright", "claude api", "react"], link: LINKS.github,
   },
   {
     slug: "resume-auto-filler", kind: "open source", title: "Resume Auto-Filler", line: "One click fills the job application, EEO questions included.",
