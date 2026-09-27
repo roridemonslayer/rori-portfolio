@@ -1,162 +1,55 @@
 import { useEffect, useRef, useState } from "react";
 import type * as ThreeNS from "three";
 
-/* fitting room: a little 3d me, dressed in my fits.
-   Add an outfit by adding an entry to OUTFITS; every colour is a hex value. */
-type Outfit = {
-  id: string; name: string; note: string;
-  skin: string; hair: string;
-  cap?: { plaid?: [string, string, string]; color?: string };
-  top: string; collar: string; tie?: string;
-  bottom: string; shoes: string; glasses?: boolean;
-};
-const OUTFITS: Outfit[] = [
-  {
-    id: "picture-day", name: "picture day", note: "plaid cap · navy knit · tie",
-    skin: "#7b4a2d", hair: "#1c120c",
-    cap: { plaid: ["#6b5e57", "#b9aea3", "#3a2f2b"] },
-    top: "#1c2536", collar: "#f3f1ec", tie: "#9c8f7a",
-    bottom: "#2a2a2e", shoes: "#141414", glasses: true,
-  },
-];
+import { OUTFITS, createFigure, type Outfit } from "../figure";
 
+/* fitting room: a 3D me, dressed in my fits (outfits live in src/figure.ts) */
 type Controls = { dress: (o: Outfit) => void; setView: (v: number) => void; zoomBy: (d: number) => void; reset: () => void; setAuto: (on: boolean) => void };
 
-function buildScene(T: typeof ThreeNS, canvas: HTMLCanvasElement, stage: HTMLElement, onView: (v: number) => void, onAuto: (on: boolean) => void) {
+function buildScene(T: typeof ThreeNS, RoomEnvironment: typeof import("three/examples/jsm/environments/RoomEnvironment.js").RoomEnvironment,
+  RoundedBox: typeof import("three/examples/jsm/geometries/RoundedBoxGeometry.js").RoundedBoxGeometry,
+  canvas: HTMLCanvasElement, stage: HTMLElement, onView: (v: number) => void, onAuto: (on: boolean) => void) {
   const renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = T.PCFSoftShadowMap;
+  renderer.toneMapping = T.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
   const scene = new T.Scene();
-  const camera = new T.PerspectiveCamera(30, 1, 0.1, 50);
-  const LOOK_Y = 0.92;
+  // studio reflections for the fabrics, skin and the puffer's sheen
+  const pmrem = new T.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environmentIntensity = 0.45;
+  const camera = new T.PerspectiveCamera(26, 1, 0.1, 50);
+  const LOOK_Y = 0.98;
   let zoom = 1;
 
-  scene.add(new T.HemisphereLight(0xffffff, 0x8a8f80, 1.1));
-  const key = new T.DirectionalLight(0xfff4e0, 1.6);
-  key.position.set(2.2, 4, 3);
+  const key = new T.DirectionalLight(0xfff1e0, 2.2);
+  key.position.set(2, 4.2, 3.4);
   key.castShadow = true;
-  key.shadow.mapSize.set(1024, 1024);
-  key.shadow.camera.left = key.shadow.camera.bottom = -1.5;
-  key.shadow.camera.right = key.shadow.camera.top = 1.5;
+  key.shadow.mapSize.set(2048, 2048);
+  key.shadow.camera.left = key.shadow.camera.bottom = -1.4;
+  key.shadow.camera.right = key.shadow.camera.top = 1.4;
   key.shadow.radius = 6;
+  key.shadow.bias = -0.0003;
+  key.shadow.normalBias = 0.02;
   scene.add(key);
-  const rim = new T.DirectionalLight(0xc8d8ff, 0.7);
-  rim.position.set(-3, 2.5, -2.5);
+  const rim = new T.DirectionalLight(0xdbe6ff, 1.4);
+  rim.position.set(-2.8, 3, -2.6);
   scene.add(rim);
+  const fill = new T.DirectionalLight(0xffe7d4, 0.5);
+  fill.position.set(-3, 1.2, 2.5);
+  scene.add(fill);
 
-  const floor = new T.Mesh(new T.CircleGeometry(0.75, 48), new T.ShadowMaterial({ opacity: 0.22 }));
+  const floor = new T.Mesh(new T.CircleGeometry(1.4, 64), new T.ShadowMaterial({ opacity: 0.18 }));
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
   scene.add(floor);
-  const plate = new T.Mesh(new T.CylinderGeometry(0.46, 0.48, 0.02, 64), new T.MeshStandardMaterial({ color: 0xf2efe6, roughness: 0.9 }));
-  plate.position.y = 0.01;
-  plate.receiveShadow = true;
-  scene.add(plate);
 
-  const figure = new T.Group();
-  scene.add(figure);
-
-  const mat = (c: string, rough = 0.75, extra: ThreeNS.MeshStandardMaterialParameters = {}) => new T.MeshStandardMaterial({ color: c, roughness: rough, ...extra });
-  function plaidTexture([a, b, c]: [string, string, string]) {
-    const cv = document.createElement("canvas");
-    cv.width = cv.height = 64;
-    const g = cv.getContext("2d")!;
-    g.fillStyle = a; g.fillRect(0, 0, 64, 64);
-    g.fillStyle = b; g.globalAlpha = 0.6;
-    for (let i = 0; i < 64; i += 16) { g.fillRect(i, 0, 5, 64); g.fillRect(0, i, 64, 5); }
-    g.fillStyle = c; g.globalAlpha = 0.7;
-    for (let i = 8; i < 64; i += 16) { g.fillRect(i, 0, 2, 64); g.fillRect(0, i, 64, 2); }
-    const t = new T.CanvasTexture(cv);
-    t.wrapS = t.wrapT = T.RepeatWrapping;
-    t.repeat.set(3, 3);
-    return t;
-  }
-  function add(parent: ThreeNS.Object3D, geo: ThreeNS.BufferGeometry, material: ThreeNS.Material, x = 0, y = 0, z = 0, sx = 1, sy = 1, sz = 1) {
-    const m = new T.Mesh(geo, material);
-    m.position.set(x, y, z);
-    m.scale.set(sx, sy, sz);
-    m.castShadow = true;
-    parent.add(m);
-    return m;
-  }
-  // a limb segment between two points
-  function limb(parent: ThreeNS.Object3D, material: ThreeNS.Material, a: [number, number, number], b: [number, number, number], r1: number, r2: number) {
-    const A = new T.Vector3(...a), B = new T.Vector3(...b);
-    const m = new T.Mesh(new T.CylinderGeometry(r2, r1, A.distanceTo(B), 20), material);
-    m.position.copy(A).add(B).multiplyScalar(0.5);
-    m.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), B.clone().sub(A).normalize());
-    m.castShadow = true;
-    parent.add(m);
-    return m;
-  }
-
-  function dress(o: Outfit) {
-    figure.clear();
-    const skin = mat(o.skin, 0.55);
-    const top = mat(o.top, 0.9);
-    const bottom = mat(o.bottom, 0.85);
-    const shoe = mat(o.shoes, 0.4);
-    const sphere = new T.SphereGeometry(1, 32, 24);
-
-    // legs + shoes
-    for (const s of [-1, 1]) {
-      const x = 0.085 * s;
-      limb(figure, bottom, [x, 0.1, 0], [x, 0.5, 0], 0.062, 0.07);
-      add(figure, sphere, bottom, x, 0.5, 0, 0.074, 0.06, 0.074);
-      limb(figure, bottom, [x, 0.5, 0], [x * 1.05, 0.93, 0], 0.074, 0.088);
-      add(figure, new T.BoxGeometry(0.1, 0.07, 0.25), shoe, x, 0.055, 0.035);
-      add(figure, sphere, shoe, x, 0.06, 0.15, 0.05, 0.04, 0.05);
-    }
-    // hips + torso (the knit)
-    add(figure, sphere, bottom, 0, 0.95, 0, 0.17, 0.1, 0.11);
-    add(figure, new T.CapsuleGeometry(0.15, 0.3, 8, 24), top, 0, 1.2, 0, 1.18, 1, 0.72);
-    // ribbed hem + zip line
-    add(figure, new T.CylinderGeometry(0.176, 0.17, 0.05, 32), top, 0, 0.99, 0, 1, 1, 0.62);
-    add(figure, new T.BoxGeometry(0.008, 0.2, 0.01), mat("#b8b8b8", 0.3, { metalness: 0.6 }), 0, 1.36, 0.108);
-    // shirt collar + tie peeking out
-    add(figure, new T.CylinderGeometry(0.06, 0.075, 0.07, 24), mat(o.collar, 0.8), 0, 1.49, 0.005);
-    if (o.tie) add(figure, new T.BoxGeometry(0.035, 0.13, 0.012), mat(o.tie, 0.6), 0, 1.4, 0.104);
-    // arms
-    for (const s of [-1, 1]) {
-      add(figure, sphere, top, 0.2 * s, 1.43, 0, 0.075, 0.075, 0.075);
-      limb(figure, top, [0.215 * s, 1.43, 0], [0.245 * s, 1.14, 0.01], 0.064, 0.058);
-      add(figure, sphere, top, 0.245 * s, 1.14, 0.01, 0.056, 0.056, 0.056);
-      limb(figure, top, [0.245 * s, 1.14, 0.01], [0.26 * s, 0.9, 0.04], 0.056, 0.048);
-      add(figure, sphere, skin, 0.262 * s, 0.84, 0.045, 0.036, 0.06, 0.025);
-    }
-    // neck + head
-    limb(figure, skin, [0, 1.47, 0], [0, 1.56, 0.005], 0.045, 0.042);
-    const head = new T.Group();
-    head.position.set(0, 1.66, 0.01);
-    figure.add(head);
-    add(head, sphere, skin, 0, 0, 0, 0.092, 0.115, 0.1);
-    add(head, sphere, skin, 0.093, -0.005, 0, 0.015, 0.025, 0.012);
-    add(head, sphere, skin, -0.093, -0.005, 0, 0.015, 0.025, 0.012);
-    // locs: hanging from under the cap, framing the face and down the back
-    const hair = mat(o.hair, 0.9);
-    for (let i = 0; i < 22; i++) {
-      const a = Math.PI * 0.18 + (i / 21) * Math.PI * 1.64; // skip the face
-      const x = Math.sin(a) * 0.092, z = Math.cos(a) * 0.092;
-      const len = 0.2 + (i % 3) * 0.035;
-      limb(head, hair, [x, 0.03, z], [x * 1.25, 0.03 - len, z * 1.25 - 0.015], 0.012, 0.01);
-    }
-    if (o.glasses) {
-      const frame = mat("#0d0d0d", 0.3);
-      for (const s of [-1, 1]) {
-        add(head, new T.TorusGeometry(0.026, 0.006, 8, 24), frame, 0.035 * s, 0.005, 0.098, 1.15, 0.85, 1);
-        limb(head, frame, [0.064 * s, 0.01, 0.095], [0.094 * s, 0.01, 0.01], 0.004, 0.004);
-      }
-      limb(head, frame, [-0.012, 0.01, 0.1], [0.012, 0.01, 0.1], 0.004, 0.004);
-    }
-    // newsboy cap
-    if (o.cap) {
-      const capMat = o.cap.plaid ? mat("#ffffff", 0.95, { map: plaidTexture(o.cap.plaid) }) : mat(o.cap.color ?? "#555", 0.9);
-      add(head, sphere, capMat, 0, 0.06, -0.005, 0.112, 0.07, 0.122);
-      add(head, new T.CylinderGeometry(0.1, 0.1, 0.012, 32, 1, false, -Math.PI / 2.4, Math.PI / 1.2), capMat, 0, 0.035, 0.035, 1, 1, 1.25);
-      add(head, sphere, capMat, 0, 0.13, 0, 0.012, 0.008, 0.012);
-    }
-  }
+  const fig = createFigure(T, RoundedBox);
+  scene.add(fig.root);
+  const figure = fig.root; // the plinth turns with the figure, like a display turntable
+  const dress = fig.dress;
 
   // ---- turning, views, zoom, auto rotate
   let rotY = 0, targetY = 0, vel = 0, dragging = false, lastX = 0, auto = true, lastView = -1;
@@ -206,7 +99,7 @@ function buildScene(T: typeof ThreeNS, canvas: HTMLCanvasElement, stage: HTMLEle
       else if (!dragging && Math.abs(vel) > 0.0005) { targetY += vel; vel *= 0.92; }
       rotY += (targetY - rotY) * Math.min(1, dt * 10);
       figure.rotation.y = rotY;
-      camera.position.set(0, LOOK_Y + 0.15 + (zoom - 1) * 0.35, 4.1 / zoom);
+      camera.position.set(0, LOOK_Y + 0.25 + (zoom - 1) * 0.4, 5.0 / zoom);
       camera.lookAt(0, LOOK_Y + (zoom - 1) * 0.45, 0);
       const n = ((Math.round(rotY / (Math.PI / 2)) % 4) + 4) % 4; // 0 front, 1 side, 2 back, 3 other side
       const v = n === 3 ? 1 : n;
@@ -254,9 +147,11 @@ export default function FittingRoom() {
       if (!e.isIntersecting) return;
       io.disconnect();
       try {
-        const T = await import("three");
+        const [T, { RoomEnvironment }, { RoundedBoxGeometry }] = await Promise.all([
+          import("three"), import("three/examples/jsm/environments/RoomEnvironment.js"), import("three/examples/jsm/geometries/RoundedBoxGeometry.js"),
+        ]);
         if (cancelled) return;
-        const built = buildScene(T, canvasRef.current!, stageRef.current!, setView, setAuto);
+        const built = buildScene(T, RoomEnvironment, RoundedBoxGeometry, canvasRef.current!, stageRef.current!, setView, setAuto);
         dispose = built.dispose;
         ctl.current = built.controls;
         built.controls.dress(OUTFITS[0]);
@@ -309,12 +204,11 @@ export default function FittingRoom() {
             {OUTFITS.map((o) => (
               <li key={o.id}>
                 <button type="button" className="outfit" aria-pressed={o === fit} onClick={() => pick(o)}>
-                  <span className="swatches">{[o.cap?.plaid?.[0], o.top, o.tie, o.bottom].filter(Boolean).map((c, i) => <i key={i} style={{ background: c }} />)}</span>
+                  <span className="swatches">{o.swatches.map((c, i) => <i key={i} style={{ background: c }} />)}</span>
                   <span>{o.name}<small>{o.note}</small></span>
                 </button>
               </li>
             ))}
-            <li><div className="outfit soon"><span>next fit coming soon ✦</span></div></li>
           </ul>
         </div>
       </div>
