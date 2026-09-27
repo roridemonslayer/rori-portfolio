@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { EXTRAS, JOBS } from "../data";
-import { prefersReducedMotion } from "../lib";
 
 /* experience: a scroll-drawn timeline the soot sprite rides down.
    Cards appear a little ahead of the sprite (and tuck away when you scroll back up),
@@ -14,27 +13,36 @@ export default function Experience() {
     const items = [...tl.querySelectorAll<HTMLElement>(".tl-item")];
     const nodes = items.map((it) => it.querySelector<HTMLElement>(".node")!);
     const lines = [...tl.querySelectorAll<HTMLElement>(".tl-card header, .tl-card li, .tl-tags")];
-    const reduce = prefersReducedMotion();
-    // the path eases toward where the scroll says it should be, every frame, so trackpad/wheel steps don't show as jumps
-    let shown = -1, raf = 0;
-    const frame = () => {
-      const r = tl.getBoundingClientRect();
-      const target = Math.min(1, Math.max(0, (innerHeight * 0.55 - r.top) / r.height));
-      shown = shown < 0 || reduce ? target : shown + (target - shown) * 0.3;
-      if (Math.abs(target - shown) < 0.0004) shown = target;
-      fill.style.transform = `scaleY(${shown})`;
-      soot.style.transform = `translate3d(0, ${shown * r.height}px, 0)`;
-      const tip = r.top + shown * r.height;
-      nodes.forEach((n, k) => items[k].classList.toggle("passed", n.getBoundingClientRect().top <= tip + 1));
-      for (const el of lines) el.classList.toggle("lit", el.getBoundingClientRect().top + 8 <= tip);
-      for (const it of items) it.classList.toggle("shown", it.getBoundingClientRect().top < innerHeight * 0.85);
-      raf = shown === target ? 0 : requestAnimationFrame(frame);
+
+    // positions inside the timeline don't change while scrolling, so measure them once (and on resize)
+    // and each scroll only reads the timeline's own position: no easing, no layout thrash, locked to the scroll
+    let height = 0, nodeY: number[] = [], lineY: number[] = [], itemY: number[] = [];
+    const measure = () => {
+      const t = tl.getBoundingClientRect().top;
+      height = tl.offsetHeight;
+      // cards/lines are shifted by their reveal animation, so measure from their un-shifted layout box
+      const y = (el: HTMLElement) => el.getBoundingClientRect().top - t - (parseFloat(getComputedStyle(el.closest(".tl-card, .date") ?? el).translate.split(" ")[1] || "0") || 0);
+      nodeY = nodes.map((n) => n.getBoundingClientRect().top - t);
+      lineY = lines.map(y);
+      itemY = items.map((it) => it.getBoundingClientRect().top - t);
     };
-    const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
-    addEventListener("scroll", kick, { passive: true });
-    addEventListener("resize", kick);
-    kick();
-    return () => { cancelAnimationFrame(raf); removeEventListener("scroll", kick); removeEventListener("resize", kick); };
+    const update = () => {
+      const top = tl.getBoundingClientRect().top;
+      const p = Math.min(1, Math.max(0, (innerHeight * 0.55 - top) / height));
+      const tip = p * height;
+      fill.style.transform = `scaleY(${p})`;
+      soot.style.transform = `translate3d(0, ${tip}px, 0)`;
+      nodes.forEach((_, k) => items[k].classList.toggle("passed", nodeY[k] <= tip + 1));
+      lines.forEach((el, k) => el.classList.toggle("lit", lineY[k] + 8 <= tip));
+      items.forEach((it, k) => it.classList.toggle("shown", top + itemY[k] < innerHeight * 0.85));
+    };
+    const onResize = () => { measure(); update(); };
+    addEventListener("scroll", update, { passive: true });
+    addEventListener("resize", onResize);
+    const ro = new ResizeObserver(onResize);
+    ro.observe(tl);
+    onResize();
+    return () => { removeEventListener("scroll", update); removeEventListener("resize", onResize); ro.disconnect(); };
   }, []);
 
   return (
