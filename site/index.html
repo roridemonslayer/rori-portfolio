@@ -103,6 +103,9 @@
   @keyframes caretBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 
   [data-reveal] { opacity: 0; transform: translateY(46px); }
+  /* the stack stays hidden on the first screen, however tall the window is, until the visitor scrolls */
+  [data-after-scroll] { opacity: 0; transform: translateY(46px); }
+  [data-after-scroll].revealed { opacity: 1; transform: translateY(0); transition: opacity 0.7s ease var(--reveal-delay, 0s), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0s); }
   [data-reveal].revealed { opacity: 1; transform: translateY(0); transition: opacity 0.7s ease var(--reveal-delay, 0s), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0s); }
 
   /* ---------- page + backdrops ---------- */
@@ -612,11 +615,11 @@
 
   <!-- ============ MY STACK ============ -->
   <section class="stack-wrap" id="stack" aria-labelledby="stack-t">
-    <div class="stack-title" data-reveal="0">
+    <div class="stack-title" data-after-scroll>
       <span class="mark" aria-hidden="true">✽</span>
       <h2 id="stack-t">MY STACK</h2>
     </div>
-    <ul class="skills" data-reveal="1">
+    <ul class="skills" data-after-scroll style="--reveal-delay: 0.14s">
       <li><img src="assets/icons/javascript.svg" alt="">JavaScript</li>
       <li><img src="assets/icons/typescript.svg" alt="">TypeScript</li>
       <li><img src="assets/icons/react.svg" alt="">React</li>
@@ -1669,6 +1672,17 @@ const ROLES = ["Software Engineer", "AI Engineer", "Machine Learning Engineer", 
 
 </script>
 <script>
+/* ---------- stack: reveal only once the visitor has scrolled and it's in view ---------- */
+(() => {
+  const els = [...document.querySelectorAll("[data-after-scroll]")];
+  const check = () => {
+    if (scrollY < 60) return;
+    for (const el of els) if (el.getBoundingClientRect().top < innerHeight * 0.88) el.classList.add("revealed");
+    if (els.every((el) => el.classList.contains("revealed"))) removeEventListener("scroll", check);
+  };
+  addEventListener("scroll", check, { passive: true });
+})();
+
 /* ---------- experience timeline: fill the path + move the soot sprite with scroll ---------- */
 (() => {
   const tl = document.getElementById("tl");
