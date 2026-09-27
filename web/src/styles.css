@@ -236,8 +236,8 @@ body.night .skills img.dark-logo { filter: invert(1) hue-rotate(180deg) brightne
 .tl { --rail: 18px; --p: 0; position: relative; }
 .tl-list { list-style: none; margin: 0; padding: 0; }
 .tl::before { content: ""; position: absolute; left: calc(var(--rail) - 1px); top: 0; bottom: 0; width: 2px; background: repeating-linear-gradient(180deg, var(--line-mid) 0 7px, transparent 7px 14px); }
-.tl-fill { position: absolute; left: calc(var(--rail) - 2px); top: 0; width: 4px; height: calc(var(--p) * 100%); border-radius: 4px; background: var(--ember); box-shadow: 0 0 10px color-mix(in srgb, var(--ember) 60%, transparent); pointer-events: none; }
-.tl-soot { position: absolute; left: var(--rail); top: calc(var(--p) * 100%); width: 46px; z-index: 2; pointer-events: none; transform: translate(-50%, -50%); }
+.tl-fill { position: absolute; left: calc(var(--rail) - 2px); top: 0; width: 4px; height: 100%; transform-origin: 50% 0; transform: scaleY(0); will-change: transform; border-radius: 4px; background: var(--ember); box-shadow: 0 0 10px color-mix(in srgb, var(--ember) 60%, transparent); pointer-events: none; }
+.tl-soot { position: absolute; left: var(--rail); top: 0; width: 46px; margin: -23px 0 0 -23px; z-index: 2; pointer-events: none; will-change: transform; } /* moved with transform by Experience.tsx */
 .tl-soot img { display: block; width: 100%; animation: sootRide 0.7s ease-in-out infinite alternate; }
 body.night .tl-soot img { filter: drop-shadow(0 0 8px rgba(255, 240, 190, 0.55)); }
 @keyframes sootRide { from { transform: translateY(-3px) rotate(-6deg); } to { transform: translateY(3px) rotate(6deg); } }
@@ -487,7 +487,7 @@ footer.foot { max-width: 1240px; margin: 0 auto; display: flex; justify-content:
   .tl-when .date { font-size: 24px; }
   .tl-when .badge { margin: 0 0 0 10px; vertical-align: 4px; }
   .tl-when .date { display: inline; }
-  .tl-soot { width: 34px; }
+  .tl-soot { width: 34px; margin: -17px 0 0 -17px; }
   .tl-card { padding: 22px 20px; border-radius: 18px; }
   .tl-card h3 { font-size: 20px; }
   .tl-card .logo { width: 42px; height: 42px; }

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { EXTRAS, JOBS } from "../data";
+import { prefersReducedMotion } from "../lib";
 
 /* experience: a scroll-drawn timeline the soot sprite rides down.
    Cards appear a little ahead of the sprite (and tuck away when you scroll back up),
@@ -8,24 +9,32 @@ export default function Experience() {
   const tlRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const tl = tlRef.current!;
+    const fill = tl.querySelector<HTMLElement>(".tl-fill")!;
+    const soot = tl.querySelector<HTMLElement>(".tl-soot")!;
     const items = [...tl.querySelectorAll<HTMLElement>(".tl-item")];
+    const nodes = items.map((it) => it.querySelector<HTMLElement>(".node")!);
     const lines = [...tl.querySelectorAll<HTMLElement>(".tl-card header, .tl-card li, .tl-tags")];
-    let queued = false;
-    const update = () => {
-      queued = false;
+    const reduce = prefersReducedMotion();
+    // the path eases toward where the scroll says it should be, every frame, so trackpad/wheel steps don't show as jumps
+    let shown = -1, raf = 0;
+    const frame = () => {
       const r = tl.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, (innerHeight * 0.55 - r.top) / r.height));
-      tl.style.setProperty("--p", p.toFixed(4));
-      const tip = r.top + p * r.height;
-      for (const it of items) it.classList.toggle("passed", it.querySelector(".node")!.getBoundingClientRect().top <= tip + 1);
+      const target = Math.min(1, Math.max(0, (innerHeight * 0.55 - r.top) / r.height));
+      shown = shown < 0 || reduce ? target : shown + (target - shown) * 0.18;
+      if (Math.abs(target - shown) < 0.0004) shown = target;
+      fill.style.transform = `scaleY(${shown})`;
+      soot.style.transform = `translate3d(0, ${shown * r.height}px, 0)`;
+      const tip = r.top + shown * r.height;
+      nodes.forEach((n, k) => items[k].classList.toggle("passed", n.getBoundingClientRect().top <= tip + 1));
       for (const el of lines) el.classList.toggle("lit", el.getBoundingClientRect().top + 8 <= tip);
       for (const it of items) it.classList.toggle("shown", it.getBoundingClientRect().top < innerHeight * 0.85);
+      raf = shown === target ? 0 : requestAnimationFrame(frame);
     };
-    const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
-    addEventListener("scroll", onScroll, { passive: true });
-    addEventListener("resize", onScroll);
-    update();
-    return () => { removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll); };
+    const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
+    addEventListener("scroll", kick, { passive: true });
+    addEventListener("resize", kick);
+    kick();
+    return () => { cancelAnimationFrame(raf); removeEventListener("scroll", kick); removeEventListener("resize", kick); };
   }, []);
 
   return (
