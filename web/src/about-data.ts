@@ -16,7 +16,7 @@ export const INTERESTS: Interest[] = [
   { key: "ghibli", title: "Studio Ghibli", caption: "Ghibli movies are my comfort watch. They're the reason this site looks like this.", photo: "/about/ghibli-day.gif", photoNight: "/about/ghibli-night.gif", focus: "50% 80%" },
   { key: "cards", title: "Card collecting", caption: "I collect cards in my free time.", photo: "/about/cards.jpg" },
   { key: "travel", title: "Travel", caption: "I really love to travel.", photo: "/about/travel.jpg" },
-  { key: "music", title: "Music", caption: "I love music. My playlists are on Spotify.", photo: "/about/music.jpg", link: { href: "https://open.spotify.com", text: "my spotify →" } },
+  { key: "music", title: "Music", caption: "I love music. This one's my \"Book writing.\" playlist.", photo: "/about/music.jpg", link: { href: "https://open.spotify.com", text: "my spotify →" } },
   { key: "books", title: "Books", caption: "My favorite book of all time is Call Me by Your Name.", photo: "/about/books.jpg" },
 ];
 
