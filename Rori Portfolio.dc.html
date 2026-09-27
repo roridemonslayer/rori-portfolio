@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: url('assets/soot-rock-v5.png') 8 8, auto;
+    --paper: #eef2ec;
+    --paper-glass: rgba(238, 242, 236, 0.88);
+    --ink: #1d2c26;
+    --muted: #4c5f54;
+    --faint: #5e7263;
+    --line: rgba(29, 44, 38, 0.15);
+    --line-mid: rgba(29, 44, 38, 0.3);
+    --line-strong: #1d2c26;
+    --ember: #d99a2b;
+    --green: #3fa06a;
+    --grid: rgba(35, 60, 48, 0.07);
+    --card: #e3ead9;
+    --card2: #d5dfc8;
+    --star: 0;
+    --castle: 0;
+    --meadow: 1;
+    --frame: #e8e1d0;
+    --leafShape: 0 100% 0 100%;
+    --leafGlow: none;
+    --leaf1: #6fa05e;
+    --leaf2: #c96a8d;
+    --leaf3: #e0b23e;
+    background: var(--paper);
+  }
+  body.night {
+    --paper: #10152a;
+    --paper-glass: rgba(16, 21, 42, 0.88);
+    --ink: #ece5d3;
+    --muted: #9a917a;
+    --faint: #8f8770;
+    --line: rgba(236, 229, 211, 0.16);
+    --line-mid: rgba(236, 229, 211, 0.32);
+    --line-strong: #ece5d3;
+    --ember: #f0a35e;
+    --green: #7fd6a4;
+    --grid: rgba(236, 229, 211, 0.055);
+    --card: #1a2140;
+    --card2: #232b4e;
+    --star: 1;
+    --castle: 1;
+    --meadow: 0;
+    --frame: #b9c2e0;
+    --leafShape: 50%;
+    --leafGlow: 0 0 8px 2px rgba(255, 240, 190, 0.55);
+    --leaf1: #ffe9a8;
+    --leaf2: #fff6d8;
+    --leaf3: #ffd97a;
+  }
+  a, button { cursor: url('assets/soot-candy-v5.png') 8 8, pointer; }
+    a { color: var(--ink); text-decoration: none; }
+  a:hover { color: var(--ember); }
+  @keyframes leafDrift {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 0.9; }
+    85%  { opacity: 0.9; }
+    100% { transform: translate(-110vw, 180px) rotate(-620deg); opacity: 0; }
+  }
+  @keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+  @keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95%, 97% { transform: scaleY(0.08); } }
+  @keyframes emberFlicker { 0%, 100% { opacity: 0.85; transform: scale(1); } 40% { opacity: 1; transform: scale(1.08); } 70% { opacity: 0.72; transform: scale(0.96); } }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes caretBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+  @keyframes loaderTwinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+  @keyframes sigDraw { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
+  @keyframes leafSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes unfold {
+    0%   { opacity: 0; transform: scale(0.7); clip-path: circle(6% at 50% 42%); }
+    46%  { opacity: 0; transform: scale(0.7); clip-path: circle(6% at 50% 42%); }
+    58%  { opacity: 1; transform: scale(0.88); clip-path: circle(22% at 50% 46%); filter: contrast(1.5) brightness(0.92); }
+    74%  { opacity: 1; transform: scale(0.97); clip-path: circle(60% at 50% 50%); filter: contrast(1.2); }
+    88%  { transform: scale(1.03); clip-path: circle(105% at 50% 50%); filter: none; }
+    100% { opacity: 1; transform: scale(1); clip-path: circle(140% at 50% 50%); }
+  }
+  @keyframes ballCrush {
+    0%   { opacity: 1; transform: scale(0.62) rotate(-8deg); }
+    14%  { transform: scale(0.66) rotate(6deg); }
+    28%  { transform: scale(0.6) rotate(-5deg); }
+    42%  { opacity: 1; transform: scale(0.64) rotate(2deg); }
+    62%  { opacity: 0.85; transform: scale(1.15) rotate(30deg); filter: blur(1px); }
+    100% { opacity: 0; transform: scale(1.9) rotate(75deg); filter: blur(7px); }
+  }
+  [data-reveal] { opacity: 0; transform: translateY(46px); }
+  [data-reveal].revealed { opacity: 1; transform: translateY(0); transition: opacity 0.7s ease var(--reveal-delay, 0s), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0s); }
+  /* walks counter-clockwise around the 313x363 portrait frame; rotation keeps feet on each edge; scaleX(-1) faces the walk direction */
+  @keyframes patrol {
+    0%   { transform: translate(245px, 535px) rotate(0deg); }
+    21%  { transform: translate(0px, 535px) rotate(0deg); }
+    23%  { transform: translate(-74px, 483px) rotate(90deg); }
+    44%  { transform: translate(-74px, 25px) rotate(90deg); }
+    46%  { transform: translate(0px, -86px) rotate(180deg); }
+    71%  { transform: translate(245px, -86px) rotate(180deg); }
+    73%  { transform: translate(319px, 25px) rotate(270deg); }
+    98%  { transform: translate(319px, 483px) rotate(270deg); }
+    100% { transform: translate(245px, 535px) rotate(360deg); }
+  }
+</style>
+</helmet>
+
+<div style="background: var(--paper); color: var(--ink); min-height: 100vh; transition: background-color 0.6s ease; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 28px 28px; position: relative; overflow-x: hidden;">
+
+  <!-- ============ LOADER ============ -->
+  <sc-if value="{{ showLoader }}" hint-placeholder-val="{{ true }}">
+  <div style="position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; background: radial-gradient(140% 100% at 50% 30%, #24203e 0%, #151a35 45%, #0a0f24 100%); opacity: {{ loaderOpacity }}; transition: opacity 0.7s ease; cursor: default;">
+    <div style="position: absolute; top: 18%; left: 22%; width: 3px; height: 3px; border-radius: 50%; background: #fff; animation: loaderTwinkle 3s ease-in-out infinite;"></div>
+    <div style="position: absolute; top: 30%; left: 68%; width: 2px; height: 2px; border-radius: 50%; background: #dfe6ff; animation: loaderTwinkle 4s ease-in-out 0.6s infinite;"></div>
+    <div style="position: absolute; top: 24%; left: 44%; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: loaderTwinkle 2.6s ease-in-out 1.2s infinite;"></div>
+    <div style="position: absolute; top: 66%; left: 30%; width: 3px; height: 3px; border-radius: 50%; background: #fff; animation: loaderTwinkle 3.6s ease-in-out 0.3s infinite;"></div>
+    <div style="position: absolute; top: 70%; left: 72%; width: 2px; height: 2px; border-radius: 50%; background: #dfe6ff; animation: loaderTwinkle 4.4s ease-in-out 1.8s infinite;"></div>
+    <div style="position: absolute; top: 16%; right: 20%; width: 64px; height: 64px; border-radius: 50%; background: #f2ecd9; box-shadow: 0 0 50px 14px rgba(242,236,217,0.25);"></div>
+
+    <div style="font-family: 'Caveat', cursive; font-weight: 700; font-size: 108px; line-height: 0.9; color: #f4eeda; text-shadow: 0 0 24px rgba(240,163,94,0.3);">Rori Olaniyi</div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; width: 360px;">
+      <div style="position: relative; width: 100%; height: 8px; border-radius: 999px; background: rgba(236,229,211,0.14); margin-top: 44px;">
+        <img src="assets/soot-loader.png" alt="" style="position: absolute; bottom: 2px; left: {{ progressPct }}; width: 60px; height: 60px; transform: translate(-50%, 0); animation: bob 1.1s ease-in-out infinite; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.5)); pointer-events: none;">
+        <div style="position: absolute; left: 0; top: 0; height: 100%; width: {{ progressPct }}; border-radius: 999px; background: linear-gradient(90deg, #d9843c, #f0a35e); box-shadow: 0 0 14px 2px rgba(240,163,94,0.6);"></div>
+      </div>
+      <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #b7ad94; letter-spacing: 0.02em;">{{ loaderMsg }}</div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #d9a05e;">{{ progressPct }}</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- imessage chat panel -->
+  <div style="position: fixed; top: 0; right: 0; bottom: 0; width: 380px; background: {{ chatBg }}; box-shadow: -12px 0 40px rgba(0,0,0,0.25); z-index: 60; display: flex; flex-direction: column; transform: {{ chatTransform }}; transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); font-family: -apple-system, 'Space Grotesk', sans-serif;">
+    <div style="padding: 14px 18px 12px; border-bottom: 1px solid {{ chatLine }}; display: flex; align-items: center; gap: 12px; background: {{ chatHeaderBg }};">
+      <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(180deg, #9aa4b2, #6e7987); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 17px;">R</div>
+      <div style="flex-grow: 1;">
+        <div style="font-weight: 600; font-size: 15px; color: {{ chatInk }};">rori (bot) 🍃</div>
+        <div style="font-size: 12px; color: {{ chatMuted }};">iMessage · usually replies instantly</div>
+      </div>
+      <button onClick="{{ closeChat }}" style="background: none; border: none; font-size: 22px; color: {{ chatMuted }}; cursor: pointer; padding: 4px 8px;">×</button>
+    </div>
+    <div ref="{{ chatScrollRef }}" style="flex-grow: 1; overflow-y: auto; padding: 18px 14px; display: flex; flex-direction: column; gap: 8px;">
+      <sc-for list="{{ chatMsgs }}" as="m" hint-placeholder-count="1">
+        <div style="max-width: 78%; padding: 9px 14px; border-radius: 18px; font-size: 14.5px; line-height: 1.45; white-space: pre-wrap; align-self: {{ m.align }}; background: {{ m.bg }}; color: {{ m.color }}; border-bottom-right-radius: {{ m.brr }}; border-bottom-left-radius: {{ m.blr }};">{{ m.text }}</div>
+      </sc-for>
+      <sc-if value="{{ chatTyping }}" hint-placeholder-val="{{ false }}">
+        <div style="align-self: flex-start; background: {{ bubbleThem }}; border-radius: 18px; padding: 12px 16px; font-size: 14px; color: {{ chatMuted }};">•••</div>
+      </sc-if>
+    </div>
+    <div style="padding: 12px 14px 16px; border-top: 1px solid {{ chatLine }}; display: flex; gap: 10px; align-items: center;">
+      <input ref="{{ chatInputRef }}" onKeyDown="{{ chatKeyDown }}" placeholder="iMessage" style="flex-grow: 1; border: 1px solid {{ chatLine }}; border-radius: 999px; padding: 10px 16px; font-size: 14.5px; background: {{ chatInputBg }}; color: {{ chatInk }}; outline: none; font-family: inherit;">
+      <button onClick="{{ chatSend }}" style="width: 36px; height: 36px; border-radius: 50%; border: none; background: #34a2fd; color: #fff; font-size: 17px; cursor: pointer; flex-shrink: 0;">↑</button>
+    </div>
+  </div>
+
+  <!-- day meadow backdrop -->
+  <div style="position: fixed; inset: 0; background: url('assets/valley-day.jpg') center / cover no-repeat; opacity: var(--meadow); transition: opacity 0.8s ease; pointer-events: none; z-index: 0;"></div>
+  <div style="position: fixed; inset: 0; background: linear-gradient(180deg, rgba(238,242,236,0.08) 0%, rgba(238,242,236,0.15) 55%, rgba(238,242,236,0.22) 100%); opacity: var(--meadow); transition: opacity 0.8s ease; pointer-events: none; z-index: 0;"></div>
+
+  <!-- night castle backdrop -->
+  <div style="position: fixed; inset: 0; background: url('assets/castle-night.gif') center / cover no-repeat; opacity: var(--castle); transition: opacity 0.8s ease; pointer-events: none; z-index: 0;"></div>
+  <div style="position: fixed; inset: 0; background: linear-gradient(180deg, rgba(16,21,42,0.55) 0%, rgba(16,21,42,0.75) 60%, rgba(16,21,42,0.88) 100%); opacity: var(--castle); transition: opacity 0.8s ease; pointer-events: none; z-index: 0;"></div>
+
+  <!-- twinkling fixed stars (night) -->
+  <div style="position: absolute; top: 90px; left: 12%; width: 3px; height: 3px; border-radius: 50%; background: #fff; opacity: var(--star); animation: twinkle 3.4s ease-in-out infinite; pointer-events: none;"></div>
+  <div style="position: absolute; top: 200px; left: 34%; width: 2px; height: 2px; border-radius: 50%; background: #dfe6ff; opacity: var(--star); animation: twinkle 4.2s ease-in-out 0.7s infinite; pointer-events: none;"></div>
+  <div style="position: absolute; top: 140px; left: 58%; width: 3px; height: 3px; border-radius: 50%; background: #fff; opacity: var(--star); animation: twinkle 2.8s ease-in-out 1.3s infinite; pointer-events: none;"></div>
+  <div style="position: absolute; top: 320px; left: 80%; width: 2px; height: 2px; border-radius: 50%; background: #dfe6ff; opacity: var(--star); animation: twinkle 3.9s ease-in-out 0.3s infinite; pointer-events: none;"></div>
+  <div style="position: absolute; top: 420px; left: 22%; width: 2px; height: 2px; border-radius: 50%; background: #fff; opacity: var(--star); animation: twinkle 4.8s ease-in-out 2s infinite; pointer-events: none;"></div>
+  <div style="position: absolute; top: 60px; left: 88%; width: 2px; height: 2px; border-radius: 50%; background: #fff; opacity: var(--star); animation: twinkle 3.1s ease-in-out 1s infinite; pointer-events: none;"></div>
+
+  <!-- drifting leaves (day) / blowing stars (night) -->
+  <div style="position: fixed; top: 120px; right: -30px; width: 16px; height: 10px; background: var(--leaf1); border-radius: var(--leafShape); box-shadow: var(--leafGlow); animation: leafDrift 16s linear infinite; z-index: 40; pointer-events: none; transition: background 0.6s;"></div>
+  <div style="position: fixed; top: 300px; right: -30px; width: 12px; height: 8px; background: var(--leaf2); border-radius: var(--leafShape); box-shadow: var(--leafGlow); animation: leafDrift 21s linear 5s infinite; z-index: 40; pointer-events: none; transition: background 0.6s;"></div>
+  <div style="position: fixed; top: 60px; right: -30px; width: 14px; height: 9px; background: var(--leaf3); border-radius: var(--leafShape); box-shadow: var(--leafGlow); animation: leafDrift 13s linear 9s infinite; z-index: 40; pointer-events: none; transition: background 0.6s;"></div>
+  <div style="position: fixed; top: 480px; right: -30px; width: 15px; height: 10px; background: var(--leaf1); border-radius: var(--leafShape); box-shadow: var(--leafGlow); animation: leafDrift 18s linear 12s infinite; z-index: 40; pointer-events: none; transition: background 0.6s;"></div>
+  <div style="position: fixed; top: 220px; right: -30px; width: 8px; height: 8px; background: var(--leaf2); border-radius: var(--leafShape); box-shadow: var(--leafGlow); animation: leafDrift 24s linear 2s infinite; z-index: 40; pointer-events: none; opacity: var(--star); transition: background 0.6s;"></div>
+  <div style="position: fixed; top: 400px; right: -30px; width: 6px; height: 6px; background: var(--leaf3); border-radius: var(--leafShape); box-shadow: var(--leafGlow); animation: leafDrift 19s linear 7s infinite; z-index: 40; pointer-events: none; opacity: var(--star); transition: background 0.6s;"></div>
+
+  <!-- ============ NAV ============ -->
+  <div style="position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; border-bottom: 1px solid var(--line); background: var(--paper-glass); backdrop-filter: blur(8px); transition: background-color 0.6s ease;">
+    <a href="#top" style="display: flex; align-items: center; gap: 12px;">
+      <span style="width: 12px; height: 12px; border-radius: 50%; background: var(--ember); box-shadow: 0 0 14px 2px var(--ember); animation: emberFlicker 2.4s ease-in-out infinite; display: inline-block;"></span>
+      <span style="font-weight: 700; font-size: 17px; letter-spacing: 0.04em;">RORI.DEV</span>
+    </a>
+    <div style="display: flex; gap: 2px; align-items: center; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">
+      <a href="#experience" style="padding: 8px 13px;">/experience</a>
+      <a href="#projects" style="padding: 8px 13px;">/projects</a>
+      <a href="#story" style="padding: 8px 13px;">/story</a>
+      <a href="#writing" style="padding: 8px 13px;">/writing</a>
+      <a href="#contact" style="padding: 8px 13px;">/contact</a>
+      <a href="https://open.spotify.com" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--line-mid); border-radius: 999px; padding: 7px 15px; margin-left: 10px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block;"></span>
+        spotify
+      </a>
+      <button onClick="{{ openChat }}" style="display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--line-mid); border-radius: 999px; padding: 7px 15px; margin-left: 8px; background: none; color: var(--ink); font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;">💬 chat</button>
+      <button onClick="{{ toggleNight }}" style="display: flex; align-items: center; gap: 9px; border: 1.5px solid var(--line-strong); border-radius: 999px; padding: 7px 15px; margin-left: 8px; background: none; color: var(--ink); font-family: 'IBM Plex Mono', monospace; font-size: 13px; cursor: pointer;">
+        <span style="width: 14px; height: 14px; border-radius: 50%; background: {{ knobColor }}; box-shadow: {{ knobGlow }}; display: inline-block; transition: background 0.5s;"></span>
+        {{ modeLabel }}
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <div id="top" data-screen-label="hero" style="position: relative; max-width: 1240px; margin: 0 auto; padding: 60px 48px 60px; min-height: calc(100vh - 80px); box-sizing: border-box; display: flex; justify-content: space-between; gap: 60px; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 20px; max-width: 720px;">
+      <div style="font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 600; color: var(--muted); text-shadow: 0 0 8px var(--paper), 0 0 16px var(--paper), 0 1px 3px var(--paper);">{{ greeting }} 👋, I'm</div>
+      <div style="font-size: 92px; font-weight: 700; line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; text-shadow: 0 0 14px var(--paper), 0 0 28px var(--paper); min-height: 168px;">{{ nameLine1 }}<sc-if value="{{ caret1 }}" hint-placeholder-val="{{ true }}"><span style="display: inline-block; width: 6px; height: 0.82em; background: var(--ember); margin-left: 6px; vertical-align: baseline; animation: caretBlink 0.9s step-end infinite;"></span></sc-if><br>{{ nameLine2 }}<sc-if value="{{ nameDone }}" hint-placeholder-val="{{ true }}"><span style="color: var(--ember);">.</span></sc-if><sc-if value="{{ caret2 }}" hint-placeholder-val="{{ true }}"><span style="display: inline-block; width: 6px; height: 0.82em; background: var(--ember); margin-left: 6px; vertical-align: baseline; animation: caretBlink 0.9s step-end infinite;"></span></sc-if></div>
+      <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 24px; font-weight: 600; text-shadow: 0 0 10px var(--paper), 0 0 20px var(--paper);">
+        <span>Full-Stack Engineer</span>
+        <span style="color: var(--ember); font-size: 18px;">✳</span>
+        <span>AI &amp; Agents</span>
+        <span style="color: var(--ember); font-size: 18px;">✳</span>
+        <span>Community Builder</span>
+      </div>
+      <div style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 22px; color: var(--ink); max-width: 560px; line-height: 1.5; margin-top: 4px; text-shadow: 0 0 10px var(--paper), 0 0 20px var(--paper), 0 1px 3px var(--paper);">
+        Welcome to my <span style="position: relative; color: var(--ember); font-style: normal; font-weight: 600;">little corner of the sky<svg viewBox="0 0 240 12" preserveAspectRatio="none" style="position: absolute; left: 0; bottom: -9px; width: 100%; height: 10px;"><path d="M2 8 Q 60 2 120 6 T 238 4" fill="none" stroke="var(--ember)" stroke-width="3" stroke-linecap="round"></path></svg></span> ✦✦✦
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 16px;">
+        <a href="#projects" style="border: 2px solid var(--line-strong); background: var(--ember); color: #1d2c26; font-weight: 700; font-family: 'Space Grotesk', sans-serif; font-size: 16px; padding: 14px 30px; border-radius: 999px; box-shadow: 5px 5px 0 var(--line-strong);">View Projects</a>
+        <a href="#contact" style="border: 2px solid var(--line-strong); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; padding: 14px 26px; border-radius: 999px; background: var(--paper);">Say hello</a>
+      </div>
+    </div>
+
+    <div style="position: relative; flex-shrink: 0;">
+      <div style="width: 348px; height: 618px; position: relative; transform-origin: center center;">
+        <div style="position: absolute; inset: 0;">
+        <img src="assets/linen-frame.png" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3;">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="portrait" shape="rect" fit="cover" placeholder="drop your portrait here" hint-size="290px,470px" style="position: absolute; left: 7.5%; top: 12%; width: 85%; height: 76%; z-index: 2;"></x-import>
+        </div>
+      </div>
+
+    </div></div>
+
+  <!-- ============ MY STACK ============ -->
+  <div data-screen-label="stack" style="max-width: 1240px; margin: 0 auto; padding: 120px 48px 80px;">
+    <div style="background: var(--paper-glass); backdrop-filter: blur(6px); border: 1.5px solid var(--line-strong); padding: 40px 44px 46px; position: relative;">
+      <div data-reveal="0" style="display: flex; align-items: center; gap: 12px; margin-bottom: 34px;">
+        <span style="color: var(--ember); font-size: 20px;">✽</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; letter-spacing: 0.12em; color: var(--muted);">MY STACK</span>
+        <span style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 16px; color: var(--faint);">— every good witch keeps her tools close</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 34px;">
+        <div data-reveal="1" style="display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start;">
+          <div style="font-size: 34px; font-weight: 700; letter-spacing: 0.02em; color: var(--ink);">FRONTEND</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 14px 34px; align-items: center; padding-top: 8px;">
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/javascript" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">JavaScript</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/typescript" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">TypeScript</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/react" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">React</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/nextdotjs/808a7a" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">Next.js</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/tailwindcss" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">Tailwind CSS</span></div>
+          </div>
+        </div>
+        <div data-reveal="2" style="display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start; border-top: 1px solid var(--line); padding-top: 30px;">
+          <div style="font-size: 34px; font-weight: 700; letter-spacing: 0.02em; color: var(--ink);">BACKEND &amp; AI</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 14px 34px; align-items: center; padding-top: 8px;">
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/python" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">Python</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/fastapi" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">FastAPI</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/nodedotjs" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">Node.js</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/langchain/1C3C3C" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">LangChain</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/qiskit/6929C4" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">Qiskit</span></div>
+          </div>
+        </div>
+        <div data-reveal="3" style="display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start; border-top: 1px solid var(--line); padding-top: 30px;">
+          <div style="font-size: 34px; font-weight: 700; letter-spacing: 0.02em; color: var(--ink);">DATABASE</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 14px 34px; align-items: center; padding-top: 8px;">
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/postgresql" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">PostgreSQL</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/mongodb" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">MongoDB</span></div>
+          </div>
+        </div>
+        <div data-reveal="4" style="display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start; border-top: 1px solid var(--line); padding-top: 30px;">
+          <div style="font-size: 34px; font-weight: 700; letter-spacing: 0.02em; color: var(--ink);">TOOLS</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 14px 34px; align-items: center; padding-top: 8px;">
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/git" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">Git</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.simpleicons.org/docker" alt="" style="width: 26px; height: 26px;"><span style="font-size: 17px; font-weight: 500;">Docker</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="" style="width: 30px; height: 30px;"><span style="font-size: 17px; font-weight: 500;">AWS</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- little wildflowers in the panel corners -->
+      <div style="position: absolute; bottom: 14px; right: 18px; display: flex; gap: 8px; align-items: flex-end;">
+        <div style="width: 10px; height: 10px; border-radius: 50% 50% 50% 0; background: #c96a8d;"></div>
+        <div style="width: 13px; height: 13px; border-radius: 50% 50% 50% 0; background: #e0b23e;"></div>
+        <div style="width: 9px; height: 9px; border-radius: 50% 50% 50% 0; background: #6fa05e;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ EXPERIENCE ============ -->
+  <div id="experience" data-screen-label="experience" style="max-width: 1240px; margin: 0 auto; padding: 30px 48px 80px;">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 26px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ember);">01</span>
+      <span style="font-size: 30px; font-weight: 700;">Experience</span>
+      <span style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 17px; color: var(--muted);">where i've been apprenticing</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <div style="display: grid; grid-template-columns: 44px 300px 1fr 180px; gap: 20px; align-items: baseline; padding: 22px 0; border-top: 1.5px solid var(--line-strong);">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--faint);">a.</span>
+        <div>
+          <div style="font-size: 20px; font-weight: 600;">Liberty Mutual</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint); margin-top: 4px;">software engineering intern</div>
+        </div>
+        <div style="font-size: 15px; color: var(--muted); line-height: 1.55;">Full-stack features for a competitive filings platform analyzing 100+ industry competitors — Python, FastAPI, React 19, TypeScript, PostgreSQL, AWS. Cut analyst lookup time by 30%.</div>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint); text-align: right;">jun 2026 — now</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 44px 300px 1fr 180px; gap: 20px; align-items: baseline; padding: 22px 0; border-top: 1px solid var(--line-mid);">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--faint);">b.</span>
+        <div>
+          <div style="font-size: 20px; font-weight: 600;">NYC Civic Engagement</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint); margin-top: 4px;">frontend developer</div>
+        </div>
+        <div style="font-size: 15px; color: var(--muted); line-height: 1.55;">Civic dashboard serving thousands of residents across all five boroughs. 10+ responsive components; accessibility scores up 25% on public civic data.</div>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint); text-align: right;">jan — may 2026</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 44px 300px 1fr 180px; gap: 20px; align-items: baseline; padding: 22px 0; border-top: 1px solid var(--line-mid);">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--faint);">c.</span>
+        <div>
+          <div style="font-size: 20px; font-weight: 600;">The Coding School</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint); margin-top: 4px;">quantum computing intern</div>
+        </div>
+        <div style="font-size: 15px; color: var(--muted); line-height: 1.55;">Quantum approaches to protein-folding with Qiskit — 25% error-mitigation improvement; Grover's search at 2× classical speed.</div>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint); text-align: right;">jun — aug 2025</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 44px 300px 1fr 180px; gap: 20px; align-items: baseline; padding: 22px 0; border-top: 1px solid var(--line-mid); border-bottom: 1.5px solid var(--line-strong);">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--faint);">d.</span>
+        <div>
+          <div style="font-size: 20px; font-weight: 600;">Stanford Code in Place</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint); margin-top: 4px;">python instructor</div>
+        </div>
+        <div style="font-size: 15px; color: var(--muted); line-height: 1.55;">Mentored 20 students through Python fundamentals — 95% completion, weekly sessions on loops, functions, OOP.</div>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint); text-align: right;">spring 2025</span>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 30px; margin-top: 22px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint); flex-wrap: wrap;">
+      <span>✦ president — NSBE @ NYIT</span>
+      <span>microsoft ECLSP fellow</span>
+      <span>america on tech data science fellow</span>
+      <span>colorstack · code2040 · mentor me collective</span>
+    </div>
+  </div>
+
+  <!-- ============ PROJECTS ============ -->
+  <div id="projects" data-screen-label="projects" style="max-width: 1240px; margin: 0 auto; padding: 10px 48px 90px;">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 26px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ember);">02</span>
+      <span style="font-size: 30px; font-weight: 700;">Projects</span>
+      <span style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 17px; color: var(--muted);">things built in the workshop</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 22px;">
+      <div style="border: 1.5px solid var(--line-strong); background: var(--card); padding: 26px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint);">P–01 · in progress</span>
+          <span style="width: 10px; height: 10px; background: var(--ember); display: inline-block;"></span>
+        </div>
+        <div style="font-size: 26px; font-weight: 700;">Pathful</div>
+        <div style="font-size: 14.5px; color: var(--muted); line-height: 1.6; flex-grow: 1;">A centralized platform surfacing 500+ internships, scholarships &amp; fellowships usually locked inside insider networks. Playwright + BeautifulSoup pipeline cuts discovery time by 70%.</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--faint);">
+          <span style="border: 1px solid var(--line-mid); border-radius: 999px; padding: 4px 10px;">react</span>
+          <span style="border: 1px solid var(--line-mid); border-radius: 999px; padding: 4px 10px;">typescript</span>
+          <span style="border: 1px solid var(--line-mid); border-radius: 999px; padding: 4px 10px;">python</span>
+          <span style="border: 1px solid var(--line-mid); border-radius: 999px; padding: 4px 10px;">playwright</span>
+        </div>
+        <a href="https://github.com/Deborah-Olaniyi" target="_blank" rel="noopener" style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ember);">live_demo →</a>
+      </div>
+
+      <div style="border: 1.5px solid var(--line-strong); background: var(--card); padding: 26px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint);">P–02 · 2025</span>
+          <span style="width: 10px; height: 10px; background: #4a7ab8; display: inline-block;"></span>
+        </div>
+        <div style="font-size: 26px; font-weight: 700;">Stellar Atlas</div>
+        <div style="font-size: 14.5px; color: var(--muted); line-height: 1.6; flex-grow: 1;">Interactive astronomy app on live NASA APIs — real-time planetary data, satellite imagery, and 100+ explorable celestial bodies with dynamic visualizations.</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--faint);">
+          <span style="border: 1px solid var(--line-mid); border-radius: 999px; padding: 4px 10px;">javascript</span>
+          <span style="border: 1px solid var(--line-mid); border-radius: 999px; padding: 4px 10px;">html/css</span>
+          <span style="border: 1px solid var(--line-mid); border-radius: 999px; padding: 4px 10px;">nasa api</span>
+        </div>
+        <a href="https://github.com/Deborah-Olaniyi" target="_blank" rel="noopener" style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ember);">live_demo →</a>
+      </div>
+
+      <div style="border: 1.5px solid var(--line-strong); background: var(--card); padding: 26px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint);">P–03 · 2025</span>
+          <span style="width: 10px; height: 10px; background: #b85c9e; display: inline-block;"></span>
+        </div>
+        <div style="font-size: 26px; font-weight: 700;">CashCat</div>
+        <div style="font-size: 14.5px; color: var(--muted); line-height: 1.6; flex-grow: 1;">AI budgeting companion for students — LangChain RAG pipelines deliver personalized financial guidance, cutting budgeting errors by 35% across 5+ expense categories.</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--faint);">
+          <span style="border: 1px solid var(--line-mid); border-radius: 999px; padding: 4px 10px;">fastapi</span>
+          <span style="border: 1px solid var(--line-mid); border-radius: 999px; padding: 4px 10px;">mongodb</span>
+          <span style="border: 1px solid var(--line-mid); border-radius: 999px; padding: 4px 10px;">langchain</span>
+        </div>
+        <a href="https://github.com/Deborah-Olaniyi" target="_blank" rel="noopener" style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ember);">github →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ STORY ============ -->
+  <div id="story" data-screen-label="story" style="max-width: 1240px; margin: 0 auto; padding: 10px 48px 90px; display: grid; grid-template-columns: 460px 1fr; gap: 60px; align-items: start;">
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="border: 1.5px solid var(--line-strong); padding: 12px; background: var(--card); transform: rotate(-1.2deg);">
+        <img src="assets/painter-hill.gif" alt="a painter on a hill" style="width: 100%; display: block;">
+      </div>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--faint); text-align: center;">the view from the workshop window</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="display: flex; align-items: baseline; gap: 18px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ember);">03</span>
+        <span style="font-size: 30px; font-weight: 700;">My story</span>
+      </div>
+      <div style="font-family: 'EB Garamond', serif; font-size: 21px; line-height: 1.65; color: var(--ink);">I'm Rori — a builder at heart. I fell for software the way you fall into a good story: all at once, and then deeper every chapter. I love working with agents, building things that scale, and most of all making software that actually lands in someone's life and makes it lighter.</div>
+      <div style="font-family: 'EB Garamond', serif; font-size: 21px; line-height: 1.65; color: var(--muted);">By day I'm a CS junior at NYIT (AI minor), NSBE chapter president, and a serial intern — insurance platforms, civic tech, quantum computing, teaching Python. The throughline: I want to help as many people as I possibly can, one shipped thing at a time.</div>
+
+      <!-- passions / fit pics -->
+      <div style="margin-top: 14px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint); margin-bottom: 12px;">// off the clock — fits &amp; other passions (drop your pics)</div>
+        <div style="display: flex; gap: 18px;">
+          <div style="border: 1.5px solid var(--line-strong); padding: 8px 8px 26px; background: var(--frame); transition: background 0.6s ease; transform: rotate(-2deg);">
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="fit1" shape="rect" fit="cover" placeholder="fit pic 01" hint-size="150px,190px" style="width: 150px; height: 190px;"></x-import>
+          </div>
+          <div style="border: 1.5px solid var(--line-strong); padding: 8px 8px 26px; background: var(--frame); transition: background 0.6s ease; transform: rotate(1.5deg);">
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="fit2" shape="rect" fit="cover" placeholder="fit pic 02" hint-size="150px,190px" style="width: 150px; height: 190px;"></x-import>
+          </div>
+          <div style="border: 1.5px solid var(--line-strong); padding: 8px 8px 26px; background: var(--frame); transition: background 0.6s ease; transform: rotate(-1deg);">
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="fit3" shape="rect" fit="cover" placeholder="fit pic 03" hint-size="150px,190px" style="width: 150px; height: 190px;"></x-import>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ WRITING ============ -->
+  <div id="writing" data-screen-label="writing" style="max-width: 1240px; margin: 0 auto; padding: 10px 48px 90px;">
+    <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 8px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ember);">04</span>
+      <span style="font-size: 30px; font-weight: 700;">Writing</span>
+      <span style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 17px; color: var(--muted);">notes on tech &amp; things i'm learning</span>
+    </div>
+    <div style="display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 20px 0; border-top: 1.5px solid var(--line-strong);">
+        <a href="#writing" style="font-family: 'EB Garamond', serif; font-size: 24px;">what building an agent taught me about patience</a>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint);">draft — coming soon</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 20px 0; border-top: 1px solid var(--line-mid);">
+        <a href="#writing" style="font-family: 'EB Garamond', serif; font-size: 24px;">scraping 500+ hidden opportunities into the open</a>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint);">draft — coming soon</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 20px 0; border-top: 1px solid var(--line-mid); border-bottom: 1.5px solid var(--line-strong);">
+        <a href="#writing" style="font-family: 'EB Garamond', serif; font-size: 24px;">a quantum summer: what protein folding felt like</a>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint);">draft — coming soon</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CONTACT ============ -->
+  <div id="contact" data-screen-label="contact" style="max-width: 1240px; margin: 0 auto; padding: 10px 48px 60px; position: relative;">
+    <div style="border: 1.5px solid var(--line-strong); background: var(--card); padding: 56px 56px 64px; display: flex; flex-direction: column; gap: 20px; position: relative; overflow: hidden;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ember);">05 — say hello</div>
+      <div style="font-size: 44px; font-weight: 700; line-height: 1.1; max-width: 700px;">The door opens to a different place every time<span style="color: var(--ember);">.</span> Knock anyway.</div>
+      <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px;">
+        <button onClick="{{ openChat }}" style="border: 1.5px solid var(--line-strong); background: var(--ember); color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 13px; padding: 12px 22px; border-radius: 999px; cursor: pointer;">💬 text_me</button>
+      <a href="mailto:olaniyideborah63@gmail.com" style="border: 1.5px solid var(--line-strong); background: var(--ink); color: var(--paper); font-family: 'IBM Plex Mono', monospace; font-size: 13px; padding: 12px 22px; border-radius: 999px;">email_me</a>
+        <a href="https://github.com/Deborah-Olaniyi" target="_blank" rel="noopener" style="border: 1.5px solid var(--line-strong); font-family: 'IBM Plex Mono', monospace; font-size: 13px; padding: 12px 22px; border-radius: 999px;">github</a>
+        <a href="https://linkedin.com/in/deborah-olaniyi" target="_blank" rel="noopener" style="border: 1.5px solid var(--line-strong); font-family: 'IBM Plex Mono', monospace; font-size: 13px; padding: 12px 22px; border-radius: 999px;">linkedin</a>
+        <a href="https://open.spotify.com" target="_blank" rel="noopener" style="border: 1.5px solid var(--line-strong); font-family: 'IBM Plex Mono', monospace; font-size: 13px; padding: 12px 22px; border-radius: 999px; display: flex; align-items: center; gap: 8px;">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block;"></span>
+          what i'm listening to
+        </a>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 22px 4px 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint);">
+      <span>© 2026 rori olaniyi — made with a little magic</span>
+      <span>nyc ✦ somewhere above the waste</span>
+    </div>
+  </div>
+
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startMode&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;day&quot;, &quot;night&quot;], &quot;default&quot;: &quot;day&quot;, &quot;tsType&quot;: &quot;'day' | 'night'&quot;}}">
+class Component extends DCLogic {
+  state = {
+    night: (this.props.startMode ?? 'day') === 'night',
+    chatOpen: false,
+    typing: false,
+    typed: 0,
+    loaderProgress: 100,
+    loaderFade: true,
+    loaderGone: true,
+    msgs: [{ who: 'them', text: "hey!! this is rori's bot 🍃 ask me anything about her projects, experience, or what she's building rn" }],
+  };
+  chatInput = React.createRef();
+  chatScroll = React.createRef();
+
+  scrollChat() {
+    setTimeout(() => { const el = this.chatScroll.current; if (el) el.scrollTop = el.scrollHeight; }, 60);
+  }
+
+  async sendChat() {
+    const el = this.chatInput.current;
+    const text = (el && el.value || '').trim();
+    if (!text || this.state.typing) return;
+    el.value = '';
+    const msgs = [...this.state.msgs, { who: 'me', text }];
+    this.setState({ msgs, typing: true }, () => this.scrollChat());
+    try {
+      const history = msgs.map(m => ({ role: m.who === 'me' ? 'user' : 'assistant', content: m.text }));
+      const reply = await window.claude.complete({
+        system: "You are the friendly chatbot on Rori Olaniyi's portfolio site, texting like a close friend over iMessage — lowercase, warm, brief (1-3 short sentences), occasional 🍃✨ emoji. Facts about Rori: rising junior at NYIT, CS major + AI minor, GPA 3.55. SWE intern at Liberty Mutual (competitive filings platform: Python, FastAPI, React 19, TypeScript, PostgreSQL, AWS). Past: frontend dev on an NYC civic engagement dashboard, quantum computing intern at The Coding School (Qiskit, protein folding), Python instructor for Stanford Code in Place. Projects: Pathful (opportunity discovery platform, 500+ internships/scholarships scraped with Playwright), Stellar Atlas (NASA API astronomy explorer), CashCat (LangChain RAG budgeting app for students). President of NSBE @ NYIT, Microsoft ECLSP fellow. Loves building agents, scalable systems, and Studio Ghibli. Contact: olaniyideborah63@gmail.com. If asked something you don't know about her, say they should text/email the real rori.",
+        messages: history,
+      });
+      this.setState({ msgs: [...msgs, { who: 'them', text: reply }], typing: false }, () => this.scrollChat());
+    } catch (e) {
+      this.setState({ msgs: [...msgs, { who: 'them', text: 'hmm, my magic is flickering rn — try again in a sec 🍂' }], typing: false }, () => this.scrollChat());
+    }
+  }
+
+  applyBody() {
+    document.body.classList.toggle('night', this.state.night);
+  }
+
+  componentDidMount() {
+    this.applyBody();
+    // typewriter for the name
+    const full = 'RORI\nOLANIYI';
+    this._typeTimer = setInterval(() => {
+      this.setState(s => {
+        if (s.typed >= full.length) { clearInterval(this._typeTimer); return null; }
+        return { typed: s.typed + 1 };
+      });
+    }, 130);
+    // scroll-reveal: stack rows slide up + settle into place with a stagger
+    this._revealTimer = setInterval(() => {
+      const els = Array.from(document.querySelectorAll('[data-reveal]:not(.revealed)'));
+      if (!els.length) return;
+      if (!this._io) {
+        this._io = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            const i = Number(el.getAttribute('data-reveal')) || 0;
+            el.style.setProperty('--reveal-delay', (i * 0.14) + 's');
+            el.classList.add('revealed');
+            this._io.unobserve(el);
+          });
+        }, { threshold: 0.35, rootMargin: '0px 0px -15% 0px' });
+      }
+      els.forEach(el => { if (!el._observed) { el._observed = true; this._io.observe(el); } });
+    }, 300);
+  }
+
+  renderVals() {
+    const night = this.state.night;
+    const bubbleThem = night ? '#2a3150' : '#e9e9eb';
+    return {
+      night,
+      chatTransform: this.state.chatOpen ? 'translateX(0)' : 'translateX(105%)',
+      chatBg: night ? '#161c33' : '#ffffff',
+      chatHeaderBg: night ? '#1a2140' : '#f7f7f9',
+      chatLine: night ? 'rgba(236,229,211,0.14)' : 'rgba(0,0,0,0.1)',
+      chatInk: night ? '#ece5d3' : '#1c1c1e',
+      chatMuted: night ? '#9a917a' : '#8e8e93',
+      chatInputBg: night ? '#10152a' : '#ffffff',
+      bubbleThem,
+      chatTyping: this.state.typing,
+      chatMsgs: this.state.msgs.map(m => ({
+        text: m.text,
+        align: m.who === 'me' ? 'flex-end' : 'flex-start',
+        bg: m.who === 'me' ? '#34a2fd' : bubbleThem,
+        color: m.who === 'me' ? '#fff' : (night ? '#ece5d3' : '#1c1c1e'),
+        brr: m.who === 'me' ? '5px' : '18px',
+        blr: m.who === 'me' ? '18px' : '5px',
+      })),
+      chatInputRef: this.chatInput,
+      chatScrollRef: this.chatScroll,
+      openChat: () => this.setState({ chatOpen: true }, () => { const el = this.chatInput.current; if (el) el.focus(); }),
+      closeChat: () => this.setState({ chatOpen: false }),
+      chatSend: () => this.sendChat(),
+      chatKeyDown: (e) => { if (e.key === 'Enter') this.sendChat(); },
+      modeLabel: night ? 'night_mode' : 'day_mode',
+      showLoader: !this.state.loaderGone,
+      loaderOpacity: this.state.loaderFade ? 0 : 1,
+      progressPct: Math.round(this.state.loaderProgress) + '%',
+      loaderMsg: 'loading rori.dev',
+      greeting: (() => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; })(),
+      ...(() => {
+        const full = 'RORI\nOLANIYI';
+        const t = this.state.typed;
+        const shown = full.slice(0, t);
+        const nl = shown.indexOf('\n');
+        const line1 = nl === -1 ? shown : shown.slice(0, nl);
+        const line2 = nl === -1 ? '' : shown.slice(nl + 1);
+        const onLine1 = nl === -1;
+        const done = t >= full.length;
+        return {
+          nameLine1: line1,
+          nameLine2: line2,
+          caret1: onLine1 && !done,
+          caret2: !onLine1 && !done,
+          nameDone: done,
+        };
+      })(),
+      knobColor: night ? '#f2ecd9' : '#f0c04a',
+      knobGlow: night ? '0 0 10px 2px rgba(242,236,217,0.5)' : '0 0 10px 2px rgba(240,192,74,0.6)',
+      toggleNight: () => this.setState(s => ({ night: !s.night }), () => this.applyBody()),
+    };
+  }
+}
+</script>
+</body>
+</html>

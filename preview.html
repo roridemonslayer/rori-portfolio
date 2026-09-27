@@ -1,0 +1,1538 @@
+<title>Rori Olaniyi</title>
+<meta name="description" content="Rori Olaniyi — software engineer building RAG and vector search, incoming at Datadog. Welcome to my little corner of the sky.">
+<link rel="icon" href="assets/soot-candy-v5.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    cursor: url('assets/soot-rock-v5.png') 8 8, auto;
+    --paper: #eef2ec;
+    --paper-glass: rgba(238, 242, 236, 0.88);
+    --ink: #1d2c26;
+    --muted: #4c5f54;
+    --faint: #5e7263;
+    --line: rgba(29, 44, 38, 0.15);
+    --line-mid: rgba(29, 44, 38, 0.3);
+    --line-strong: #1d2c26;
+    --ember: #d99a2b;
+    --green: #3fa06a;
+    --grid: rgba(35, 60, 48, 0.07);
+    --card: #e3ead9;
+    --frame: #e8e1d0;
+    --star: 0;
+    --castle: 0;
+    --meadow: 1;
+    --leafShape: 0 100% 0 100%;
+    --leafGlow: none;
+    --leaf1: #6fa05e;
+    --leaf2: #c96a8d;
+    --leaf3: #e0b23e;
+    --knob: #f0c04a;
+    --mist: rgba(240, 244, 237, 0.72);
+    --knobGlow: 0 0 10px 2px rgba(240, 192, 74, 0.6);
+    /* chat */
+    --chat-bg: #ffffff;
+    --chat-head: #f7f7f9;
+    --chat-line: rgba(0, 0, 0, 0.1);
+    --chat-ink: #1c1c1e;
+    --chat-muted: #8e8e93;
+    --chat-input: #ffffff;
+    --bubble-them: #e9e9eb;
+    background: var(--paper);
+    color: var(--ink);
+    color-scheme: light;
+  }
+  body.night {
+    --paper: #10152a;
+    --paper-glass: rgba(16, 21, 42, 0.88);
+    --ink: #ece5d3;
+    --muted: #9a917a;
+    --faint: #8f8770;
+    --line: rgba(236, 229, 211, 0.16);
+    --line-mid: rgba(236, 229, 211, 0.32);
+    --line-strong: #ece5d3;
+    --ember: #f0a35e;
+    --green: #7fd6a4;
+    --grid: rgba(236, 229, 211, 0.055);
+    --card: #1a2140;
+    --frame: #b9c2e0;
+    --star: 1;
+    --castle: 1;
+    --meadow: 0;
+    --leafShape: 50%;
+    --leafGlow: 0 0 8px 2px rgba(255, 240, 190, 0.55);
+    --leaf1: #ffe9a8;
+    --leaf2: #fff6d8;
+    --leaf3: #ffd97a;
+    --knob: #f2ecd9;
+    --mist: rgba(16, 21, 42, 0.45);
+    --knobGlow: 0 0 10px 2px rgba(242, 236, 217, 0.5);
+    --chat-bg: #161c33;
+    --chat-head: #1a2140;
+    --chat-line: rgba(236, 229, 211, 0.14);
+    --chat-ink: #ece5d3;
+    --chat-muted: #9a917a;
+    --chat-input: #10152a;
+    --bubble-them: #2a3150;
+    color-scheme: dark;
+  }
+  [hidden] { display: none !important; }
+  a, button { cursor: url('assets/soot-candy-v5.png') 8 8, pointer; }
+  a { color: var(--ink); text-decoration: none; }
+  a:hover { color: var(--ember); }
+  :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+  .serif { font-family: 'EB Garamond', Georgia, serif; }
+
+  @keyframes leafDrift {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 0.9; }
+    85%  { opacity: 0.9; }
+    100% { transform: translate(-110vw, 180px) rotate(-620deg); opacity: 0; }
+  }
+  @keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+  @keyframes emberFlicker { 0%, 100% { opacity: 0.85; transform: scale(1); } 40% { opacity: 1; transform: scale(1.08); } 70% { opacity: 0.72; transform: scale(0.96); } }
+  @keyframes caretBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+  [data-reveal] { opacity: 0; transform: translateY(46px); }
+  [data-reveal].revealed { opacity: 1; transform: translateY(0); transition: opacity 0.7s ease var(--reveal-delay, 0s), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0s); }
+
+  /* ---------- page + backdrops ---------- */
+  .page {
+    background: var(--paper); min-height: 100vh; position: relative; overflow-x: hidden;
+    transition: background-color 0.6s ease;
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .backdrop { position: fixed; inset: 0; pointer-events: none; z-index: 0; transition: opacity 0.8s ease; }
+  .meadow { background: url('assets/valley-day.jpg') center / cover no-repeat; opacity: var(--meadow); }
+  .meadow-wash { background: linear-gradient(180deg, rgba(238,242,236,0.08) 0%, rgba(238,242,236,0.15) 55%, rgba(238,242,236,0.22) 100%); opacity: var(--meadow); }
+  .castle { background: url('assets/castle-night.gif') center / cover no-repeat; opacity: var(--castle); }
+  .castle-wash { background: linear-gradient(180deg, rgba(16,21,42,0.55) 0%, rgba(16,21,42,0.75) 60%, rgba(16,21,42,0.88) 100%); opacity: var(--castle); }
+  .star { position: absolute; border-radius: 50%; background: #fff; opacity: var(--star); animation: twinkle 3.4s ease-in-out infinite; pointer-events: none; }
+  .leaf { position: fixed; right: -30px; background: var(--leaf1); border-radius: var(--leafShape); box-shadow: var(--leafGlow); animation: leafDrift 16s linear infinite; z-index: 40; pointer-events: none; transition: background 0.6s; }
+  .page > section, .page > .sheet, .page > footer { position: relative; z-index: 1; }
+
+  /* ---------- floating controls (top-right) ---------- */
+  .controls {
+    position: fixed; z-index: 50; top: calc(18px + env(safe-area-inset-top, 0px)); right: 20px;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .controls .pill { margin: 0; background: var(--paper-glass); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-color: var(--line-strong); box-shadow: 2px 2px 0 var(--line-strong); }
+  .ember-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--ember); box-shadow: 0 0 14px 2px var(--ember); animation: emberFlicker 2.4s ease-in-out infinite; display: inline-block; }
+  .pill {
+    display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--line-mid); border-radius: 999px; padding: 7px 15px; margin-left: 8px;
+    background: none; color: var(--ink); font: 13px 'IBM Plex Mono', ui-monospace, monospace; white-space: nowrap;
+  }
+  .pill.strong { border-color: var(--line-strong); gap: 9px; }
+  .green-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; }
+  .knob { width: 14px; height: 14px; border-radius: 50%; background: var(--knob); box-shadow: var(--knobGlow); display: inline-block; transition: background 0.5s; }
+
+  /* ---------- hero ---------- */
+  .hero { max-width: none; margin: 0; padding: 60px clamp(24px, 7vw, 140px); min-height: 100vh; min-height: 100svh; box-sizing: border-box; display: flex; justify-content: space-between; gap: 60px; align-items: center; }
+  .hero-copy { display: flex; flex-direction: column; gap: 20px; max-width: 720px; position: relative; isolation: isolate; }
+  /* a soft patch of mist behind the words: blurs and lightens the painting there, fading out with no hard edge */
+  .hero-copy::before {
+    content: ""; position: absolute; inset: -90px -140px -90px -180px; z-index: -1; pointer-events: none;
+    background: radial-gradient(ellipse 60% 55% at 42% 50%, var(--mist) 0%, var(--mist) 38%, transparent 100%);
+    -webkit-backdrop-filter: blur(7px) saturate(0.85); backdrop-filter: blur(7px) saturate(0.85);
+    -webkit-mask-image: radial-gradient(ellipse 60% 55% at 42% 50%, #000 45%, transparent 100%);
+    mask-image: radial-gradient(ellipse 60% 55% at 42% 50%, #000 45%, transparent 100%);
+  }
+  .glow { text-shadow: 0 0 10px var(--paper), 0 0 20px var(--paper), 0 1px 3px var(--paper); }
+  .greeting { font-size: 26px; font-weight: 600; color: var(--muted); }
+  body:not(.night) .glow, body:not(.night) .name { text-shadow: none; } /* the pale halo looked odd over the daytime painting */
+  body:not(.night) .greeting { color: var(--ink); }
+  body:not(.night) .welcome { font-weight: 500; }
+  body:not(.night) .welcome .hl { color: var(--ink); font-weight: 700; }
+  .name { margin: 0; font-size: 92px; font-weight: 700; line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; text-shadow: 0 0 14px var(--paper), 0 0 28px var(--paper); min-height: 1.84em; }
+  .caret { display: inline-block; width: 6px; height: 0.82em; background: var(--ember); margin-left: 6px; vertical-align: baseline; animation: caretBlink 0.9s step-end infinite; }
+  .roles { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 24px; font-weight: 600; margin: 0; padding: 0; list-style: none; }
+  .roles .sep { color: var(--ember); font-size: 20px; }
+  .roles { font-size: 28px; gap: 12px; flex-wrap: nowrap; }
+  .flip-wrap { display: inline-block; perspective: 600px; }
+  .flip { display: inline-block; transform-origin: 50% 60%; transition: transform .32s cubic-bezier(.5, 0, .5, 1), opacity .32s; white-space: nowrap; }
+  .flip.out { transform: rotateX(90deg); opacity: 0; }
+  .flip.pre { transform: rotateX(-90deg); opacity: 0; transition: none; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .next-badge {
+    align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; margin-top: -4px;
+    padding: 6px 16px 6px 6px; border-radius: 999px; border: 1.5px solid var(--line-strong);
+    background: var(--paper); box-shadow: 3px 3px 0 var(--line-strong);
+    font: 13px 'IBM Plex Mono', ui-monospace, monospace; color: var(--ink); transition: transform .15s, box-shadow .15s;
+  }
+  .next-badge:hover { color: var(--ink); transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--line-strong); }
+  .next-badge img { width: 26px; height: 26px; padding: 3px; box-sizing: border-box; border-radius: 50%; background: #fff; border: 1px solid var(--line); }
+  .next-badge b { color: #632ca6; font-weight: 500; }
+  body.night .next-badge b { color: #b48cff; }
+  .welcome { font-style: italic; font-size: 22px; max-width: 560px; line-height: 1.5; margin-top: 4px; }
+  .welcome .hl { position: relative; color: var(--ember); font-style: normal; font-weight: 600; }
+  .welcome svg { position: absolute; left: 0; bottom: -9px; width: 100%; height: 10px; }
+  .ctas { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+  .btn-main { border: 2px solid var(--line-strong); background: var(--ember); color: #1d2c26; font-weight: 700; font-size: 16px; padding: 14px 30px; border-radius: 999px; box-shadow: 5px 5px 0 var(--line-strong); transition: transform .15s, box-shadow .15s; }
+  .btn-main:hover { color: #1d2c26; transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--line-strong); }
+  .btn-alt { border: 2px solid var(--line-strong); font-weight: 600; font-size: 16px; padding: 14px 26px; border-radius: 999px; background: var(--paper); }
+
+
+  /* ---------- sections ---------- */
+  .section { max-width: 1240px; margin: 0 auto; padding: 10px 48px 90px; }
+  .sec-head { display: flex; align-items: baseline; gap: 18px; margin-bottom: 26px; flex-wrap: wrap; }
+  .sec-head .num { font: 13px 'IBM Plex Mono', monospace; color: var(--ember); }
+  .sec-head h2 { margin: 0; font-size: 30px; font-weight: 700; }
+  .sec-head .aside { font: italic 17px 'EB Garamond', Georgia, serif; color: var(--muted); }
+
+  /* stack */
+  .stack-wrap { padding-top: 120px; padding-bottom: 80px; }
+  .stack-panel { background: var(--paper-glass); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1.5px solid var(--line-strong); padding: 40px 44px 46px; position: relative; }
+  .stack-title { display: flex; align-items: center; gap: 12px; margin-bottom: 34px; flex-wrap: wrap; }
+  .stack-title .mark { color: var(--ember); font-size: 20px; }
+  .stack-title h2 { margin: 0; font: 400 14px 'IBM Plex Mono', monospace; letter-spacing: 0.12em; color: var(--muted); }
+  .stack-title .aside { font: italic 16px 'EB Garamond', Georgia, serif; color: var(--faint); }
+  .stack-rows { display: flex; flex-direction: column; gap: 34px; }
+  .stack-row { display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start; }
+  .stack-row + .stack-row { border-top: 1px solid var(--line); padding-top: 30px; }
+  .stack-row h3 { margin: 0; font-size: 34px; font-weight: 700; letter-spacing: 0.02em; }
+  .tools { display: flex; flex-wrap: wrap; gap: 14px 34px; align-items: center; padding: 8px 0 0; margin: 0; list-style: none; }
+  .tools li { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 500; }
+  .tools img { width: 26px; height: 26px; }
+  body.night .tools img.dark-logo { filter: invert(1) brightness(1.4); }
+  .flowers { position: absolute; bottom: 14px; right: 18px; display: flex; gap: 8px; align-items: flex-end; }
+  .flowers i { border-radius: 50% 50% 50% 0; }
+
+  /* frosted sheet behind experience → writing */
+  .sheet {
+    position: relative; z-index: 1; box-sizing: border-box;
+    margin: 0 max(48px, calc((100% - 1144px) / 2)) 90px;
+    background: var(--paper-glass); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    border: 1.5px solid var(--line-strong); padding: 50px 0 0;
+  }
+  .sheet .section { padding: 0 44px 80px; }
+
+  /* experience */
+  .rows { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+  .xp { display: grid; grid-template-columns: 44px 330px 1fr 170px; gap: 20px; align-items: center; padding: 22px 0; border-top: 1px solid var(--line-mid); }
+  .xp:first-child { border-top: 1.5px solid var(--line-strong); }
+  .xp:last-child { border-bottom: 1.5px solid var(--line-strong); }
+  .xp .idx, .xp .when, .xp .role { font-family: 'IBM Plex Mono', monospace; color: var(--faint); }
+  .xp .idx { font-size: 13px; }
+  .xp .who { display: flex; gap: 14px; align-items: center; }
+  .xp .logo { width: 42px; height: 42px; flex-shrink: 0; box-sizing: border-box; padding: 5px; background: #fff; border: 1.5px solid var(--line-strong); border-radius: 10px; object-fit: contain; }
+  .xp .co { font-size: 20px; font-weight: 600; }
+  .xp.next .when { color: var(--ember); }
+  .badge { display: inline-block; margin-left: 8px; padding: 2px 9px; border-radius: 999px; background: var(--ember); color: #1d2c26; font: 500 11px 'IBM Plex Mono', monospace; vertical-align: 3px; }
+  .xp .role { font-size: 12px; margin-top: 4px; }
+  .xp .what { font-size: 15px; color: var(--muted); line-height: 1.55; }
+  .xp .when { font-size: 12px; text-align: right; }
+  .extras { display: flex; gap: 30px; margin-top: 22px; font-size: 12px; color: var(--faint); flex-wrap: wrap; }
+
+  /* projects */
+  .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .proj { border: 1.5px solid var(--line-strong); background: var(--card); padding: 26px; display: flex; flex-direction: column; gap: 14px; }
+  .proj-top { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--faint); }
+  .proj-top i { width: 10px; height: 10px; display: inline-block; }
+  .proj h3 { margin: 0; font-size: 26px; font-weight: 700; }
+  .proj p { margin: 0; font-size: 14.5px; color: var(--muted); line-height: 1.6; flex-grow: 1; }
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; font-size: 11px; color: var(--faint); margin: 0; padding: 0; list-style: none; }
+  .tags li { border: 1px solid var(--line-mid); border-radius: 999px; padding: 4px 10px; }
+  .proj a.go { font-size: 13px; color: var(--ember); }
+
+  /* story */
+  .story { display: grid; grid-template-columns: 460px 1fr; gap: 60px; align-items: start; }
+  .story figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  .story .painting { border: 1.5px solid var(--line-strong); padding: 12px; background: var(--card); transform: rotate(-1.2deg); }
+  .story .painting img { width: 100%; display: block; }
+  .story figcaption { font-size: 11px; color: var(--faint); text-align: center; }
+  .story-text { display: flex; flex-direction: column; gap: 20px; }
+  .story-text .sec-head { margin: 0; }
+  .story-text p { margin: 0; font: 21px/1.65 'EB Garamond', Georgia, serif; }
+  .story-text p + p { color: var(--muted); }
+  .fits-label { font-size: 12px; color: var(--faint); margin: 14px 0 12px; }
+  .fits { display: flex; gap: 18px; flex-wrap: wrap; }
+  .polaroid { border: 1.5px solid var(--line-strong); padding: 8px 8px 26px; background: var(--frame); transition: background 0.6s ease; }
+  .polaroid .slot { width: 150px; height: 190px; display: grid; place-items: center; background: repeating-linear-gradient(45deg, rgba(0,0,0,.04) 0 8px, transparent 8px 16px); color: #5e7263; font: 12px 'IBM Plex Mono', monospace; overflow: hidden; }
+  .polaroid .slot img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* writing */
+  .post { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 20px 0; border-top: 1px solid var(--line-mid); }
+  .post:first-child { border-top: 1.5px solid var(--line-strong); }
+  .post:last-child { border-bottom: 1.5px solid var(--line-strong); }
+  .post .title { font: 24px 'EB Garamond', Georgia, serif; }
+  .post .status { font-size: 12px; color: var(--faint); white-space: nowrap; }
+
+  /* contact */
+  .contact-card { border: 1.5px solid var(--line-strong); background: var(--card); padding: 56px 56px 64px; display: flex; flex-direction: column; gap: 20px; }
+  .contact-card .kicker { font-size: 13px; color: var(--ember); }
+  .contact-card h2 { margin: 0; font-size: 44px; font-weight: 700; line-height: 1.1; max-width: 700px; }
+  .contact-links { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
+  .contact-links > * { border: 1.5px solid var(--line-strong); font: 13px 'IBM Plex Mono', monospace; padding: 12px 22px; border-radius: 999px; display: flex; align-items: center; gap: 8px; background: none; color: var(--ink); }
+  .contact-links .text-me { background: var(--ember); color: #fff; }
+  .contact-links .email-me { background: var(--ink); color: var(--paper); }
+  .email-line { font-size: 13px; color: var(--muted); }
+  .email-line code { font: inherit; color: var(--ink); user-select: all; }
+  footer.foot { max-width: 1240px; margin: 0 auto; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 22px 52px 60px; font-size: 12px; color: var(--faint); box-sizing: border-box; }
+
+  /* ---------- imessage chat ---------- */
+  .chat {
+    position: fixed; top: 0; right: 0; bottom: 0; width: 380px; max-width: 100vw; background: var(--chat-bg);
+    box-shadow: -12px 0 40px rgba(0,0,0,0.25); z-index: 60; display: flex; flex-direction: column;
+    transform: translateX(105%); visibility: hidden; transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), visibility 0s 0.4s;
+    font-family: -apple-system, 'Space Grotesk', sans-serif;
+  }
+  .chat.open { transform: none; visibility: visible; transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); }
+  .chat-head { padding: 14px 18px 12px; padding-top: calc(14px + env(safe-area-inset-top, 0px)); border-bottom: 1px solid var(--chat-line); display: flex; align-items: center; gap: 12px; background: var(--chat-head); }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(180deg, #9aa4b2, #6e7987); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 17px; }
+  .chat-who { flex-grow: 1; }
+  .chat-who b { display: block; font-weight: 600; font-size: 15px; color: var(--chat-ink); }
+  .chat-who span { font-size: 12px; color: var(--chat-muted); }
+  .chat-close { background: none; border: none; font-size: 22px; color: var(--chat-muted); padding: 4px 8px; }
+  .msgs { flex-grow: 1; overflow-y: auto; padding: 18px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .bubble { max-width: 78%; padding: 9px 14px; border-radius: 18px; font-size: 14.5px; line-height: 1.45; white-space: pre-wrap; }
+  .bubble.them { align-self: flex-start; background: var(--bubble-them); color: var(--chat-ink); border-bottom-left-radius: 5px; }
+  .bubble.me { align-self: flex-end; background: #34a2fd; color: #fff; border-bottom-right-radius: 5px; }
+  .chat-form { padding: 12px 14px 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--chat-line); display: flex; gap: 10px; align-items: center; }
+  .chat-form input { flex-grow: 1; min-width: 0; border: 1px solid var(--chat-line); border-radius: 999px; padding: 10px 16px; font-size: 14.5px; background: var(--chat-input); color: var(--chat-ink); outline: none; font-family: inherit; }
+  .chat-form button { width: 36px; height: 36px; border-radius: 50%; border: none; background: #34a2fd; color: #fff; font-size: 17px; flex-shrink: 0; }
+
+
+  /* ---------- music button (bottom-left) ---------- */
+  .sound {
+    position: fixed; left: 18px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 55;
+    display: flex; align-items: center; gap: 10px; padding: 9px 16px 9px 12px; border-radius: 999px;
+    border: 1.5px solid var(--line-strong); background: var(--paper-glass); color: var(--ink);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    font: 12px 'IBM Plex Mono', ui-monospace, monospace; box-shadow: 3px 3px 0 var(--line-strong);
+  }
+  .sound .bars { display: flex; gap: 2px; align-items: flex-end; height: 14px; width: 16px; }
+  .sound .bars i { width: 3px; background: var(--ember); border-radius: 1px; height: 4px; }
+  .sound.playing .bars i { animation: eq 0.9s ease-in-out infinite; }
+  .sound.playing .bars i:nth-child(2) { animation-delay: .2s; }
+  .sound.playing .bars i:nth-child(3) { animation-delay: .4s; }
+  .sound.playing .bars i:nth-child(4) { animation-delay: .1s; }
+  @keyframes eq { 0%, 100% { height: 4px; } 50% { height: 14px; } }
+  .sound .slash { display: none; color: var(--ember); font-size: 15px; line-height: 1; }
+  .sound.muted .bars { display: none; }
+  .sound.muted .slash { display: inline; }
+
+  /* ---------- soot climb game ---------- */
+  .game {
+    position: fixed; inset: 0; z-index: 70; display: grid; place-items: center;
+    background: rgba(10, 14, 30, 0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    padding: 16px; box-sizing: border-box;
+  }
+  .game-box {
+    position: relative; width: min(460px, 100%); height: min(700px, calc(100dvh - 32px));
+    border: 1.5px solid var(--line-strong); background: var(--paper); box-shadow: 6px 6px 0 var(--line-strong);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .game-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1.5px solid var(--line-strong); font: 12px 'IBM Plex Mono', monospace; }
+  .game-bar b { font: 700 15px 'Space Grotesk', sans-serif; }
+  .game-bar .score { color: var(--ember); }
+  .game-bar button { background: none; border: none; color: var(--ink); font-size: 22px; line-height: 1; padding: 2px 6px; }
+  .game canvas { flex: 1; width: 100%; min-height: 0; display: block; touch-action: none; }
+  .game-pad { display: none; gap: 10px; padding: 10px; border-top: 1.5px solid var(--line-strong); }
+  .game-pad button {
+    flex: 1; height: 56px; border: 1.5px solid var(--line-strong); border-radius: 14px; background: var(--card);
+    color: var(--ink); font: 700 20px 'Space Grotesk', sans-serif; touch-action: none; user-select: none; -webkit-user-select: none;
+  }
+  .game-pad .jump { flex: 1.6; background: var(--ember); color: #1d2c26; }
+  @media (hover: none), (pointer: coarse) { .game-pad { display: flex; } }
+  .game-help { padding: 6px 14px 10px; font: 11px 'IBM Plex Mono', monospace; color: var(--faint); text-align: center; }
+  @media (pointer: coarse) { .game-help { display: none; } }
+
+
+  /* ---------- fitting room (3d figure) ---------- */
+  .fitting { display: grid; grid-template-columns: 1fr 300px; gap: 28px; align-items: stretch; }
+  .stage {
+    position: relative; border: 1.5px solid var(--line-strong); background: var(--card);
+    aspect-ratio: 4 / 5; max-height: 640px; width: 100%; overflow: hidden;
+  }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: grab; }
+  .stage canvas:active { cursor: grabbing; }
+  .stage-label { position: absolute; top: 16px; left: 18px; right: 18px; display: flex; justify-content: space-between; font-size: 11px; letter-spacing: .12em; color: var(--faint); pointer-events: none; z-index: 1; }
+  .stage-loading { position: absolute; inset: 0; display: grid; place-items: center; font-size: 12px; color: var(--faint); }
+  .stage-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; font-size: 12px; }
+  .views, .zoom { display: flex; gap: 4px; align-items: center; }
+  .views button, .zoom button, .autorot {
+    background: none; border: none; color: var(--muted); font: 12px 'IBM Plex Mono', monospace; letter-spacing: .08em;
+    padding: 6px 10px; border-bottom: 1.5px solid transparent;
+  }
+  .views button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ember); }
+  .zoom button { font-size: 16px; padding: 4px 10px; }
+  .zoom #zoom-reset { font-size: 12px; }
+  .autorot[aria-pressed="true"] { color: var(--ember); }
+  .fit-side { display: flex; flex-direction: column; gap: 16px; }
+  .fit-side p { margin: 0; font: 19px/1.55 'EB Garamond', Georgia, serif; color: var(--muted); }
+  .outfits { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .outfit {
+    width: 100%; box-sizing: border-box; display: flex; align-items: center; gap: 12px; text-align: left; padding: 12px 14px;
+    border: 1.5px solid var(--line-strong); background: var(--paper); color: var(--ink); font: 14px 'Space Grotesk', sans-serif;
+  }
+  .outfit[aria-pressed="true"] { background: var(--card); box-shadow: 3px 3px 0 var(--line-strong); }
+  .outfit .swatches { display: flex; }
+  .outfit .swatches i { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--paper); margin-left: -5px; }
+  .outfit .swatches i:first-child { margin-left: 0; }
+  .outfit small { display: block; font: 11px 'IBM Plex Mono', monospace; color: var(--faint); }
+  .outfit.soon { border-style: dashed; color: var(--faint); cursor: default; }
+  .drag-hint { font-size: 11px; color: var(--faint); }
+
+  /* ---------- smaller screens ---------- */
+  @media (max-width: 1100px) {
+    .hero { gap: 36px; }
+    .name { font-size: 76px; }
+    .xp { grid-template-columns: 34px 1fr 150px; }
+    .xp .what { grid-column: 2 / -1; grid-row: 2; }
+    .story { grid-template-columns: 1fr 1fr; gap: 40px; }
+  }
+  @media (max-width: 820px) {
+    .controls { right: 12px; top: calc(12px + env(safe-area-inset-top, 0px)); gap: 6px; }
+    .pill { padding: 7px 12px; }
+    .hero { flex-direction: column; align-items: flex-start; padding: 76px 16px 60px; min-height: 0; }
+    .name { font-size: clamp(48px, 14vw, 76px); }
+    .roles { font-size: 22px; gap: 10px; }
+    .welcome { font-size: 20px; }
+    .section { padding: 10px 16px 70px; }
+    .sheet { margin: 0 16px 60px; padding-top: 32px; }
+    .sheet .section { padding: 0 20px 60px; }
+    .stack-wrap { padding-top: 40px; }
+    .stack-panel { padding: 28px 20px 40px; }
+    .stack-row { grid-template-columns: 1fr; gap: 10px; }
+    .stack-row h3 { font-size: 26px; }
+    .tools { gap: 12px 22px; }
+    .xp { grid-template-columns: 26px 1fr; gap: 6px 12px; align-items: baseline; }
+    .xp .idx { align-self: center; }
+    .xp .when { grid-column: 2; text-align: left; grid-row: 2; }
+    .xp .what { grid-column: 2; grid-row: 3; }
+    .projects { grid-template-columns: 1fr; }
+    .story { grid-template-columns: 1fr; }
+    .fitting { grid-template-columns: 1fr; }
+    .stage { aspect-ratio: 4 / 5; }
+    .polaroid .slot { width: 120px; height: 152px; }
+    .post { flex-direction: column; gap: 4px; }
+    .post .title { font-size: 21px; }
+    .contact-card { padding: 34px 22px 40px; }
+    .contact-card h2 { font-size: 32px; }
+    footer.foot { padding: 22px 20px 48px; }
+    .chat { width: 100vw; }
+    .sound { left: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+  }
+  @media (max-width: 520px) {
+    .pill-text { display: none; }
+    .roles { gap: 6px; }
+    .next-badge { font-size: 12px; white-space: nowrap; }
+    .next-badge .when-long { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    [data-reveal] { opacity: 1; transform: none; }
+  }
+</style>
+<div class="page">
+
+  <!-- day meadow / night castle -->
+  <div class="backdrop meadow" aria-hidden="true"></div>
+  <div class="backdrop meadow-wash" aria-hidden="true"></div>
+  <div class="backdrop castle" aria-hidden="true"></div>
+  <div class="backdrop castle-wash" aria-hidden="true"></div>
+
+  <!-- twinkling stars (night) -->
+  <div aria-hidden="true">
+    <i class="star" style="top: 90px; left: 12%; width: 3px; height: 3px;"></i>
+    <i class="star" style="top: 200px; left: 34%; width: 2px; height: 2px; background: #dfe6ff; animation-duration: 4.2s; animation-delay: .7s;"></i>
+    <i class="star" style="top: 140px; left: 58%; width: 3px; height: 3px; animation-duration: 2.8s; animation-delay: 1.3s;"></i>
+    <i class="star" style="top: 320px; left: 80%; width: 2px; height: 2px; background: #dfe6ff; animation-duration: 3.9s; animation-delay: .3s;"></i>
+    <i class="star" style="top: 420px; left: 22%; width: 2px; height: 2px; animation-duration: 4.8s; animation-delay: 2s;"></i>
+    <i class="star" style="top: 60px; left: 88%; width: 2px; height: 2px; animation-duration: 3.1s; animation-delay: 1s;"></i>
+  </div>
+
+  <!-- drifting leaves (day) / blowing stars (night) -->
+  <div aria-hidden="true">
+    <i class="leaf" style="top: 120px; width: 16px; height: 10px;"></i>
+    <i class="leaf" style="top: 300px; width: 12px; height: 8px; background: var(--leaf2); animation-duration: 21s; animation-delay: 5s;"></i>
+    <i class="leaf" style="top: 60px; width: 14px; height: 9px; background: var(--leaf3); animation-duration: 13s; animation-delay: 9s;"></i>
+    <i class="leaf" style="top: 480px; width: 15px; height: 10px; animation-duration: 18s; animation-delay: 12s;"></i>
+    <i class="leaf" style="top: 220px; width: 8px; height: 8px; background: var(--leaf2); animation-duration: 24s; animation-delay: 2s; opacity: var(--star);"></i>
+    <i class="leaf" style="top: 400px; width: 6px; height: 6px; background: var(--leaf3); animation-duration: 19s; animation-delay: 7s; opacity: var(--star);"></i>
+  </div>
+
+  <!-- ============ NAV ============ -->
+  <!-- floating controls, no nav bar: the hero runs full screen -->
+  <div class="controls mono" role="toolbar" aria-label="Site controls">
+    <button class="pill" type="button" data-open-chat aria-controls="chat">💬<span class="pill-text"> chat</span></button>
+    <button class="pill" type="button" data-open-game aria-controls="game">🎮<span class="pill-text"> play</span></button>
+    <button class="pill strong" type="button" id="mode"><span class="knob"></span><span id="mode-label" class="pill-text">day_mode</span></button>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="hero">
+    <div class="hero-copy">
+      <div class="greeting glow" id="greeting">Hello 👋, I'm</div>
+      <h1 class="name" aria-label="Rori Olaniyi"><span id="typed" aria-hidden="true">RORI<br>OLANIYI<span style="color: var(--ember);">.</span></span></h1>
+      <p class="roles glow">
+        <span class="sep" aria-hidden="true">✳</span>
+        <span class="flip-wrap" aria-hidden="true"><span class="flip" id="role">Software Engineer</span></span>
+        <span class="sr-only">Software engineer, AI engineer, machine learning engineer, search and retrieval engineer, full-stack engineer.</span>
+      </p>
+      <a class="next-badge" href="#experience"><img src="assets/logos/datadog.svg" alt=""><span>incoming swe intern <b>@ datadog</b><span class="when-long"> · winter 2027</span></span></a>
+      <div class="welcome serif glow">
+        Welcome to my <span class="hl">little corner of the sky<svg viewBox="0 0 240 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 Q 60 2 120 6 T 238 4" fill="none" stroke="var(--ember)" stroke-width="3" stroke-linecap="round"></path></svg></span> ✦✦✦
+      </div>
+      <div class="ctas">
+        <a href="#projects" class="btn-main">View Projects</a>
+        <a href="#contact" class="btn-alt">Say hello</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ MY STACK ============ -->
+  <section class="section stack-wrap" id="stack" aria-labelledby="stack-t">
+    <div class="stack-panel">
+      <div class="stack-title" data-reveal="0">
+        <span class="mark" aria-hidden="true">✽</span>
+        <h2 id="stack-t">MY STACK</h2>
+        <span class="aside">— every good witch keeps her tools close</span>
+      </div>
+      <div class="stack-rows">
+        <div class="stack-row" data-reveal="1">
+          <h3>FRONTEND</h3>
+          <ul class="tools">
+            <li><img src="assets/icons/javascript.svg" alt="">JavaScript</li>
+            <li><img src="assets/icons/typescript.svg" alt="">TypeScript</li>
+            <li><img src="assets/icons/react.svg" alt="">React</li>
+            <li><img src="assets/icons/nextdotjs.svg" alt="">Next.js</li>
+            <li><img src="assets/icons/tailwindcss.svg" alt="">Tailwind CSS</li>
+          </ul>
+        </div>
+        <div class="stack-row" data-reveal="2">
+          <h3>BACKEND &amp; AI</h3>
+          <ul class="tools">
+            <li><img src="assets/icons/python.svg" alt="">Python</li>
+            <li><img src="assets/icons/fastapi.svg" alt="">FastAPI</li>
+            <li><img src="assets/icons/nodedotjs.svg" alt="">Node.js</li>
+            <li><img class="dark-logo" src="assets/icons/langchain.svg" alt="">LangChain</li>
+            <li><img src="assets/icons/qiskit.svg" alt="">Qiskit</li>
+          </ul>
+        </div>
+        <div class="stack-row" data-reveal="3">
+          <h3>DATABASE</h3>
+          <ul class="tools">
+            <li><img src="assets/icons/postgresql.svg" alt="">PostgreSQL + pgvector</li>
+            <li><img src="assets/icons/mongodb.svg" alt="">MongoDB</li>
+          </ul>
+        </div>
+        <div class="stack-row" data-reveal="4">
+          <h3>TOOLS</h3>
+          <ul class="tools">
+            <li><img src="assets/icons/git.svg" alt="">Git</li>
+            <li><img src="assets/icons/docker.svg" alt="">Docker</li>
+            <li><img class="dark-logo" src="assets/icons/aws.svg" alt="" style="width: 30px; height: 30px;">AWS</li>
+          </ul>
+        </div>
+      </div>
+      <div class="flowers" aria-hidden="true">
+        <i style="width: 10px; height: 10px; background: #c96a8d;"></i>
+        <i style="width: 13px; height: 13px; background: #e0b23e;"></i>
+        <i style="width: 9px; height: 9px; background: #6fa05e;"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- experience → writing share one frosted sheet, same glass as the stack panel, so text stays readable over the painting -->
+  <div class="sheet">
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="experience" class="section" aria-labelledby="xp-t">
+    <div class="sec-head">
+      <span class="num">01</span>
+      <h2 id="xp-t">Experience</h2>
+      <span class="aside">where i've been apprenticing</span>
+    </div>
+    <ol class="rows">
+      <li class="xp next">
+        <span class="idx">a.</span>
+        <div class="who"><img class="logo" src="assets/logos/datadog.svg" alt=""><div><div class="co">Datadog<span class="badge">incoming</span></div><div class="role">software engineering intern</div></div></div>
+        <div class="what">Next stop: joining Datadog, the observability platform engineering teams use to monitor their infrastructure and apps.</div>
+        <span class="when">winter 2027</span>
+      </li>
+      <li class="xp">
+        <span class="idx">b.</span>
+        <div class="who"><img class="logo" src="assets/logos/libertymutual.png" alt=""><div><div class="co">Liberty Mutual</div><div class="role">software engineering intern</div></div></div>
+        <div class="what">Built RAG chat and hybrid search over 156 competitors' filings, taking analyst research from ~15 minutes to under 10 seconds. Inline citations link every answer to its source PDF; pgvector + HNSW over 40K+ filings cut vector lookups 30%.</div>
+        <span class="when">may — jul 2026</span>
+      </li>
+      <li class="xp">
+        <span class="idx">c.</span>
+        <div class="who"><img class="logo" src="assets/logos/nyc.gov.png" alt=""><div><div class="co">NYC Civic Engagement</div><div class="role">software engineer</div></div></div>
+        <div class="what">Map, timeline and chart views in React + TypeScript for ~2K residents exploring 3,900 proposals from NYC's $5M participatory budget. Shipped a 14-language switcher and raised Lighthouse accessibility 25%.</div>
+        <span class="when">jan — may 2026</span>
+      </li>
+      <li class="xp">
+        <span class="idx">d.</span>
+        <div class="who"><img class="logo" src="assets/logos/thecodingschool.png" alt="" style="padding: 1px;"><div><div class="co">The Coding School</div><div class="role">quantum computing researcher</div></div></div>
+        <div class="what">Qiskit optimization to find minimum-energy protein folds: scored 4,096 configurations, and CVaR over the top 20% found folds 26 points more stable than plain averaging.</div>
+        <span class="when">jun — aug 2025</span>
+      </li>
+      <li class="xp">
+        <span class="idx">e.</span>
+        <div class="who"><img class="logo" src="assets/logos/stanford.edu.png" alt=""><div><div class="co">Stanford Code in Place</div><div class="role">section leader · python</div></div></div>
+        <div class="what">Taught a weekly Python section to 20 students across time zones, from their first program to final projects. 95% finished the course.</div>
+        <span class="when">apr — may 2025</span>
+      </li>
+    </ol>
+    <div class="extras mono">
+      <span>✦ president — NSBE @ NYIT</span>
+      <span>microsoft ECLSP fellow</span>
+      <span>america on tech fellow</span>
+      <span>break through tech · colorstack · code2040</span>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects" class="section" aria-labelledby="proj-t">
+    <div class="sec-head">
+      <span class="num">02</span>
+      <h2 id="proj-t">Projects</h2>
+      <span class="aside">things built in the workshop</span>
+    </div>
+    <div class="projects">
+      <article class="proj">
+        <div class="proj-top mono"><span>P–01 · in progress</span><i style="background: var(--ember);"></i></div>
+        <h3>Pathful</h3>
+        <p>Surfaces 500+ internships usually locked inside insider networks. A scheduled Playwright pipeline crawls and dedupes dozens of sources, and Claude API enrichment makes every listing searchable. Manual search time down 70%.</p>
+        <ul class="tags mono"><li>python</li><li>playwright</li><li>claude api</li><li>react</li></ul>
+        <a class="go mono" href="https://github.com/roridemonslayer" target="_blank" rel="noopener">github →</a>
+      </article>
+      <article class="proj">
+        <div class="proj-top mono"><span>P–02 · from scratch</span><i style="background: #4a7ab8;"></i></div>
+        <h3>Vector Search Engine</h3>
+        <p>Search that matches text by meaning, not keywords. HNSW written by hand (probabilistic layers, greedy layered traversal) with no FAISS or Chroma. Lookups 3–4× faster than brute force: 0.4ms → 0.1ms.</p>
+        <ul class="tags mono"><li>python</li><li>numpy</li><li>sentence-transformers</li></ul>
+        <a class="go mono" href="https://github.com/roridemonslayer/vector-search-engine" target="_blank" rel="noopener">github →</a>
+      </article>
+      <article class="proj">
+        <div class="proj-top mono"><span>P–03 · machine learning</span><i style="background: #b85c9e;"></i></div>
+        <h3>ESG Investment Recommender</h3>
+        <p>Helps student investors match portfolios to their values. Clusters 722 public companies on ESG ratings and returns with K-Means + PCA, built on 8 merged datasets (27K+ rows).</p>
+        <ul class="tags mono"><li>python</li><li>scikit-learn</li><li>pandas</li></ul>
+        <a class="go mono" href="https://github.com/roridemonslayer/esg-financial-assistant" target="_blank" rel="noopener">github →</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ STORY ============ -->
+  <section id="story" class="section story" aria-labelledby="story-t">
+    <figure>
+      <div class="painting"><img src="assets/painter-hill.gif" alt="A painter at an easel on a grassy hill"></div>
+      <figcaption class="mono">the view from the workshop window</figcaption>
+    </figure>
+    <div class="story-text">
+      <div class="sec-head"><span class="num">03</span><h2 id="story-t">My story</h2></div>
+      <p>I'm Rori — a builder at heart. I fell for software the way you fall into a good story: all at once, and then deeper every chapter. I love working with agents, building things that scale, and most of all making software that actually lands in someone's life and makes it lighter.</p>
+      <p>By day I'm a CS junior at NYIT (AI minor), NSBE chapter president, and a serial intern — insurance platforms, civic tech, quantum computing, teaching Python, and next up, Datadog. The throughline: I want to help as many people as I possibly can, one shipped thing at a time.</p>
+      <div>
+        <div class="fits-label mono">// off the clock — fits &amp; other passions</div>
+        <div class="fits">
+          <div class="polaroid" style="transform: rotate(-2deg);"><div class="slot" data-fit="fit1.jpg">fit pic 01</div></div>
+          <div class="polaroid" style="transform: rotate(1.5deg);"><div class="slot" data-fit="fit2.jpg">fit pic 02</div></div>
+          <div class="polaroid" style="transform: rotate(-1deg);"><div class="slot" data-fit="fit3.jpg">fit pic 03</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FITTING ROOM ============ -->
+  <section id="fits" class="section" aria-labelledby="fits-t">
+    <div class="sec-head">
+      <span class="num">04</span>
+      <h2 id="fits-t">Fitting room</h2>
+      <span class="aside">fashion is half the fun</span>
+    </div>
+    <div class="fitting">
+      <div>
+        <div class="stage" id="stage">
+          <div class="stage-label mono"><span>RORI OLANIYI / PERSONAL EDITION</span><span>360° VIEW</span></div>
+          <div class="stage-loading mono" id="stage-loading">setting up the fitting room…</div>
+          <canvas id="figure" tabindex="0" aria-label="3D figure wearing the selected outfit. Drag, or use the left and right arrow keys, to turn it."></canvas>
+        </div>
+        <div class="stage-bar mono">
+          <div class="views" role="group" aria-label="View">
+            <button type="button" data-view="0" aria-pressed="true">FRONT</button>
+            <button type="button" data-view="1" aria-pressed="false">SIDE</button>
+            <button type="button" data-view="2" aria-pressed="false">BACK</button>
+          </div>
+          <span class="drag-hint">drag to spin · ← → when focused</span>
+          <div class="zoom">
+            <button type="button" id="zoom-out" aria-label="Zoom out">−</button>
+            <button type="button" id="zoom-reset">RESET</button>
+            <button type="button" id="zoom-in" aria-label="Zoom in">+</button>
+            <button type="button" class="autorot" id="autorot" aria-pressed="true">auto rotate ↻</button>
+          </div>
+        </div>
+      </div>
+      <div class="fit-side">
+        <p>Fashion is something I'm proud of. Pick a fit and spin me around.</p>
+        <ul class="outfits" id="outfits"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WRITING ============ -->
+  <section id="writing" class="section" aria-labelledby="writing-t">
+    <div class="sec-head" style="margin-bottom: 8px;">
+      <span class="num">05</span>
+      <h2 id="writing-t">Writing</h2>
+      <span class="aside">notes on tech &amp; things i'm learning</span>
+    </div>
+    <div class="rows">
+      <div class="post"><span class="title">what building an agent taught me about patience</span><span class="status mono">draft — coming soon</span></div>
+      <div class="post"><span class="title">scraping 500+ hidden opportunities into the open</span><span class="status mono">draft — coming soon</span></div>
+      <div class="post"><span class="title">a quantum summer: what protein folding felt like</span><span class="status mono">draft — coming soon</span></div>
+    </div>
+  </section>
+
+  </div>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="section" aria-labelledby="contact-t" style="padding-bottom: 0;">
+    <div class="contact-card">
+      <div class="kicker mono">06 — say hello</div>
+      <h2 id="contact-t">The door opens to a different place every time<span style="color: var(--ember);">.</span> Knock anyway.</h2>
+      <div class="contact-links">
+        <button type="button" class="text-me" data-open-chat>💬 text_me</button>
+        <a class="email-me" href="mailto:olaniyideborah63@gmail.com">email_me</a>
+        <a data-link="github" href="https://github.com/roridemonslayer" target="_blank" rel="noopener">github</a>
+        <a href="https://linkedin.com/in/deborah-olaniyi" target="_blank" rel="noopener">linkedin</a>
+        <a data-link="spotify" href="https://open.spotify.com" target="_blank" rel="noopener"><span class="green-dot"></span>what i'm listening to</a>
+      </div>
+      <div class="email-line mono">or copy it: <code>olaniyideborah63@gmail.com</code></div>
+    </div>
+  </section>
+  <footer class="foot mono">
+    <span>© <span id="year">2026</span> rori olaniyi — made with a little magic</span>
+    <span>nyc ✦ somewhere above the waste</span>
+  </footer>
+</div>
+
+<!-- imessage chat panel -->
+<!-- background music: drop the song file at assets/merry-go-round-of-life.mp3 -->
+<audio id="bgm" src="assets/merry-go-round-of-life.mp3" loop preload="auto"></audio>
+<button class="sound" id="sound" type="button" aria-pressed="false" aria-label="Mute music">
+  <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  <span class="slash" aria-hidden="true">♪̸</span>
+  <span id="sound-label">merry-go-round of life</span>
+</button>
+
+<!-- soot climb mini game -->
+<div class="game" id="game" role="dialog" aria-modal="true" aria-label="Soot climb game" hidden>
+  <div class="game-box">
+    <div class="game-bar">
+      <b>soot climb 🍬</b>
+      <span class="score mono" id="game-score">0m · best 0m</span>
+      <button type="button" id="game-close" aria-label="Close game">×</button>
+    </div>
+    <canvas id="game-canvas" tabindex="0" aria-label="Game. Use arrow keys to move and space to jump."></canvas>
+    <div class="game-pad">
+      <button type="button" data-key="left" aria-label="Move left">◀</button>
+      <button type="button" class="jump" data-key="jump" aria-label="Jump">jump</button>
+      <button type="button" data-key="right" aria-label="Move right">▶</button>
+    </div>
+    <div class="game-help">← → or A D to move · space / ↑ to jump</div>
+  </div>
+</div>
+
+<aside class="chat" id="chat" aria-label="Chat with rori's bot">
+  <div class="chat-head">
+    <div class="avatar" aria-hidden="true">R</div>
+    <div class="chat-who"><b>rori (bot) 🍃</b><span>iMessage · usually replies instantly</span></div>
+    <button class="chat-close" type="button" id="chat-close" aria-label="Close chat">×</button>
+  </div>
+  <div class="msgs" id="msgs" aria-live="polite"></div>
+  <form class="chat-form" id="chat-form">
+    <input id="chat-input" autocomplete="off" placeholder="iMessage" aria-label="Message">
+    <button type="submit" aria-label="Send">↑</button>
+  </form>
+</aside>
+
+<script>
+/* your links in one place: edit here and every button on the page updates */
+const LINKS = {
+  github: "https://github.com/roridemonslayer",
+  spotify: "https://open.spotify.com",
+};
+for (const el of document.querySelectorAll("[data-link]")) el.href = LINKS[el.dataset.link];
+
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- day / night ---------- */
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+};
+function setNight(night) {
+  document.body.classList.toggle("night", night);
+  document.getElementById("mode-label").textContent = night ? "night_mode" : "day_mode";
+}
+setNight(store.get("rori-mode") === "night");
+document.getElementById("mode").addEventListener("click", () => {
+  const night = !document.body.classList.contains("night");
+  setNight(night);
+  store.set("rori-mode", night ? "night" : "day");
+});
+
+/* ---------- greeting + typewriter name ---------- */
+document.getElementById("year").textContent = new Date().getFullYear();
+
+const typedEl = document.getElementById("typed");
+const FULL = "RORI\nOLANIYI";
+function renderName(t) {
+  const shown = FULL.slice(0, t), done = t >= FULL.length;
+  const [l1, l2] = shown.split("\n");
+  const caret = '<span class="caret"></span>';
+  typedEl.innerHTML = l1 + (l2 === undefined && !done ? caret : "") + "<br>" + (l2 ?? "") +
+    (done ? '<span style="color: var(--ember);">.</span>' : l2 !== undefined ? caret : "");
+}
+if (!reduced) {
+  let t = 0;
+  renderName(0);
+  const timer = setInterval(() => { renderName(++t); if (t >= FULL.length) clearInterval(timer); }, 130);
+}
+
+/* ---------- stack rows slide up and settle in, staggered ---------- */
+const reveals = document.querySelectorAll("[data-reveal]");
+if ("IntersectionObserver" in window && !reduced) {
+  const io = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      const el = entry.target;
+      el.style.setProperty("--reveal-delay", (Number(el.dataset.reveal) || 0) * 0.14 + "s");
+      el.classList.add("revealed");
+      io.unobserve(el);
+    }
+  }, { threshold: 0.35, rootMargin: "0px 0px -15% 0px" });
+  reveals.forEach((el) => io.observe(el));
+} else {
+  reveals.forEach((el) => el.classList.add("revealed"));
+}
+
+/* ---------- fit pics: drop fit1.jpg / fit2.jpg / fit3.jpg into assets/ ---------- */
+for (const slot of document.querySelectorAll("[data-fit]")) {
+  const img = new Image();
+  img.alt = "";
+  img.onload = () => { slot.textContent = ""; slot.appendChild(img); };
+  img.src = "assets/" + slot.dataset.fit;
+}
+
+/* ---------- imessage chat ---------- */
+const chat = document.getElementById("chat");
+const msgsEl = document.getElementById("msgs");
+const input = document.getElementById("chat-input");
+const msgs = [{ who: "them", text: "hey!! this is rori's bot 🍃 ask me anything about her projects, experience, or what she's building rn" }];
+let typing = false;
+
+function renderChat() {
+  msgsEl.innerHTML = "";
+  for (const m of msgs) {
+    const b = document.createElement("div");
+    b.className = "bubble " + m.who;
+    b.textContent = m.text;
+    msgsEl.appendChild(b);
+  }
+  if (typing) {
+    const b = document.createElement("div");
+    b.className = "bubble them";
+    b.style.color = "var(--chat-muted)";
+    b.textContent = "•••";
+    msgsEl.appendChild(b);
+  }
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+
+const SYSTEM = "You are the friendly chatbot on Rori Olaniyi's portfolio site, texting like a close friend over iMessage — lowercase, warm, brief (1-3 short sentences), occasional 🍃✨ emoji. Facts about Rori (legal name Deborah Olaniyi): CS major + AI minor at NYIT in Manhattan, GPA 3.65, graduating May 2028. Incoming software engineering intern at Datadog, starting winter 2027. Liberty Mutual SWE intern May–Jul 2026: built RAG chat and hybrid search over 156 competitors' filings (research went from ~15 min to under 10 s), inline citations to source PDFs for 55 analysts, pgvector + HNSW over 40K+ filings (30% faster lookups). NYC Civic Engagement software engineer Jan–May 2026: React/TypeScript map, timeline and chart views for 3,900 proposals from NYC's $5M participatory budget, 14-language switcher, accessibility up 25%. The Coding School (Qubit by Qubit) quantum computing researcher summer 2025: Qiskit protein-folding optimization, CVaR. Stanford Code in Place section leader spring 2025: taught 20 students Python, 95% completion. Projects: Pathful (Playwright + Claude API platform surfacing 500+ hidden internships), a vector search engine built from scratch with hand-written HNSW, and an ESG investment recommender (K-Means + PCA on 722 companies). President of NSBE @ NYIT; Microsoft ECLSP, America On Tech, Break Through Tech, ColorStack, Code2040. Loves building agents, search systems, and Studio Ghibli. Contact: olaniyideborah63@gmail.com. If asked something you don't know about her, say they should text/email the real rori.";
+
+// on a plain web host there's no model to call, so the bot answers from these
+const CANNED = [
+  [["datadog", "next", "incoming", "winter"], "i'm incoming at datadog!! ✨ joining as a software engineering intern this winter 🍃"],
+  [["liberty", "intern", "work", "job", "experience"], "this summer i was a swe intern at liberty mutual 🍃 built rag chat + hybrid search over competitors' filings — research went from ~15 min to under 10 sec. next up: datadog this winter ✨"],
+  [["project", "build", "pathful", "made"], "my baby is pathful ✨ it surfaces 500+ internships that usually live in insider networks. i also built a vector search engine from scratch (hand-written hnsw!) and an esg investment recommender 🍃"],
+  [["school", "nyit", "study", "major", "college"], "cs major + ai minor at nyit in nyc 🍃"],
+  [["nsbe", "club", "community", "lead"], "i'm president of nsbe @ nyit! community is a huge part of why i do this ✨"],
+  [["ghibli", "howl", "totoro", "site", "design"], "studio ghibli forever 🍃 howl's moving castle is the whole vibe of this site"],
+  [["hire", "hiring", "recruit", "open", "available", "2027"], "i'm headed to datadog this winter ✨ but always happy to chat — email me at olaniyideborah63@gmail.com"],
+  [["email", "contact", "reach", "linkedin", "text"], "easiest is email: olaniyideborah63@gmail.com 🍃"],
+  [["game", "play", "soot", "climb", "bored"], "hit the 🎮 play button up top!! help the soot sprite climb as high as you can 🍬"],
+  [["hi", "hey", "hello", "yo", "sup"], "heyyy 🍃 what do you wanna know?"],
+];
+function cannedReply(text) {
+  const t = text.toLowerCase();
+  const hit = CANNED.find(([keys]) => keys.some((k) => new RegExp("\\b" + k).test(t)));
+  return hit ? hit[1] : "ooh good question, the real rori would know better 🍂 email her at olaniyideborah63@gmail.com";
+}
+
+async function sendChat(text) {
+  if (!text || typing) return;
+  msgs.push({ who: "me", text });
+  typing = true;
+  renderChat();
+  let reply;
+  try {
+    if (!window.claude?.complete) throw new Error("no model");
+    reply = await window.claude.complete({
+      system: SYSTEM,
+      messages: msgs.map((m) => ({ role: m.who === "me" ? "user" : "assistant", content: m.text })),
+    });
+  } catch {
+    await new Promise((r) => setTimeout(r, 700));
+    reply = cannedReply(text);
+  }
+  msgs.push({ who: "them", text: reply });
+  typing = false;
+  renderChat();
+}
+
+function openChat() {
+  chat.classList.add("open");
+  setTimeout(() => input.focus(), 350);
+}
+document.querySelectorAll("[data-open-chat]").forEach((b) => b.addEventListener("click", openChat));
+document.getElementById("chat-close").addEventListener("click", () => chat.classList.remove("open"));
+addEventListener("keydown", (e) => { if (e.key === "Escape") chat.classList.remove("open"); });
+document.getElementById("chat-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const text = input.value.trim();
+  input.value = "";
+  sendChat(text);
+});
+renderChat();
+
+/* ---------- background music ----------
+   browsers only allow sound after the visitor interacts, so we try right away
+   and otherwise start on the first click, tap or key press */
+const bgm = document.getElementById("bgm");
+const soundBtn = document.getElementById("sound");
+const soundLabel = document.getElementById("sound-label");
+let muted = store.get("rori-muted") === "1";
+let songMissing = false;
+bgm.volume = 0;
+
+function fadeTo(target) {
+  clearInterval(bgm._fade);
+  bgm._fade = setInterval(() => {
+    const v = bgm.volume + (target > bgm.volume ? 0.03 : -0.05);
+    bgm.volume = Math.min(1, Math.max(0, v));
+    if ((target > 0 && bgm.volume >= target) || (target === 0 && bgm.volume <= 0)) {
+      bgm.volume = target;
+      clearInterval(bgm._fade);
+      if (target === 0) bgm.pause();
+    }
+  }, 60);
+}
+function syncSound() {
+  const playing = !muted && !bgm.paused && !songMissing;
+  soundBtn.classList.toggle("playing", playing);
+  soundBtn.classList.toggle("muted", muted || songMissing);
+  soundBtn.setAttribute("aria-pressed", String(muted));
+  soundBtn.setAttribute("aria-label", muted ? "Play music" : "Mute music");
+  soundLabel.textContent = songMissing ? "no song file yet" : muted ? "sound off" : "merry-go-round of life";
+}
+async function startMusic() {
+  if (muted || songMissing) return syncSound();
+  try {
+    await bgm.play();
+    fadeTo(0.45);
+  } catch {}
+  syncSound();
+}
+bgm.addEventListener("error", () => { songMissing = true; syncSound(); });
+if (bgm.error || bgm.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) songMissing = true; // failed before this script ran
+bgm.addEventListener("play", syncSound);
+bgm.addEventListener("pause", syncSound);
+
+soundBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  muted = !muted;
+  store.set("rori-muted", muted ? "1" : "0");
+  if (muted) fadeTo(0); else startMusic();
+  syncSound();
+});
+function firstTouch() {
+  ["pointerdown", "keydown", "touchstart"].forEach((t) => removeEventListener(t, firstTouch, true));
+  if (bgm.paused) startMusic();
+}
+["pointerdown", "keydown", "touchstart"].forEach((t) => addEventListener(t, firstTouch, true));
+syncSound();
+startMusic();
+
+/* ---------- soot climb: jump up the platforms, don't fall ---------- */
+const game = document.getElementById("game");
+const cv = document.getElementById("game-canvas");
+const ctx = cv.getContext("2d");
+const scoreEl = document.getElementById("game-score");
+const keys = { left: false, right: false, jump: false };
+let best = Number(store.get("rori-climb-best")) || 0;
+let W = 0, H = 0, raf = 0, last = 0, G;
+
+const GRAV = 0.5, JUMP_V = -11.8, RUN = 4.9, PX = 40; // PX = pixels per metre of height
+const MILESTONES = [[10, "above the meadow"], [25, "past the treetops"], [50, "level with the castle"], [100, "somewhere above the waste ✦"], [200, "calcifer is impressed 🔥"]];
+
+function sizeCanvas() {
+  const r = cv.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+  W = r.width; H = r.height;
+  cv.width = W * dpr; cv.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+// every "step" is solid (stone or a slow cloud), spaced so it's always reachable
+// from the one below. Crumbly platforms are extra shortcuts, never the only way up.
+const MAX_GAP = 104, MAX_REACH = 125;
+function platform(x, y, w, kind, height) {
+  const hard = Math.min(height / 120, 1);
+  return {
+    x, y, oy: y, w, kind,
+    vx: kind === "moving" ? (Math.random() < 0.5 ? -1 : 1) * (0.6 + hard * 0.9) : 0,
+    candy: kind !== "crumble" && Math.random() < 0.28, crumbleAt: 0, fall: 0,
+  };
+}
+function addStep(prev) {
+  const height = (G.startY - prev.y) / PX, hard = Math.min(height / 120, 1);
+  const y = prev.y - (72 + Math.random() * (MAX_GAP - 72) * (0.6 + 0.4 * hard));
+  const w = 104 - hard * 30 + Math.random() * 26;
+  const kind = height > 6 && Math.random() < 0.15 + hard * 0.2 ? "moving" : "stone";
+  // stay within jumping distance of the step below (moving clouds sweep the whole width anyway)
+  const from = prev.kind === "ground" ? W / 2 : prev.x + prev.w / 2;
+  // pick uniformly inside the reachable window (clamping would pile platforms up on the edges)
+  const lo = Math.max(w / 2, from - MAX_REACH), hi = Math.min(W - w / 2, from + MAX_REACH);
+  const cx = lo + Math.random() * Math.max(0, hi - lo);
+  const step = platform(cx - w / 2, y, w, kind, height);
+  G.plats.push(step);
+  if (height > 4 && Math.random() < 0.3 + hard * 0.2) {   // bonus crumbly ledge between steps
+    const cw = 60 + Math.random() * 30;
+    G.plats.push(platform(Math.random() * (W - cw), (prev.y + y) / 2, cw, "crumble", height));
+  }
+  G.top = y;
+  G.lastStep = step;
+}
+
+function resetGame() {
+  const ground = { x: 0, y: H - 24, oy: H - 24, w: W, kind: "ground", vx: 0, candy: false, crumbleAt: 0, fall: 0 };
+  G = {
+    state: "ready", t: 0, camY: 0, startY: H - 24, top: H - 24, plats: [ground], lastStep: ground, sparks: [], banner: null, next: 0, candies: 0,
+    p: { x: W / 2 - 14, y: H - 24 - 28, w: 28, h: 28, vx: 0, vy: 0, ground: true, coyote: 0, buffer: 0, face: 1, squash: 0, blink: 0, ride: null },
+  };
+  while (G.top > -H) addStep(G.lastStep);
+  updateScore();
+}
+
+function height() { return Math.max(0, Math.floor((G.startY - (G.p.y + G.p.h)) / PX)); }
+function score() { return height() + G.candies * 5; }
+function updateScore() {
+  if (!G) return;
+  scoreEl.textContent = `${score()}m · best ${best}m`;
+}
+
+function step(dt) {
+  const p = G.p;
+  G.t += dt;
+  if (G.state !== "play") return;
+
+  // run with a little inertia, wrap around the edges
+  const want = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
+  p.vx += (want * RUN - p.vx) * Math.min(1, 0.25 * dt);
+  if (want) p.face = want;
+  p.x += p.vx * dt;
+  if (p.x > W) p.x = -p.w; else if (p.x < -p.w) p.x = W;
+
+  // jump: coyote time + input buffer so it feels fair
+  p.coyote = p.ground ? 6 : p.coyote - dt;
+  p.buffer = keys.jump ? p.buffer : p.buffer - dt;
+  if (p.buffer > 0 && p.coyote > 0) {
+    p.vy = JUMP_V; p.ground = false; p.coyote = 0; p.buffer = 0; p.ride = null; p.squash = -0.25;
+  }
+
+  p.vy = Math.min(p.vy + GRAV * dt, 14);
+  const prevBottom = p.y + p.h;
+  p.y += p.vy * dt;
+  if (p.ride) p.x += p.ride.vx * dt;
+  p.ground = false;
+
+  for (const pl of G.plats) {
+    if (pl.kind === "moving") {
+      pl.x += pl.vx * dt;
+      if (pl.x < 0 || pl.x + pl.w > W) pl.vx *= -1;
+    }
+    if (pl.crumbleAt && G.t - pl.crumbleAt > 40) pl.fall += 0.6 * dt, pl.y += pl.fall * dt;
+    if (pl.crumbleAt && G.t - pl.crumbleAt > 220) pl.y = pl.oy, pl.fall = 0, pl.crumbleAt = 0;
+    if (p.vy >= 0 && prevBottom <= pl.y + 1 && p.y + p.h >= pl.y && p.x + p.w - 6 > pl.x && p.x + 6 < pl.x + pl.w && !(pl.fall > 0)) {
+      if (p.vy > 3) p.squash = 0.3;
+      p.y = pl.y - p.h; p.vy = 0; p.ground = true; p.ride = pl.kind === "moving" ? pl : null;
+      if (pl.kind === "crumble" && !pl.crumbleAt) pl.crumbleAt = G.t;
+      if (pl.candy) {
+        pl.candy = false; G.candies++;
+        for (let i = 0; i < 10; i++) G.sparks.push({ x: p.x + 14, y: p.y, vx: (Math.random() - .5) * 5, vy: -Math.random() * 4, life: 30 });
+      }
+    }
+  }
+  if (!p.ground) p.ride = null;
+  p.squash *= 0.85;
+
+  // camera only moves up; keep building platforms above
+  G.camY = Math.min(G.camY, p.y - H * 0.42);
+  while (G.top > G.camY - 120) addStep(G.lastStep);
+  G.plats = G.plats.filter((pl) => pl.oy < G.camY + H + 60);
+
+  for (const s of G.sparks) s.x += s.vx * dt, s.y += s.vy * dt, s.vy += 0.2 * dt, s.life -= dt;
+  G.sparks = G.sparks.filter((s) => s.life > 0);
+
+  const h = height();
+  if (G.next < MILESTONES.length && h >= MILESTONES[G.next][0]) {
+    G.banner = { text: `${MILESTONES[G.next][0]}m — ${MILESTONES[G.next][1]}`, until: G.t + 130 };
+    G.next++;
+  }
+  updateScore();
+
+  if (p.y > G.camY + H + 40) {
+    G.state = "over";
+    if (score() > best) { best = score(); store.set("rori-climb-best", String(best)); G.newBest = true; }
+    updateScore();
+  }
+}
+
+function drawSoot(x, y, face, squash, blink) {
+  const cx = x + 14, cy = y + 14, sx = 1 + squash, sy = 1 - squash;
+  ctx.save();
+  ctx.translate(cx, cy + squash * 10);
+  ctx.scale(sx, sy);
+  ctx.fillStyle = "#111";
+  for (let i = 0; i < 22; i++) {           // fuzz
+    const a = (i / 22) * Math.PI * 2 + G.t * 0.02;
+    ctx.beginPath(); ctx.arc(Math.cos(a) * 12, Math.sin(a) * 12, 3.4, 0, 7); ctx.fill();
+  }
+  ctx.beginPath(); ctx.arc(0, 0, 13, 0, 7); ctx.fill();
+  const eyeH = blink ? 0.6 : 4.4;
+  ctx.fillStyle = "#fff";
+  ctx.beginPath(); ctx.ellipse(-4.5 + face, -2, 4.2, eyeH, 0, 0, 7); ctx.ellipse(4.5 + face, -2, 4.2, eyeH, 0, 0, 7); ctx.fill();
+  if (!blink) {
+    ctx.fillStyle = "#111";
+    ctx.beginPath(); ctx.arc(-4.5 + face * 2.2, -1.6, 1.9, 0, 7); ctx.arc(4.5 + face * 2.2, -1.6, 1.9, 0, 7); ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawCandy(x, y, t) {
+  ctx.save();
+  ctx.translate(x, y + Math.sin(t * 0.08) * 2);
+  ctx.rotate(t * 0.03);
+  ctx.fillStyle = "#ff8fb8";
+  ctx.beginPath();
+  for (let i = 0; i < 10; i++) {
+    const r = i % 2 ? 3.2 : 7, a = (i / 10) * Math.PI * 2;
+    ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+  }
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+
+function draw() {
+  const night = document.body.classList.contains("night");
+  const h = G.startY - G.camY;
+  // sky darkens and fills with stars the higher you climb
+  const k = Math.min(h / (PX * 120), 1);
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  if (night) { g.addColorStop(0, "#070b1f"); g.addColorStop(1, "#1d2650"); }
+  else { g.addColorStop(0, k > 0.5 ? "#6aa6d8" : "#9fd0ef"); g.addColorStop(1, "#e3f1e6"); }
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = night ? "rgba(255,248,220,.8)" : "rgba(255,255,255,.75)";
+  for (let i = 0; i < 26; i++) {
+    const sy = ((i * 97 + G.camY * -0.25) % (H + 40) + H + 40) % (H + 40) - 20;
+    const sx = (i * 173) % W;
+    if (night) { ctx.globalAlpha = 0.4 + 0.6 * Math.abs(Math.sin(G.t * 0.03 + i)); ctx.fillRect(sx, sy, 2, 2); }
+    else { ctx.globalAlpha = 0.5; ctx.beginPath(); ctx.ellipse(sx, sy, 34, 9, 0, 0, 7); ctx.fill(); }
+  }
+  ctx.globalAlpha = 1;
+
+  ctx.save();
+  ctx.translate(0, -G.camY);
+  for (const pl of G.plats) {
+    if (pl.kind === "ground") {
+      ctx.fillStyle = night ? "#1b2a3a" : "#5f9a48";
+      ctx.fillRect(0, pl.y, W, 400);
+      continue;
+    }
+    const shake = pl.crumbleAt && !pl.fall ? Math.sin(G.t * 1.5) * 1.5 : 0;
+    ctx.fillStyle = pl.kind === "crumble" ? (night ? "#6e5a4a" : "#b89468") : pl.kind === "moving" ? (night ? "#3d4f86" : "#e9eef3") : (night ? "#34466e" : "#7a8f86");
+    ctx.beginPath(); ctx.roundRect(pl.x + shake, pl.y, pl.w, 12, 6); ctx.fill();
+    ctx.fillStyle = pl.kind === "moving" ? "rgba(255,255,255,.35)" : night ? "#7fd6a4" : "#6fa05e"; // moss / cloud top
+    ctx.beginPath(); ctx.roundRect(pl.x + shake, pl.y - 2, pl.w, 5, 3); ctx.fill();
+    if (pl.candy) drawCandy(pl.x + pl.w / 2, pl.y - 16, G.t);
+  }
+  for (const s of G.sparks) { ctx.globalAlpha = s.life / 30; ctx.fillStyle = "#ffd97a"; ctx.fillRect(s.x, s.y, 3, 3); }
+  ctx.globalAlpha = 1;
+  const p = G.p;
+  drawSoot(p.x, p.y, p.face, p.squash, (G.t % 220) < 8);
+  if (p.x > W - p.w) drawSoot(p.x - W, p.y, p.face, p.squash, false);
+  ctx.restore();
+
+  ctx.textAlign = "center";
+  const ink = night ? "#ece5d3" : "#1d2c26";
+  if (G.banner && G.t < G.banner.until) {
+    ctx.font = "italic 20px 'EB Garamond', Georgia, serif";
+    ctx.fillStyle = ink; ctx.fillText(G.banner.text, W / 2, 40);
+  }
+  if (G.state !== "play") {
+    ctx.fillStyle = night ? "rgba(16,21,42,.72)" : "rgba(238,242,236,.78)";
+    ctx.fillRect(0, H / 2 - 90, W, 170);
+    ctx.fillStyle = ink;
+    ctx.font = "700 30px 'Space Grotesk', sans-serif";
+    ctx.fillText(G.state === "ready" ? "help soot climb!" : G.newBest ? "new best! ✦" : "oof, you fell", W / 2, H / 2 - 36);
+    ctx.font = "15px 'IBM Plex Mono', monospace";
+    if (G.state === "over") ctx.fillText(`${height()}m climbed · ${G.candies} konpeito`, W / 2, H / 2 - 4);
+    else ctx.fillText("grab konpeito for +5 each", W / 2, H / 2 - 4);
+    ctx.fillStyle = night ? "#f0a35e" : "#b77a14";
+    ctx.fillText(matchMedia("(pointer: coarse)").matches ? "tap jump to start" : "press space to start", W / 2, H / 2 + 32);
+  }
+}
+
+function loop(now) {
+  const dt = Math.min((now - last) / 16.667, 2.5);
+  last = now;
+  step(dt);
+  draw();
+  raf = requestAnimationFrame(loop);
+}
+
+function pressJump() {
+  if (G.state !== "play") {
+    if (G.state === "over") resetGame();
+    G.state = "play";
+  }
+  keys.jump = true;
+  G.p.buffer = 7;
+}
+
+function openGame() {
+  chat.classList.remove("open");
+  game.hidden = false;
+  document.documentElement.style.overflow = "hidden";
+  sizeCanvas();
+  resetGame();
+  last = performance.now();
+  cancelAnimationFrame(raf);
+  raf = requestAnimationFrame(loop);
+  cv.focus();
+}
+function closeGame() {
+  game.hidden = true;
+  document.documentElement.style.overflow = "";
+  cancelAnimationFrame(raf);
+  keys.left = keys.right = keys.jump = false;
+}
+document.querySelectorAll("[data-open-game]").forEach((b) => b.addEventListener("click", openGame));
+document.getElementById("game-close").addEventListener("click", closeGame);
+game.addEventListener("click", (e) => { if (e.target === game) closeGame(); });
+
+const KEYMAP = { ArrowLeft: "left", a: "left", A: "left", ArrowRight: "right", d: "right", D: "right", " ": "jump", ArrowUp: "jump", w: "jump", W: "jump" };
+addEventListener("keydown", (e) => {
+  if (game.hidden) return;
+  if (e.key === "Escape") return closeGame();
+  const k = KEYMAP[e.key];
+  if (!k) return;
+  e.preventDefault();
+  if (k === "jump") { if (!e.repeat) pressJump(); } else keys[k] = true;
+});
+addEventListener("keyup", (e) => { const k = KEYMAP[e.key]; if (k) keys[k] = false; });
+for (const b of document.querySelectorAll(".game-pad button")) {
+  const k = b.dataset.key;
+  b.addEventListener("pointerdown", (e) => { e.preventDefault(); b.setPointerCapture(e.pointerId); k === "jump" ? pressJump() : (keys[k] = true); });
+  const up = () => (keys[k] = false);
+  b.addEventListener("pointerup", up);
+  b.addEventListener("pointercancel", up);
+}
+cv.addEventListener("pointerdown", () => { if (G.state !== "play") pressJump(); });
+cv.addEventListener("pointerup", () => (keys.jump = false));
+addEventListener("resize", () => { if (!game.hidden) { sizeCanvas(); if (G.state !== "play") resetGame(); } });
+
+/* ---------- fitting room: a little 3d me, dressed in my fits ----------
+   add an outfit by adding an entry to OUTFITS; every colour is a hex value */
+const OUTFITS = [
+  {
+    id: "picture-day", name: "picture day", note: "plaid cap · navy knit · tie",
+    skin: "#7b4a2d", hair: "#1c120c",
+    cap: { plaid: ["#6b5e57", "#b9aea3", "#3a2f2b"] },
+    top: "#1c2536", collar: "#f3f1ec", tie: "#9c8f7a",
+    bottom: "#2a2a2e", shoes: "#141414", glasses: true,
+  },
+];
+const fitList = document.getElementById("outfits");
+let currentFit = OUTFITS[0];
+function renderFitList() {
+  fitList.innerHTML = "";
+  for (const o of OUTFITS) {
+    const sw = [o.cap?.plaid?.[0], o.top, o.tie, o.bottom].filter(Boolean).map((c) => `<i style="background:${c}"></i>`).join("");
+    const li = document.createElement("li");
+    li.innerHTML = `<button type="button" class="outfit" aria-pressed="${o === currentFit}"><span class="swatches">${sw}</span><span>${o.name}<small>${o.note}</small></span></button>`;
+    li.firstChild.addEventListener("click", () => { currentFit = o; renderFitList(); window.dressFigure?.(o); });
+    fitList.appendChild(li);
+  }
+  fitList.insertAdjacentHTML("beforeend", '<li><div class="outfit soon"><span>next fit coming soon ✦</span></div></li>');
+}
+renderFitList();
+
+function startFittingRoom() {
+  const T = window.THREE;
+  const canvas = document.getElementById("figure");
+  const stage = document.getElementById("stage");
+  const renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = T.PCFSoftShadowMap;
+  const scene = new T.Scene();
+  const camera = new T.PerspectiveCamera(30, 1, 0.1, 50);
+  const LOOK_Y = 0.92;
+  let zoom = 1;
+
+  scene.add(new T.HemisphereLight(0xffffff, 0x8a8f80, 1.1));
+  const key = new T.DirectionalLight(0xfff4e0, 1.6);
+  key.position.set(2.2, 4, 3);
+  key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  key.shadow.camera.left = key.shadow.camera.bottom = -1.5;
+  key.shadow.camera.right = key.shadow.camera.top = 1.5;
+  key.shadow.radius = 6;
+  scene.add(key);
+  const rim = new T.DirectionalLight(0xc8d8ff, 0.7);
+  rim.position.set(-3, 2.5, -2.5);
+  scene.add(rim);
+
+  const floor = new T.Mesh(new T.CircleGeometry(0.75, 48), new T.ShadowMaterial({ opacity: 0.22 }));
+  floor.rotation.x = -Math.PI / 2;
+  floor.receiveShadow = true;
+  scene.add(floor);
+  const plate = new T.Mesh(new T.CylinderGeometry(0.46, 0.48, 0.02, 64), new T.MeshStandardMaterial({ color: 0xf2efe6, roughness: 0.9 }));
+  plate.position.y = 0.01;
+  plate.receiveShadow = true;
+  scene.add(plate);
+
+  const figure = new T.Group();
+  scene.add(figure);
+
+  const mat = (c, rough = 0.75, extra = {}) => new T.MeshStandardMaterial({ color: c, roughness: rough, ...extra });
+  function plaidTexture([a, b, c]) {
+    const cv = document.createElement("canvas");
+    cv.width = cv.height = 64;
+    const g = cv.getContext("2d");
+    g.fillStyle = a; g.fillRect(0, 0, 64, 64);
+    g.fillStyle = b; g.globalAlpha = 0.6;
+    for (let i = 0; i < 64; i += 16) { g.fillRect(i, 0, 5, 64); g.fillRect(0, i, 64, 5); }
+    g.fillStyle = c; g.globalAlpha = 0.7;
+    for (let i = 8; i < 64; i += 16) { g.fillRect(i, 0, 2, 64); g.fillRect(0, i, 64, 2); }
+    const t = new T.CanvasTexture(cv);
+    t.wrapS = t.wrapT = T.RepeatWrapping;
+    t.repeat.set(3, 3);
+    return t;
+  }
+  function add(parent, geo, material, x = 0, y = 0, z = 0, sx = 1, sy = 1, sz = 1) {
+    const m = new T.Mesh(geo, material);
+    m.position.set(x, y, z);
+    m.scale.set(sx, sy, sz);
+    m.castShadow = true;
+    parent.add(m);
+    return m;
+  }
+  // a limb segment between two points
+  function limb(parent, material, a, b, r1, r2) {
+    const A = new T.Vector3(...a), B = new T.Vector3(...b);
+    const len = A.distanceTo(B);
+    const m = new T.Mesh(new T.CylinderGeometry(r2, r1, len, 20), material);
+    m.position.copy(A).add(B).multiplyScalar(0.5);
+    m.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), B.clone().sub(A).normalize());
+    m.castShadow = true;
+    parent.add(m);
+    return m;
+  }
+
+  function dress(o) {
+    figure.clear();
+    const skin = mat(o.skin, 0.55);
+    const top = mat(o.top, 0.9);
+    const bottom = mat(o.bottom, 0.85);
+    const shoe = mat(o.shoes, 0.4);
+    const sphere = new T.SphereGeometry(1, 32, 24);
+
+    // legs + shoes
+    for (const s of [-1, 1]) {
+      const x = 0.085 * s;
+      limb(figure, bottom, [x, 0.1, 0], [x, 0.5, 0], 0.062, 0.07);
+      add(figure, sphere, bottom, x, 0.5, 0, 0.074, 0.06, 0.074);
+      limb(figure, bottom, [x, 0.5, 0], [x * 1.05, 0.93, 0], 0.074, 0.088);
+      add(figure, new T.BoxGeometry(0.1, 0.07, 0.25), shoe, x, 0.055, 0.035).geometry.translate(0, 0, 0);
+      add(figure, sphere, shoe, x, 0.06, 0.15, 0.05, 0.04, 0.05);
+    }
+    // hips + torso (the knit)
+    add(figure, sphere, bottom, 0, 0.95, 0, 0.17, 0.1, 0.11);
+    const torso = add(figure, new T.CapsuleGeometry(0.15, 0.3, 8, 24), top, 0, 1.2, 0, 1.18, 1, 0.72);
+    // ribbed hem + zip line
+    add(figure, new T.CylinderGeometry(0.176, 0.17, 0.05, 32), top, 0, 0.99, 0, 1, 1, 0.62);
+    add(figure, new T.BoxGeometry(0.008, 0.2, 0.01), mat("#b8b8b8", 0.3, { metalness: 0.6 }), 0, 1.36, 0.108);
+    // shirt collar + tie peeking out
+    add(figure, new T.CylinderGeometry(0.06, 0.075, 0.07, 24), mat(o.collar, 0.8), 0, 1.49, 0.005);
+    if (o.tie) add(figure, new T.BoxGeometry(0.035, 0.13, 0.012), mat(o.tie, 0.6), 0, 1.4, 0.104);
+    // arms
+    for (const s of [-1, 1]) {
+      add(figure, sphere, top, 0.2 * s, 1.43, 0, 0.075, 0.075, 0.075);
+      limb(figure, top, [0.215 * s, 1.43, 0], [0.245 * s, 1.14, 0.01], 0.064, 0.058);
+      add(figure, sphere, top, 0.245 * s, 1.14, 0.01, 0.056, 0.056, 0.056);
+      limb(figure, top, [0.245 * s, 1.14, 0.01], [0.26 * s, 0.9, 0.04], 0.056, 0.048);
+      add(figure, sphere, skin, 0.262 * s, 0.84, 0.045, 0.036, 0.06, 0.025);
+    }
+    // neck + head
+    limb(figure, skin, [0, 1.47, 0], [0, 1.56, 0.005], 0.045, 0.042);
+    const head = new T.Group();
+    head.position.set(0, 1.66, 0.01);
+    figure.add(head);
+    add(head, sphere, skin, 0, 0, 0, 0.092, 0.115, 0.1);
+    add(head, sphere, skin, 0.093, -0.005, 0, 0.015, 0.025, 0.012);
+    add(head, sphere, skin, -0.093, -0.005, 0, 0.015, 0.025, 0.012);
+    // locs: hanging from under the cap, framing the face and down the back
+    const hair = mat(o.hair, 0.9);
+    for (let i = 0; i < 22; i++) {
+      const a = Math.PI * 0.18 + (i / 21) * Math.PI * 1.64; // skip the face
+      const x = Math.sin(a) * 0.092, z = Math.cos(a) * 0.092;
+      const len = 0.2 + (i % 3) * 0.035;
+      limb(head, hair, [x, 0.03, z], [x * 1.25, 0.03 - len, z * 1.25 - 0.015], 0.012, 0.01);
+    }
+    if (o.glasses) {
+      const frame = mat("#0d0d0d", 0.3);
+      for (const s of [-1, 1]) {
+        const rimG = new T.TorusGeometry(0.026, 0.006, 8, 24);
+        add(head, rimG, frame, 0.035 * s, 0.005, 0.098, 1.15, 0.85, 1);
+        limb(head, frame, [0.064 * s, 0.01, 0.095], [0.094 * s, 0.01, 0.01], 0.004, 0.004);
+      }
+      limb(head, frame, [-0.012, 0.01, 0.1], [0.012, 0.01, 0.1], 0.004, 0.004);
+    }
+    // newsboy cap
+    if (o.cap) {
+      const capMat = o.cap.plaid ? mat("#ffffff", 0.95, { map: plaidTexture(o.cap.plaid) }) : mat(o.cap.color, 0.9);
+      add(head, sphere, capMat, 0, 0.06, -0.005, 0.112, 0.07, 0.122);
+      add(head, new T.CylinderGeometry(0.1, 0.1, 0.012, 32, 1, false, -Math.PI / 2.4, Math.PI / 1.2), capMat, 0, 0.035, 0.035, 1, 1, 1.25);
+      add(head, sphere, capMat, 0, 0.13, 0, 0.012, 0.008, 0.012);
+    }
+  }
+
+  // ---- turning, views, zoom, auto rotate
+  let rotY = 0, targetY = 0, vel = 0, dragging = false, lastX = 0, auto = true, idleT = 0;
+  const autoBtn = document.getElementById("autorot");
+  const viewBtns = document.querySelectorAll("[data-view]");
+  function setAuto(on) { auto = on; autoBtn.setAttribute("aria-pressed", String(on)); }
+  function markView() {
+    const n = ((Math.round(rotY / (Math.PI / 2)) % 4) + 4) % 4; // 0 front, 1 side, 2 back, 3 other side
+    viewBtns.forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.view) === (n === 3 ? 1 : n))));
+  }
+  viewBtns.forEach((b) => b.addEventListener("click", () => {
+    setAuto(false);
+    const want = Number(b.dataset.view) * (Math.PI / 2);
+    const turns = Math.round((rotY - want) / (Math.PI * 2));
+    targetY = want + turns * Math.PI * 2;
+  }));
+  autoBtn.addEventListener("click", () => setAuto(!auto));
+  document.getElementById("zoom-in").addEventListener("click", () => (zoom = Math.min(1.8, zoom + 0.2)));
+  document.getElementById("zoom-out").addEventListener("click", () => (zoom = Math.max(0.7, zoom - 0.2)));
+  document.getElementById("zoom-reset").addEventListener("click", () => { zoom = 1; targetY = Math.round(rotY / (Math.PI * 2)) * Math.PI * 2; setAuto(true); });
+
+  canvas.addEventListener("pointerdown", (e) => { dragging = true; lastX = e.clientX; canvas.setPointerCapture(e.pointerId); setAuto(false); });
+  canvas.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - lastX;
+    lastX = e.clientX;
+    targetY += dx * 0.012;
+    vel = dx * 0.012;
+  });
+  const endDrag = () => { dragging = false; };
+  canvas.addEventListener("pointerup", endDrag);
+  canvas.addEventListener("pointercancel", endDrag);
+  canvas.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      e.preventDefault();
+      setAuto(false);
+      targetY += (e.key === "ArrowRight" ? 1 : -1) * (Math.PI / 8);
+    }
+  });
+
+  function resize() {
+    const w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage);
+  resize();
+
+  let visible = true;
+  new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(stage);
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reducedMotion) setAuto(false);
+
+  let last = performance.now();
+  (function frame(now) {
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    if (visible) {
+      if (auto) targetY += dt * 0.6;
+      else if (!dragging && Math.abs(vel) > 0.0005) { targetY += vel; vel *= 0.92; }
+      rotY += (targetY - rotY) * Math.min(1, dt * 10);
+      figure.rotation.y = rotY;
+      const dist = 4.1 / zoom;
+      const camY = LOOK_Y + 0.15 + (zoom - 1) * 0.35;
+      camera.position.set(0, camY, dist);
+      camera.lookAt(0, LOOK_Y + (zoom - 1) * 0.45, 0);
+      markView();
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(frame);
+  })(last);
+
+  dress(currentFit);
+  window.dressFigure = dress;
+  document.getElementById("stage-loading").remove();
+}
+
+// only fetch three.js when the fitting room is about to scroll into view
+(function lazyFittingRoom() {
+  const stage = document.getElementById("stage");
+  let started = false;
+  const go = () => {
+    if (started) return;
+    started = true;
+    const sc = document.createElement("script");
+    sc.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js";
+    sc.onload = () => { try { startFittingRoom(); } catch (err) { document.getElementById("stage-loading").textContent = "3d view isn't supported in this browser"; console.error(err); } };
+    sc.onerror = () => (document.getElementById("stage-loading").textContent = "couldn't load the 3d view");
+    document.head.appendChild(sc);
+  };
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); go(); } }, { rootMargin: "600px 0px" });
+    io.observe(stage);
+  } else go();
+})();
+
+/* ---------- roles that flip, picked from the resume ---------- */
+const ROLES = ["Software Engineer", "AI Engineer", "Machine Learning Engineer", "Search & Retrieval Engineer", "Full-Stack Engineer"];
+(function flipRoles() {
+  const el = document.getElementById("role");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let i = 0;
+  setInterval(() => {
+    el.classList.add("out");
+    setTimeout(() => {
+      i = (i + 1) % ROLES.length;
+      el.textContent = ROLES[i];
+      el.classList.remove("out");
+      el.classList.add("pre");
+      void el.offsetWidth; // restart from the flipped-under position
+      el.classList.remove("pre");
+    }, 320);
+  }, 2600);
+})();
+
+</script>

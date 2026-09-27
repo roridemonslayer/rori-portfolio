@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" width="600" height="900">
+  <defs>
+    <!-- plaid for the newsboy cap -->
+    <pattern id="plaid" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(-6)">
+      <rect width="26" height="26" fill="#8c7f76"/>
+      <rect x="0" y="0" width="9" height="26" fill="#c8bdb1" opacity=".55"/>
+      <rect x="0" y="0" width="26" height="9" fill="#c8bdb1" opacity=".55"/>
+      <rect x="15" y="0" width="2.5" height="26" fill="#3b302b" opacity=".75"/>
+      <rect x="0" y="15" width="26" height="2.5" fill="#3b302b" opacity=".75"/>
+      <rect x="21" y="0" width="1.2" height="26" fill="#a86f5a" opacity=".6"/>
+    </pattern>
+    <!-- ribbed knit -->
+    <pattern id="rib" width="11" height="40" patternUnits="userSpaceOnUse">
+      <rect width="11" height="40" fill="#1c2436"/>
+      <rect x="0" width="4" height="40" fill="#28324a"/>
+    </pattern>
+    <!-- paisley-ish tie -->
+    <pattern id="tie" width="16" height="16" patternUnits="userSpaceOnUse">
+      <rect width="16" height="16" fill="#a39479"/>
+      <circle cx="5" cy="5" r="3" fill="#7d6f58"/>
+      <circle cx="12" cy="12" r="2.2" fill="#c7baa0"/>
+      <path d="M11 3 q3 1 2 4" stroke="#6b5e49" stroke-width="1.2" fill="none"/>
+    </pattern>
+    <linearGradient id="lens" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dfe9ff" stop-opacity=".35"/>
+      <stop offset=".5" stop-color="#b8c8e8" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#dfe9ff" stop-opacity=".3"/>
+    </linearGradient>
+  </defs>
+
+  <g stroke="#1a110c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+
+    <!-- locs behind the head and shoulders -->
+    <g stroke="#1c120d" stroke-width="15" fill="none" transform="translate(300 500) scale(1.2) translate(-300 -474)">
+      <path d="M232 270 C 212 360 206 450 196 560"/>
+      <path d="M250 268 C 236 380 232 470 226 590"/>
+      <path d="M368 270 C 388 360 394 450 404 560"/>
+      <path d="M350 268 C 364 380 368 470 374 590"/>
+      <path d="M300 250 C 300 380 296 470 300 560"/>
+    </g>
+
+    <!-- sweater body -->
+    <path d="M96 900 L 108 690 C 118 610 190 566 258 548 L 342 548 C 410 566 482 610 492 690 L 504 900 Z" fill="url(#rib)"/>
+    <!-- shadow side of the sweater -->
+    <path d="M342 548 C 410 566 482 610 492 690 L 504 900 L 420 900 C 430 780 420 660 350 600 Z" fill="#000" opacity=".22" stroke="none"/>
+
+    <!-- neck -->
+    <path d="M262 430 L 260 566 L 340 566 L 338 430 Z" fill="#6f4128"/>
+    <path d="M268 470 C 290 500 312 500 332 470 L 332 520 C 310 540 290 540 268 520 Z" fill="#4e2c1a" stroke="none"/>
+
+    <!-- shirt collar -->
+    <path d="M262 540 L 246 610 L 298 628 L 300 580 Z" fill="#f5f2ea"/>
+    <path d="M338 540 L 354 610 L 302 628 L 300 580 Z" fill="#e6e2d8"/>
+
+    <!-- tie -->
+    <path d="M289 606 L 311 606 L 307 632 L 293 632 Z" fill="url(#tie)"/>
+    <path d="M293 632 L 307 632 L 318 740 L 300 764 L 282 740 Z" fill="url(#tie)"/>
+
+    <!-- half-zip funnel collar, folded open -->
+    <path d="M254 536 C 232 560 222 600 236 632 L 300 770 L 300 700 L 262 612 C 256 590 258 560 262 540 Z" fill="#242e45"/>
+    <path d="M346 536 C 368 560 378 600 364 632 L 300 770 L 300 700 L 338 612 C 344 590 342 560 338 540 Z" fill="#1d263a"/>
+    <!-- zip -->
+    <path d="M300 770 L 300 900" stroke="#9ba3ad" stroke-width="3.5"/>
+    <rect x="293" y="772" width="14" height="30" rx="4" fill="#b9c0c8"/>
+    <!-- little chest logo -->
+    <path d="M388 760 q 14 -8 28 0 q -14 8 -28 0 Z" fill="#9aa3b8" stroke="none" opacity=".75"/>
+
+    <g transform="translate(300 500) scale(1.2) translate(-300 -474)">
+    <!-- ears -->
+    <ellipse cx="214" cy="335" rx="15" ry="26" fill="#6f4128"/>
+    <ellipse cx="386" cy="335" rx="15" ry="26" fill="#5c3520"/>
+    <circle cx="212" cy="362" r="4" fill="#e3c26a" stroke-width="1.5"/>
+
+    <!-- face -->
+    <path d="M220 240 C 216 340 228 418 266 456 Q 300 482 334 456 C 372 418 384 340 380 240 Z" fill="#7a4a2e"/>
+    <!-- cel shadow: right side of the face and under the cap -->
+    <path d="M338 246 C 372 300 374 390 346 440 C 334 456 318 468 300 474 C 338 446 356 388 352 320 C 350 290 346 266 338 246 Z" fill="#5a3320" stroke="none" opacity=".85"/>
+    <path d="M221 244 L 379 244 L 379 272 C 330 262 270 262 221 272 Z" fill="#4a2a19" stroke="none" opacity=".7"/>
+    <!-- cheeks -->
+    <ellipse cx="248" cy="392" rx="20" ry="10" fill="#b0503f" opacity=".28" stroke="none"/>
+    <ellipse cx="352" cy="392" rx="20" ry="10" fill="#b0503f" opacity=".22" stroke="none"/>
+
+    <!-- brows -->
+    <path d="M242 300 Q 264 286 290 296" stroke-width="8" fill="none"/>
+    <path d="M310 296 Q 336 286 358 300" stroke-width="8" fill="none"/>
+
+    <!-- eyes (a warm, smiling squint) -->
+    <g>
+      <path d="M246 338 Q 266 318 288 338 Q 266 350 246 338 Z" fill="#fbf7ef"/>
+      <circle cx="267" cy="336" r="10" fill="#2a1810"/>
+      <circle cx="267" cy="336" r="5" fill="#120a06" stroke="none"/>
+      <circle cx="271" cy="332" r="3" fill="#fff" stroke="none"/>
+      <path d="M244 338 Q 266 314 290 336" stroke-width="5" fill="none"/>
+
+      <path d="M312 338 Q 334 318 354 338 Q 334 350 312 338 Z" fill="#fbf7ef"/>
+      <circle cx="333" cy="336" r="10" fill="#2a1810"/>
+      <circle cx="333" cy="336" r="5" fill="#120a06" stroke="none"/>
+      <circle cx="337" cy="332" r="3" fill="#fff" stroke="none"/>
+      <path d="M310 336 Q 334 314 356 338" stroke-width="5" fill="none"/>
+    </g>
+
+    <!-- nose -->
+    <path d="M302 352 Q 310 378 300 390 Q 293 392 288 388" fill="none" stroke-width="2.5"/>
+
+    <!-- big smile -->
+    <path d="M258 410 Q 300 456 342 410 Q 300 422 258 410 Z" fill="#5b1d19"/>
+    <path d="M264 412 Q 300 422 336 412 Q 334 424 300 430 Q 268 424 264 412 Z" fill="#fbf7ef" stroke-width="2"/>
+    <path d="M280 440 Q 300 448 320 440" fill="#b5584a" stroke="none" opacity=".8"/>
+
+    <!-- glasses: thick black frames -->
+    <g>
+      <rect x="230" y="312" width="68" height="50" rx="13" fill="url(#lens)" stroke="#0d0d0d" stroke-width="10"/>
+      <rect x="302" y="312" width="68" height="50" rx="13" fill="url(#lens)" stroke="#0d0d0d" stroke-width="10"/>
+      <path d="M296 326 Q 300 320 304 326" stroke="#0d0d0d" stroke-width="7" fill="none"/>
+      <path d="M230 322 L 212 318" stroke="#0d0d0d" stroke-width="7"/>
+      <path d="M370 322 L 388 318" stroke="#0d0d0d" stroke-width="7"/>
+      <path d="M240 320 L 256 316" stroke="#fff" stroke-width="2.5" opacity=".7"/>
+      <path d="M312 320 L 328 316" stroke="#fff" stroke-width="2.5" opacity=".7"/>
+    </g>
+
+    <!-- locs in front, framing the face -->
+    <g fill="none">
+      <g stroke="#1c120d" stroke-width="14">
+        <path d="M222 262 C 204 320 198 390 194 470"/>
+        <path d="M236 268 C 224 330 220 400 218 488"/>
+        <path d="M378 262 C 396 320 402 390 406 470"/>
+        <path d="M364 268 C 376 330 380 400 382 488"/>
+      </g>
+      <g stroke="#4b3325" stroke-width="3" opacity=".9">
+        <path d="M218 280 C 204 330 200 390 197 440"/>
+        <path d="M232 290 C 224 340 221 400 220 450"/>
+        <path d="M382 280 C 396 330 400 390 403 440"/>
+        <path d="M368 290 C 376 340 379 400 380 450"/>
+      </g>
+    </g>
+
+    <!-- newsboy cap -->
+    <g>
+    <path d="M200 262 C 190 186 246 150 306 152 C 372 154 414 196 402 258 C 392 272 340 276 300 274 C 250 276 210 274 200 262 Z" fill="url(#plaid)"/>
+    <path d="M300 156 C 280 200 278 240 284 272" fill="none" stroke-width="2" opacity=".5"/>
+    <path d="M214 262 C 250 296 350 296 392 262 C 388 280 350 290 300 292 C 252 290 218 282 214 262 Z" fill="#5d514b"/>
+    <path d="M206 258 C 250 250 350 250 398 258" fill="none" stroke-width="2.5"/>
+    <circle cx="306" cy="156" r="8" fill="#6d615a"/>
+    </g>
+    </g>
+  </g>
+</svg>
