@@ -3,7 +3,7 @@ import { LINKS, PROJECTS, type Project } from "../data";
 import { prefersReducedMotion } from "../lib";
 
 /* projects: a slideshow, one project per slide (art lives in public/projects/<slug>.jpg).
-   Arrows, dots, ← → keys and swipe move between slides; it advances on its own until you interact.
+   Arrows, dots, ← → keys and swipe move between slides; it keeps advancing on its own, pausing while hovered.
    The last slide points to GitHub, and the show loops forward (last → first keeps sliding the same way). */
 function Art({ p }: { p: Project }) {
   const [missing, setMissing] = useState(false);
@@ -52,12 +52,14 @@ const TRACK = [SLIDES[N - 1], ...SLIDES, SLIDES[0]];
 export default function Projects() {
   const [pos, setPos] = useState(1); // index into TRACK; real slides are 1..N
   const [anim, setAnim] = useState(true);
-  const [auto, setAuto] = useState(() => !prefersReducedMotion());
+  const auto = !prefersReducedMotion();
+  const [paused, setPaused] = useState(false); // only while the mouse is over it
+  const [tick, setTick] = useState(0); // bumped on manual moves so the timer restarts
   const i = (((pos - 1) % N) + N) % N;
   const busy = pos < 1 || pos > N; // mid-way onto a copy; wait for it to settle
   const step = useCallback((d: number) => { setAnim(true); setPos((x) => (x < 1 || x > N ? x : x + d)); }, []);
   const jump = (k: number) => { setAnim(true); setPos(k + 1); };
-  const stop = () => setAuto(false);
+  const stop = () => setTick((t) => t + 1);
   const touchX = useRef<number | null>(null);
   const root = useRef<HTMLDivElement>(null);
 
@@ -73,15 +75,15 @@ export default function Projects() {
     return () => cancelAnimationFrame(id);
   }, [anim]);
 
-  // advance on its own while it's on screen, until the visitor takes over
+  // keeps advancing on its own while it's on screen; pauses only while hovered
   useEffect(() => {
-    if (!auto) return;
+    if (!auto || paused) return;
     let visible = false;
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting), { threshold: 0.4 });
     io.observe(root.current!);
     const id = setInterval(() => { if (visible && !document.hidden) step(1); }, AUTO_MS);
     return () => { clearInterval(id); io.disconnect(); };
-  }, [auto, step]);
+  }, [auto, paused, step, tick]);
 
   const onKey = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowRight") { stop(); step(1); }
@@ -100,7 +102,7 @@ export default function Projects() {
       </div>
 
       <div className="show" ref={root} data-reveal="1" role="region" aria-roledescription="carousel" aria-label="Projects" tabIndex={0} onKeyDown={onKey}
-        onMouseEnter={stop} onFocus={stop}
+        onMouseEnter={() => setPaused(true)} onMouseLeave={() => { setPaused(false); setTick((t) => t + 1); }}
         onTouchStart={(e) => { touchX.current = e.touches[0].clientX; stop(); }}
         onTouchEnd={(e) => {
           if (touchX.current === null) return;
@@ -120,7 +122,7 @@ export default function Projects() {
           </div>
           <button type="button" className="show-arrow prev" aria-label="Previous project" disabled={busy} onClick={() => { stop(); step(-1); }}>←</button>
           <button type="button" className="show-arrow next" aria-label="Next project" disabled={busy} onClick={() => { stop(); step(1); }}>→</button>
-          {auto && <div className="show-timer" key={pos} aria-hidden="true" style={{ animationDuration: `${AUTO_MS}ms` }} />}
+          {auto && <div className="show-timer" key={`${pos}-${tick}`} aria-hidden="true" style={{ animationDuration: `${AUTO_MS}ms`, animationPlayState: paused ? "paused" : "running" }} />}
         </div>
 
         <article className="work-label" aria-live="polite" key={sl.key}>
