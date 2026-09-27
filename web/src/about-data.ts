@@ -10,10 +10,10 @@ export const OVERVIEW = [
 
 export const FITS = ["fit1.jpg", "fit2.jpg", "fit3.jpg"]; // in web/public/assets/
 
-export type Interest = { key: string; title: string; caption: string; photo: string; link?: { href: string; text: string } };
+export type Interest = { key: string; title: string; caption: string; photo: string; photoNight?: string; focus?: string; link?: { href: string; text: string } };
 export const INTERESTS: Interest[] = [
   { key: "marvel", title: "Marvel", caption: "I'm really into Marvel. My favorite character is Wanda.", photo: "/about/marvel.jpg" },
-  { key: "ghibli", title: "Studio Ghibli", caption: "Ghibli movies are my comfort watch. They're the reason this site looks like this.", photo: "/assets/castle-night.gif" },
+  { key: "ghibli", title: "Studio Ghibli", caption: "Ghibli movies are my comfort watch. They're the reason this site looks like this.", photo: "/about/ghibli-day.gif", photoNight: "/about/ghibli-night.gif", focus: "50% 80%" },
   { key: "cards", title: "Card collecting", caption: "I collect cards in my free time.", photo: "/about/cards.jpg" },
   { key: "travel", title: "Travel", caption: "I really love to travel.", photo: "/about/travel.jpg" },
   { key: "music", title: "Music", caption: "I love music. My playlists are on Spotify.", photo: "/about/music.jpg", link: { href: "https://open.spotify.com", text: "my spotify →" } },

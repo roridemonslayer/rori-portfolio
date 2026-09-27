@@ -42,7 +42,7 @@ export default function LightStrip({ items, compact = false }: { items: Interest
                 <li key={it.key} className="hang" style={{ left: `${t * 100}%`, top: yAt(t), animationDelay: `${-(k + r) * 0.9}s` }}>
                   <span className="clip" aria-hidden="true" />
                   <figure className="polaroid-card">
-                    <PhotoCard src={it.photo} label={it.title} alt={it.title} />
+                    <PhotoCard src={it.photo} srcNight={it.photoNight} focus={it.focus} label={it.title} alt={it.title} />
                     <figcaption>
                       {it.caption}
                       {it.link && <> <a href={it.link.href} target="_blank" rel="noopener">{it.link.text}</a></>}

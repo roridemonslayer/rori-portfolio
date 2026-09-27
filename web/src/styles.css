@@ -575,6 +575,8 @@ body.loading { overflow: hidden; }
 .polaroid-card { margin: 0; padding: 10px 10px 14px; background: #f8f3e6; box-shadow: 0 10px 24px rgba(20, 16, 8, 0.28), 0 2px 4px rgba(20, 16, 8, 0.2); color: #2c261d; }
 .pc-photo { aspect-ratio: 1; overflow: hidden; background: #e9e1cd; }
 .pc-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pc-photo .night-only, body.night .pc-photo .day-only { display: none; }
+body.night .pc-photo .night-only { display: block; }
 .pc-empty { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; box-sizing: border-box; text-align: center;
   background: repeating-linear-gradient(135deg, transparent 0 12px, rgba(59, 50, 38, 0.06) 12px 13px), #ece4cf; color: #6b5f4a; }
 .pc-empty b { font: italic 500 22px/1.1 'EB Garamond', Georgia, serif; }
