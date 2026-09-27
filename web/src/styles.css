@@ -298,6 +298,16 @@ body.night .tl-soot img { filter: drop-shadow(0 0 8px rgba(255, 240, 190, 0.55))
 .show-arrow { position: absolute; top: 50%; translate: 0 -50%; width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid var(--line-strong); background: var(--paper-glass); color: var(--ink);
   font-size: 22px; box-shadow: 3px 3px 0 var(--line-strong); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: transform 0.2s; }
 .show-arrow:hover { transform: scale(1.08); }
+.show-arrow:disabled { opacity: 0.6; }
+/* closing slide: a dark card that opens GitHub */
+.more-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; height: 100%; color: #f0f6fc; text-decoration: none;
+  background: radial-gradient(circle at 50% 35%, #2d333b, #0d1117 70%); }
+.more-slide svg { width: 84px; height: 84px; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.more-slide b { font-size: clamp(24px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.01em; }
+.more-slide span { font-size: 15px; color: #f0a35e; }
+.more-slide:hover { color: #fff; }
+.more-slide:hover svg { transform: rotate(-8deg) scale(1.08); }
+.show-dots button.more { border-style: dashed; }
 .show-arrow.prev { left: 18px; } .show-arrow.next { right: 18px; }
 .show-timer { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; background: var(--ember); transform-origin: 0 50%; animation: showTimer linear forwards; }
 @keyframes showTimer { from { transform: scaleX(0); } to { transform: scaleX(1); } }
