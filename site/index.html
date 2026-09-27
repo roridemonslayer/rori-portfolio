@@ -317,7 +317,7 @@
   .room-panel { width: 100%; max-width: 560px; }
   .room-sheet { background: #f8f1de; color: #2c261d; border-radius: 6px; padding: 26px 30px 24px; box-shadow: 0 16px 40px rgba(20, 12, 4, 0.3); }
   .room-where { font-size: 11px; letter-spacing: 0.05em; color: #7a6a52; }
-  .room-art { display: block; width: 100%; height: auto; margin: 12px 0 14px; max-height: 190px; background: rgba(255,255,255,0.5); border-radius: 4px; }
+  .room-art { display: block; width: calc(100% + 60px); height: auto; aspect-ratio: 400 / 220; margin: 12px -30px 18px; border-top: 1px solid rgba(44,38,29,0.15); border-bottom: 1px solid rgba(44,38,29,0.15); } /* painted scene runs edge to edge across the sheet */
   .room-sheet h3 { margin: 0 0 10px; font-size: 30px; line-height: 1.1; }
   .room-sheet .paper-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
   .room-sheet .paper-tags li { padding: 4px 11px; border: 1px solid rgba(44, 38, 29, 0.35); border-radius: 999px; font-size: 12px; color: #5b4f3c; }
@@ -526,6 +526,7 @@
     .door { border-radius: 50% 50% 0 0 / 120px 120px 0 0; }
     .door-window { top: 36px; width: 46px; height: 46px; border-width: 5px; }
     .room-sheet { padding: 20px 18px; }
+    .room-art { width: calc(100% + 36px); margin: 10px -18px 16px; }
     .room-sheet h3 { font-size: 24px; }
     .door-soot { right: -6px; width: 44px; }
     .story { grid-template-columns: 1fr; }
@@ -795,10 +796,24 @@
           <div class="room-panel" role="tabpanel" id="door-panel-0" aria-labelledby="door-tab-0">
             <div class="room-sheet">
               <div class="room-where mono">P–01 · in progress · opens onto a sunny meadow</div>
-              <svg class="room-art" viewBox="0 0 200 120" aria-hidden="true"><path d="M18 104 C60 96 40 70 88 66 S120 38 150 34" fill="none" stroke="#3b3226" stroke-width="2.4" stroke-dasharray="7 6" stroke-linecap="round"/>
-<g fill="none" stroke="#3b3226" stroke-width="2"><path d="M150 34 V8"/><path d="M150 8 L176 15 L150 22" fill="#e0a13a"/></g>
-<g fill="#e0a13a" opacity=".9"><circle cx="40" cy="88" r="3"/><circle cx="72" cy="70" r="3"/><circle cx="104" cy="56" r="3"/><circle cx="130" cy="40" r="3"/></g>
-<g stroke="#3b3226" stroke-width="1.6" fill="none"><path d="M14 112 q6 -10 12 0"/><path d="M160 112 q6 -12 12 0"/><path d="M178 112 q5 -8 10 0"/></g></svg>
+              <svg class="room-art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>
+ <linearGradient id="pf-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fc6ef"/><stop offset=".7" stop-color="#e6f3f7"/><stop offset="1" stop-color="#fff4d6"/></linearGradient>
+ <radialGradient id="pf-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6c9"/><stop offset=".45" stop-color="#ffe08a" stop-opacity=".9"/><stop offset="1" stop-color="#ffe08a" stop-opacity="0"/></radialGradient>
+ <linearGradient id="pf-h1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9cc97a"/><stop offset="1" stop-color="#6fa556"/></linearGradient>
+ <linearGradient id="pf-h2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bddc8e"/><stop offset="1" stop-color="#8fbf63"/></linearGradient>
+</defs>
+<rect width="400" height="220" fill="url(#pf-sky)"/>
+<circle cx="320" cy="52" r="60" fill="url(#pf-sun)"/><circle cx="320" cy="52" r="16" fill="#fff3b8"/>
+<g fill="#fff" opacity=".9"><ellipse cx="90" cy="40" rx="34" ry="11"/><ellipse cx="112" cy="34" rx="22" ry="10"/><ellipse cx="220" cy="28" rx="26" ry="8"/></g>
+<path d="M0 118 Q70 84 150 104 T300 92 T400 100 V220 H0 Z" fill="#a9c7d9" opacity=".6"/>
+<path d="M0 132 Q90 102 190 124 T400 116 V220 H0 Z" fill="url(#pf-h1)"/>
+<path d="M0 160 Q120 130 240 150 T400 142 V220 H0 Z" fill="url(#pf-h2)"/>
+<path d="M36 220 C80 190 130 186 170 172 S240 140 280 128" fill="none" stroke="#e8cf98" stroke-width="16" stroke-linecap="round"/>
+<path d="M36 220 C80 190 130 186 170 172 S240 140 280 128" fill="none" stroke="#f4e2b5" stroke-width="8" stroke-linecap="round"/>
+<g transform="translate(280 98)"><rect x="-16" y="4" width="32" height="26" fill="#f3e7cf" stroke="#6b4a2b" stroke-width="1.5"/><path d="M-21 6 L0 -12 L21 6 Z" fill="#c9573a" stroke="#6b4a2b" stroke-width="1.5"/><rect x="-5" y="14" width="10" height="16" fill="#ffd36e" stroke="#6b4a2b" stroke-width="1.2"/></g>
+<g><path d="M300 104 V70" stroke="#6b4a2b" stroke-width="2"/><path d="M300 70 L322 77 L300 84 Z" fill="#e0a13a"><animateTransform attributeName="transform" type="skewY" values="0;-4;0" dur="2.4s" repeatCount="indefinite"/></path></g>
+<g fill="#ffd36e" stroke="#b27a26" stroke-width="1"><circle cx="100" cy="190" r="4.5"><animate attributeName="opacity" values="1;.55;1" dur="2s" repeatCount="indefinite"/></circle><circle cx="162" cy="170" r="4.5"><animate attributeName="opacity" values=".55;1;.55" dur="2s" repeatCount="indefinite"/></circle><circle cx="222" cy="146" r="4"><animate attributeName="opacity" values="1;.55;1" dur="2.3s" repeatCount="indefinite"/></circle><circle cx="258" cy="132" r="3.5"/></g>
+<g fill="#e46a8a"><circle cx="30" cy="176" r="2.5"/><circle cx="52" cy="186" r="2"/><circle cx="330" cy="170" r="2.5"/><circle cx="360" cy="182" r="2"/></g><g fill="#fff"><circle cx="70" cy="168" r="2"/><circle cx="350" cy="160" r="2"/><circle cx="378" cy="172" r="2.5"/></g></svg>
               <h3>Pathful</h3>
               <p>Surfaces 500+ internships usually locked inside insider networks. A scheduled Playwright pipeline crawls and dedupes dozens of sources, and Claude API enrichment makes every listing searchable. Manual search time down 70%.</p>
             <ul class="paper-tags mono"><li>python</li><li>playwright</li><li>claude api</li><li>react</li></ul>
@@ -808,9 +823,23 @@
           <div class="room-panel" role="tabpanel" id="door-panel-1" aria-labelledby="door-tab-1" hidden>
             <div class="room-sheet">
               <div class="room-where mono">P–02 · from scratch · opens onto a starry night</div>
-              <svg class="room-art" viewBox="0 0 200 120" aria-hidden="true"><g stroke="#3b3226" stroke-width="1.3" opacity=".55"><path d="M100 60 L62 36 M100 60 L140 30 M100 60 L150 82 M100 60 L70 92 M62 36 L30 50 M140 30 L176 44 M150 82 L182 98"/></g>
-<g fill="#3b3226"><circle cx="62" cy="36" r="4"/><circle cx="140" cy="30" r="4"/><circle cx="150" cy="82" r="4"/><circle cx="70" cy="92" r="4"/><circle cx="30" cy="50" r="3"/><circle cx="176" cy="44" r="3"/><circle cx="182" cy="98" r="3"/><circle cx="24" cy="96" r="2.5"/><circle cx="110" cy="104" r="2.5"/><circle cx="96" cy="16" r="2.5"/></g>
-<circle cx="100" cy="60" r="7" fill="#4a7ab8"/><circle cx="100" cy="60" r="22" fill="none" stroke="#4a7ab8" stroke-width="1.6" stroke-dasharray="4 4"/></svg>
+              <svg class="room-art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>
+ <linearGradient id="vs-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f1a3d"/><stop offset=".65" stop-color="#26407a"/><stop offset="1" stop-color="#5a6fa8"/></linearGradient>
+ <radialGradient id="vs-q" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe9a8"/><stop offset=".35" stop-color="#ffd36e" stop-opacity=".7"/><stop offset="1" stop-color="#ffd36e" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="400" height="220" fill="url(#vs-sky)"/>
+<g fill="#fff" opacity=".55"><circle cx="20" cy="20" r="1"/><circle cx="60" cy="70" r="1.2"/><circle cx="120" cy="16" r="1"/><circle cx="360" cy="30" r="1.2"/><circle cx="380" cy="90" r="1"/><circle cx="250" cy="14" r="1"/><circle cx="300" cy="110" r="1"/><circle cx="30" cy="120" r="1"/><circle cx="180" cy="120" r="1"/></g>
+<g stroke="#a9c1ff" stroke-width="1" opacity=".55"><path d="M200 78 L140 44 M200 78 L262 40 M200 78 L270 108 M200 78 L136 112 M140 44 L88 62 M262 40 L318 58 M270 108 L330 124 M136 112 L84 130"/></g>
+<g fill="#dfe8ff"><circle cx="140" cy="44" r="3.4"/><circle cx="262" cy="40" r="3.4"/><circle cx="270" cy="108" r="3.4"/><circle cx="136" cy="112" r="3.4"/><circle cx="88" cy="62" r="2.4"/><circle cx="318" cy="58" r="2.4"/><circle cx="330" cy="124" r="2.4"/><circle cx="84" cy="130" r="2.4"/></g>
+<g fill="#fff"><circle cx="140" cy="44" r="1.6"><animate attributeName="opacity" values="1;.3;1" dur="2.6s" repeatCount="indefinite"/></circle><circle cx="270" cy="108" r="1.6"><animate attributeName="opacity" values=".3;1;.3" dur="2.2s" repeatCount="indefinite"/></circle></g>
+<circle cx="200" cy="78" r="30" fill="url(#vs-q)"/>
+<circle cx="200" cy="78" r="36" fill="none" stroke="#ffd36e" stroke-width="1.2" stroke-dasharray="4 5" opacity=".8"><animateTransform attributeName="transform" type="rotate" from="0 200 78" to="360 200 78" dur="24s" repeatCount="indefinite"/></circle>
+<circle cx="200" cy="78" r="6" fill="#fff4cf"/>
+<path d="M0 176 Q80 150 160 168 T300 160 T400 170 V220 H0 Z" fill="#1b2748"/>
+<path d="M0 196 Q100 176 220 192 T400 188 V220 H0 Z" fill="#131c36"/>
+<g fill="#131c36"><path d="M296 164 l4 -10 l4 10 z"/><rect x="298" y="164" width="4" height="14"/></g>
+<g stroke="#0c1226" stroke-width="3" stroke-linecap="round" fill="none"><path d="M86 176 v-14"/><path d="M86 162 l14 -12"/><circle cx="86" cy="156" r="4" fill="#0c1226"/></g>
+<rect x="96" y="144" width="18" height="6" rx="2" transform="rotate(-40 100 150)" fill="#0c1226"/></svg>
               <h3>Vector Search Engine</h3>
               <p>Search that matches text by meaning, not keywords. HNSW written by hand (probabilistic layers, greedy layered traversal) with no FAISS or Chroma. Lookups 3–4× faster than brute force: 0.4ms → 0.1ms.</p>
             <ul class="paper-tags mono"><li>python</li><li>numpy</li><li>sentence-transformers</li></ul>
@@ -820,11 +849,32 @@
           <div class="room-panel" role="tabpanel" id="door-panel-2" aria-labelledby="door-tab-2" hidden>
             <div class="room-sheet">
               <div class="room-where mono">P–03 · open source · opens onto a green valley</div>
-              <svg class="room-art" viewBox="0 0 200 120" aria-hidden="true"><rect x="40" y="10" width="120" height="100" rx="6" fill="#fffdf6" stroke="#3b3226" stroke-width="2"/>
-<g stroke="#3b3226" stroke-width="1.6" fill="none"><rect x="54" y="26" width="92" height="12" rx="3"/><rect x="54" y="48" width="92" height="12" rx="3"/><rect x="54" y="70" width="92" height="12" rx="3"/></g>
-<g stroke="#6fa05e" stroke-width="3" stroke-linecap="round"><path d="M60 32 H112"/><path d="M60 54 H128"/><path d="M60 76 H96"/></g>
-<rect x="104" y="90" width="42" height="12" rx="6" fill="#6fa05e"/>
-<path d="M150 64 l14 30 l5 -12 l12 -4 z" fill="#fffdf6" stroke="#3b3226" stroke-width="2" stroke-linejoin="round"/></svg>
+              <svg class="room-art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>
+ <linearGradient id="af-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe3f0"/><stop offset="1" stop-color="#eef7df"/></linearGradient>
+ <linearGradient id="af-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8cc46e"/><stop offset="1" stop-color="#5f9a4a"/></linearGradient>
+</defs>
+<rect width="400" height="220" fill="url(#af-sky)"/>
+<g fill="#fff" opacity=".85"><ellipse cx="70" cy="36" rx="30" ry="9"/><ellipse cx="330" cy="30" rx="36" ry="10"/></g>
+<path d="M0 150 Q100 120 200 140 T400 128 V220 H0 Z" fill="#a4cf86"/>
+<path d="M0 174 Q120 150 250 168 T400 160 V220 H0 Z" fill="url(#af-h)"/>
+<g stroke="#4f8a3d" stroke-width="1.2" opacity=".45"><path d="M0 190 Q120 170 250 186 T400 180"/><path d="M0 204 Q120 186 250 200 T400 196"/></g>
+<g transform="translate(150 22) rotate(-4)">
+ <rect x="0" y="0" width="112" height="136" rx="6" fill="#fffdf6" stroke="#3b3226" stroke-width="1.8"/>
+ <rect x="12" y="12" width="48" height="6" rx="3" fill="#3b3226" opacity=".75"/>
+ <g fill="#fff" stroke="#3b3226" stroke-width="1.2"><rect x="12" y="28" width="88" height="14" rx="3"/><rect x="12" y="50" width="88" height="14" rx="3"/><rect x="12" y="72" width="88" height="14" rx="3"/><rect x="12" y="94" width="88" height="14" rx="3"/></g>
+ <g stroke="#6fa05e" stroke-width="4" stroke-linecap="round">
+  <path d="M18 35 H18"><animate attributeName="d" values="M18 35 H18;M18 35 H78;M18 35 H78" keyTimes="0;.3;1" dur="4s" repeatCount="indefinite"/></path>
+  <path d="M18 57 H18"><animate attributeName="d" values="M18 57 H18;M18 57 H18;M18 57 H90;M18 57 H90" keyTimes="0;.25;.5;1" dur="4s" repeatCount="indefinite"/></path>
+  <path d="M18 79 H18"><animate attributeName="d" values="M18 79 H18;M18 79 H18;M18 79 H60;M18 79 H60" keyTimes="0;.45;.7;1" dur="4s" repeatCount="indefinite"/></path>
+ </g>
+ <g fill="none" stroke="#3b3226" stroke-width="1.2"><circle cx="20" cy="101" r="3.5"/><circle cx="46" cy="101" r="3.5"/><circle cx="72" cy="101" r="3.5"/></g><circle cx="46" cy="101" r="2" fill="#6fa05e"/>
+ <rect x="58" y="116" width="42" height="12" rx="6" fill="#6fa05e"/>
+</g>
+<g transform="translate(284 44)"><circle r="17" fill="#c8f25a" stroke="#3b3226" stroke-width="1.6"/><path d="M-7 1 l5 5 l10 -11" fill="none" stroke="#3b3226" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g fill="#fffdf6" stroke="#3b3226" stroke-width="1.2" stroke-linejoin="round">
+ <path d="M300 96 l22 -8 l-8 14 z M314 102 l-2 8 l4 -6"><animateTransform attributeName="transform" type="translate" values="0 0;16 -10;0 0" dur="5s" repeatCount="indefinite"/></path>
+ <path d="M336 120 l18 -6 l-6 11 z"><animateTransform attributeName="transform" type="translate" values="0 0;12 -12;0 0" dur="4.2s" repeatCount="indefinite"/></path>
+</g></svg>
               <h3>Resume Auto-Filler</h3>
               <p>Free, open-source Chrome extension that fills job applications from your resume in one click, including the EEO self-identification questions most autofillers skip. Upload your resume once to the web app; the extension fills every field it recognizes, and you review and submit yourself. It also tracks the applications you send.</p>
             <ul class="paper-tags mono"><li>typescript</li><li>chrome extension</li><li>python</li></ul>
@@ -834,10 +884,30 @@
           <div class="room-panel" role="tabpanel" id="door-panel-3" aria-labelledby="door-tab-3" hidden>
             <div class="room-sheet">
               <div class="room-where mono">P–04 · systems · opens onto a late-night study</div>
-              <svg class="room-art" viewBox="0 0 200 120" aria-hidden="true"><rect x="24" y="14" width="152" height="92" rx="8" fill="#2a2620" stroke="#3b3226" stroke-width="2"/>
-<g fill="#e0a13a"><circle cx="38" cy="26" r="3.2"/><circle cx="48" cy="26" r="3.2" opacity=".7"/><circle cx="58" cy="26" r="3.2" opacity=".45"/></g>
-<g font-family="IBM Plex Mono, monospace" font-size="11" fill="#f3ead2"><text x="36" y="52"><tspan fill="#e0a13a">◆</tspan> ls -la | grep main</text><text x="36" y="70"><tspan fill="#e0a13a">◆</tspan> cd .. &amp;&amp; make</text><text x="36" y="88"><tspan fill="#e0a13a">◆</tspan> </text></g>
-<rect x="52" y="80" width="7" height="11" fill="#f3ead2"><animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/></rect></svg>
+              <svg class="room-art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>
+ <linearGradient id="sh-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2142"/><stop offset="1" stop-color="#3b2e57"/></linearGradient>
+ <linearGradient id="sh-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1838"/><stop offset="1" stop-color="#4b3b7a"/></linearGradient>
+ <radialGradient id="sh-lamp" cx=".5" cy=".3" r=".6"><stop offset="0" stop-color="#ffd58a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd58a" stop-opacity="0"/></radialGradient>
+ <radialGradient id="sh-crt" cx=".5" cy=".5" r=".7"><stop offset="0" stop-color="#2f3b2a"/><stop offset="1" stop-color="#141a12"/></radialGradient>
+</defs>
+<rect width="400" height="220" fill="url(#sh-wall)"/>
+<rect x="36" y="22" width="110" height="92" rx="4" fill="url(#sh-sky)" stroke="#1a1428" stroke-width="5"/>
+<path d="M91 22 V114 M36 68 H146" stroke="#1a1428" stroke-width="4"/>
+<circle cx="120" cy="44" r="10" fill="#f6ecc8"/><circle cx="125" cy="41" r="9" fill="#2a2350"/>
+<g fill="#fff" opacity=".8"><circle cx="54" cy="36" r="1"/><circle cx="70" cy="90" r="1"/><circle cx="108" cy="96" r="1.2"/></g>
+<circle cx="300" cy="60" r="120" fill="url(#sh-lamp)"/>
+<path d="M330 20 l-26 30 h52 z" fill="#e0a13a" stroke="#1a1428" stroke-width="2"/><path d="M330 20 V0" stroke="#1a1428" stroke-width="2"/>
+<rect x="0" y="160" width="400" height="60" fill="#5a3b24"/><rect x="0" y="160" width="400" height="6" fill="#6e4a2e"/>
+<g transform="translate(206 70)">
+ <rect x="0" y="0" width="140" height="96" rx="10" fill="#d9ccb0" stroke="#1a1428" stroke-width="2"/>
+ <rect x="10" y="9" width="120" height="74" rx="8" fill="url(#sh-crt)"/>
+ <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#b8f5a0"><text x="18" y="28"><tspan fill="#e0a13a">◆</tspan> ls | grep main</text><text x="18" y="44"><tspan fill="#e0a13a">◆</tspan> make &amp;&amp; ./main</text><text x="18" y="60"><tspan fill="#e0a13a">◆</tspan></text></g>
+ <rect x="30" y="52" width="6" height="10" fill="#b8f5a0"><animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/></rect>
+ <rect x="50" y="96" width="40" height="8" fill="#b9ab8e" stroke="#1a1428" stroke-width="1.5"/>
+</g>
+<rect x="190" y="170" width="170" height="16" rx="4" fill="#cfc2a5" stroke="#1a1428" stroke-width="1.5"/>
+<g transform="translate(96 140)"><rect x="0" y="0" width="28" height="26" rx="4" fill="#f1e8d4" stroke="#1a1428" stroke-width="1.6"/><path d="M28 6 q10 0 10 8 t-10 8" fill="none" stroke="#1a1428" stroke-width="1.6"/>
+ <g fill="none" stroke="#e9e2f7" stroke-width="1.5" stroke-linecap="round" opacity=".7"><path d="M8 -4 q-4 -6 0 -12 t0 -12"><animate attributeName="opacity" values=".1;.8;.1" dur="3s" repeatCount="indefinite"/></path><path d="M18 -4 q-4 -6 0 -12 t0 -12"><animate attributeName="opacity" values=".8;.1;.8" dur="3s" repeatCount="indefinite"/></path></g></g></svg>
               <h3>rori.sh</h3>
               <p>A Unix shell built from scratch in C with raw system calls: a REPL loop, fork/exec for any program, pipes, output redirection, built-in cd and exit, and Ctrl+C handling that kills the command, not the shell. Built to understand what a terminal is actually doing.</p>
             <ul class="paper-tags mono"><li>c</li><li>unix</li><li>fork / exec</li><li>pipes</li></ul>
@@ -847,11 +917,28 @@
           <div class="room-panel" role="tabpanel" id="door-panel-4" aria-labelledby="door-tab-4" hidden>
             <div class="room-sheet">
               <div class="room-where mono">P–05 · computer vision · opens onto a flower field</div>
-              <svg class="room-art" viewBox="0 0 200 120" aria-hidden="true"><ellipse cx="82" cy="60" rx="38" ry="50" fill="#fffdf6" stroke="#3b3226" stroke-width="2.4"/>
-<ellipse cx="82" cy="60" rx="31" ry="43" fill="none" stroke="#3b3226" stroke-width="1" opacity=".5"/>
-<g fill="none" stroke="#3b3226" stroke-width="2" stroke-linecap="round"><circle cx="82" cy="36" r="7"/><path d="M70 50 h24 l6 28 h-36 z"/><path d="M74 78 v18 M90 78 v18"/></g>
-<g stroke="#b85c9e" stroke-width="1.4" fill="none" stroke-dasharray="3 3"><rect x="60" y="46" width="44" height="54" rx="3"/></g>
-<g stroke="#3b3226" stroke-width="1.4"><rect x="140" y="26" width="18" height="18" fill="#d97e5f"/><rect x="140" y="50" width="18" height="18" fill="#e7c872"/><rect x="140" y="74" width="18" height="18" fill="#6f8fb8"/></g></svg>
+              <svg class="room-art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>
+ <linearGradient id="mi-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9e8"/><stop offset="1" stop-color="#fff1e6"/></linearGradient>
+ <linearGradient id="mi-glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9f4ff"/><stop offset=".6" stop-color="#cfe0f2"/><stop offset="1" stop-color="#b7cbe4"/></linearGradient>
+</defs>
+<rect width="400" height="220" fill="url(#mi-sky)"/>
+<path d="M0 150 Q100 130 200 146 T400 138 V220 H0 Z" fill="#c9dba6"/>
+<path d="M0 176 Q120 160 250 172 T400 168 V220 H0 Z" fill="#a8c982"/>
+<g>
+ <g fill="#e46a9a"><circle cx="40" cy="168" r="4"/><circle cx="70" cy="184" r="3.5"/><circle cx="110" cy="172" r="4"/><circle cx="300" cy="176" r="4"/><circle cx="340" cy="164" r="3.5"/><circle cx="372" cy="186" r="4"/><circle cx="24" cy="198" r="3.5"/><circle cx="130" cy="200" r="3"/></g>
+ <g fill="#fff"><circle cx="56" cy="160" r="3"/><circle cx="92" cy="196" r="3"/><circle cx="322" cy="192" r="3"/><circle cx="356" cy="152" r="3"/></g>
+ <g fill="#f3b8d2"><circle cx="150" cy="186" r="3.5"/><circle cx="270" cy="198" r="3.5"/><circle cx="386" cy="160" r="3"/></g>
+</g>
+<g transform="translate(200 108)">
+ <path d="M-8 64 L-24 100 M8 64 L24 100" stroke="#8a5a33" stroke-width="4" stroke-linecap="round"/>
+ <ellipse rx="52" ry="70" fill="#c89a4a" stroke="#6b4a2b" stroke-width="2"/>
+ <ellipse rx="44" ry="62" fill="url(#mi-glass)"/>
+ <path d="M-30 -40 q10 -14 22 -18" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+ <g fill="none" stroke="#3b3226" stroke-width="2" stroke-linecap="round"><circle cx="0" cy="-26" r="8" fill="#f3d9c4"/><path d="M-14 -12 h28 l6 34 h-40 z" fill="#d97ea8"/><path d="M-8 22 v22 M8 22 v22"/></g>
+ <rect x="-24" y="-18" width="48" height="66" rx="3" fill="none" stroke="#b85c9e" stroke-width="1.3" stroke-dasharray="3 3"><animate attributeName="stroke-dashoffset" from="0" to="12" dur="1.2s" repeatCount="indefinite"/></rect>
+</g>
+<g transform="translate(290 46)" stroke="#6b4a2b" stroke-width="1.3"><rect width="18" height="18" rx="3" fill="#d97ea8"/><rect y="24" width="18" height="18" rx="3" fill="#f0c872"/><rect y="48" width="18" height="18" rx="3" fill="#7fa6d6"/></g>
+<g fill="#fff"><path d="M112 60 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 z"><animate attributeName="opacity" values="1;.2;1" dur="2s" repeatCount="indefinite"/></path><path d="M270 118 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2 l5 -2 z"><animate attributeName="opacity" values=".2;1;.2" dur="2.4s" repeatCount="indefinite"/></path></g></svg>
               <h3>Outfit Mirror</h3>
               <p>A mirror, not a store: real-time computer vision that reads your outfit's aesthetic, color harmony and proportion, hands-free.</p>
             <ul class="paper-tags mono"><li>python</li><li>computer vision</li></ul>
@@ -861,12 +948,30 @@
           <div class="room-panel" role="tabpanel" id="door-panel-5" aria-labelledby="door-tab-5" hidden>
             <div class="room-sheet">
               <div class="room-where mono">P–06 · game · opens onto a sunset stage</div>
-              <svg class="room-art" viewBox="0 0 200 120" aria-hidden="true"><g transform="rotate(-28 100 60)"><path d="M40 60 c0 -22 26 -26 34 -12 c8 -10 30 -8 30 12 c0 20 -22 22 -30 12 c-8 14 -34 10 -34 -12 z" fill="#e0a13a" stroke="#3b3226" stroke-width="2"/>
-<circle cx="74" cy="60" r="7" fill="#2a2620"/><rect x="104" y="55" width="72" height="10" fill="#8a5a33" stroke="#3b3226" stroke-width="1.6"/>
-<g stroke="#3b3226" stroke-width="1"><path d="M118 55 v10 M132 55 v10 M146 55 v10 M160 55 v10"/></g></g>
-<g fill="#b85c9e"><circle cx="128" cy="30" r="3"/><circle cx="138" cy="24" r="3"/><circle cx="148" cy="22" r="3"/><circle cx="158" cy="26" r="3"/></g>
-<g stroke="#b85c9e" stroke-width="1.2"><path d="M128 30 L138 24 L148 22 L158 26"/></g>
-<g stroke="#3b3226" stroke-width="1.6" fill="none" stroke-linecap="round"><path d="M20 26 q6 -8 12 0 t12 0"/><path d="M16 40 q6 -8 12 0 t12 0"/></g></svg>
+              <svg class="room-art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>
+ <linearGradient id="gt-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a4a8c"/><stop offset=".45" stop-color="#e2735a"/><stop offset=".8" stop-color="#ffb870"/><stop offset="1" stop-color="#ffd9a0"/></linearGradient>
+ <radialGradient id="gt-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff0c0"/><stop offset=".5" stop-color="#ffc877" stop-opacity=".8"/><stop offset="1" stop-color="#ffc877" stop-opacity="0"/></radialGradient>
+ <linearGradient id="gt-body" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0b45a"/><stop offset="1" stop-color="#b8692a"/></linearGradient>
+</defs>
+<rect width="400" height="220" fill="url(#gt-sky)"/>
+<circle cx="110" cy="150" r="80" fill="url(#gt-sun)"/><circle cx="110" cy="150" r="30" fill="#ffe7a8"/>
+<path d="M0 168 Q90 150 190 164 T400 156 V220 H0 Z" fill="#6b3a4a"/>
+<path d="M0 190 Q120 176 260 188 T400 184 V220 H0 Z" fill="#3e2233"/>
+<g transform="translate(250 118) rotate(-32)">
+ <path d="M-66 0 c0 -26 30 -30 40 -14 c10 -12 36 -10 36 14 c0 24 -26 26 -36 14 c-10 16 -40 12 -40 -14 z" fill="url(#gt-body)" stroke="#3b2226" stroke-width="2"/>
+ <circle cx="-26" cy="0" r="8" fill="#3b2226"/>
+ <rect x="10" y="-6" width="96" height="12" fill="#7a4a2a" stroke="#3b2226" stroke-width="1.6"/>
+ <rect x="104" y="-9" width="22" height="18" rx="3" fill="#5a331c" stroke="#3b2226" stroke-width="1.6"/>
+ <g stroke="#f3e3c0" stroke-width=".8"><path d="M-40 -3 H110 M-40 0 H110 M-40 3 H110"/></g>
+ <g stroke="#3b2226" stroke-width="1"><path d="M28 -6 v12 M46 -6 v12 M64 -6 v12 M82 -6 v12"/></g>
+ <g fill="#8ff0ff" stroke="#1d6b7a" stroke-width=".8"><circle cx="37" cy="-12" r="3"/><circle cx="55" cy="-15" r="3"/><circle cx="73" cy="-14" r="3"/><circle cx="90" cy="-10" r="3"/></g>
+ <path d="M37 -12 L55 -15 L73 -14 L90 -10" fill="none" stroke="#8ff0ff" stroke-width="1.2"/>
+</g>
+<g fill="#fff4dc">
+ <g><path d="M60 60 v-22 l14 -4 v22" fill="none" stroke="#fff4dc" stroke-width="2.4"/><circle cx="56" cy="60" r="5"/><circle cx="70" cy="56" r="5"/><animateTransform attributeName="transform" type="translate" values="0 0;0 -8;0 0" dur="3s" repeatCount="indefinite"/></g>
+ <g><path d="M172 44 v-20" stroke="#fff4dc" stroke-width="2.4"/><circle cx="168" cy="44" r="5"/><animateTransform attributeName="transform" type="translate" values="0 -6;0 4;0 -6" dur="2.6s" repeatCount="indefinite"/></g>
+</g>
+<path d="M260 40 q10 -14 20 0 t20 0 t20 0 t20 0" fill="none" stroke="#fff4dc" stroke-width="2" stroke-linecap="round" opacity=".85"><animate attributeName="d" values="M260 40 q10 -14 20 0 t20 0 t20 0 t20 0;M260 40 q10 14 20 0 t20 0 t20 0 t20 0;M260 40 q10 -14 20 0 t20 0 t20 0 t20 0" dur="1.6s" repeatCount="indefinite"/></path></svg>
               <h3>Guitar CV</h3>
               <p>A real-time guitar learning game that scores your playing with computer vision (MediaPipe hand tracking) plus audio pitch detection.</p>
             <ul class="paper-tags mono"><li>python</li><li>mediapipe</li><li>pitch detection</li></ul>
@@ -876,12 +981,21 @@
           <div class="room-panel" role="tabpanel" id="door-panel-6" aria-labelledby="door-tab-6" hidden>
             <div class="room-sheet">
               <div class="room-where mono">P–07 · machine learning · opens onto a quiet forest</div>
-              <svg class="room-art" viewBox="0 0 200 120" aria-hidden="true"><g stroke="#3b3226" stroke-width="1.6"><path d="M24 104 H184 M24 104 V12"/></g>
-<g fill="#6fa05e"><circle cx="52" cy="80" r="4"/><circle cx="62" cy="88" r="4"/><circle cx="46" cy="92" r="4"/><circle cx="58" cy="74" r="4"/></g>
-<g fill="#4a7ab8"><circle cx="108" cy="56" r="4"/><circle cx="120" cy="50" r="4"/><circle cx="114" cy="64" r="4"/><circle cx="100" cy="48" r="4"/></g>
-<g fill="#b85c9e"><circle cx="160" cy="30" r="4"/><circle cx="170" cy="38" r="4"/><circle cx="156" cy="42" r="4"/></g>
-<g fill="none" stroke="#3b3226" stroke-width="1.2" stroke-dasharray="3 3"><circle cx="54" cy="84" r="17"/><circle cx="110" cy="56" r="17"/><circle cx="162" cy="36" r="15"/></g>
-<path d="M150 90 c10 -18 30 -14 34 -10 c-4 12 -18 20 -34 10 z" fill="#6fa05e" stroke="#3b3226" stroke-width="1.6"/></svg>
+              <svg class="room-art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>
+ <linearGradient id="eg-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cdeee3"/><stop offset="1" stop-color="#f3faf0"/></linearGradient>
+ <linearGradient id="eg-beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c9" stop-opacity=".7"/><stop offset="1" stop-color="#fff6c9" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="400" height="220" fill="url(#eg-sky)"/>
+<g fill="url(#eg-beam)"><path d="M250 0 L290 0 L220 220 L170 220 Z"/><path d="M310 0 L330 0 L290 220 L260 220 Z" opacity=".7"/></g>
+<path d="M0 170 Q100 150 200 164 T400 158 V220 H0 Z" fill="#8cc6a4"/>
+<path d="M0 192 Q120 178 250 190 T400 186 V220 H0 Z" fill="#5fa383"/>
+<g><g fill="#3f9a82"><circle cx="46" cy="120" r="20"/><circle cx="66" cy="110" r="22"/><circle cx="84" cy="124" r="18"/></g><g fill="#6b4a2b"><rect x="62" y="130" width="6" height="40"/></g></g>
+<g><g fill="#4a7ab8"><circle cx="170" cy="112" r="18"/><circle cx="188" cy="100" r="22"/><circle cx="206" cy="116" r="18"/></g><rect x="185" y="122" width="6" height="46" fill="#6b4a2b"/></g>
+<g><g fill="#b85c9e"><circle cx="318" cy="118" r="16"/><circle cx="334" cy="106" r="19"/><circle cx="350" cy="120" r="16"/></g><rect x="331" y="126" width="6" height="40" fill="#6b4a2b"/></g>
+<g fill="none" stroke="#2f5a4a" stroke-width="1.2" stroke-dasharray="4 4" opacity=".6"><ellipse cx="65" cy="116" rx="40" ry="32"/><ellipse cx="188" cy="108" rx="40" ry="34"/><ellipse cx="334" cy="112" rx="36" ry="30"/></g>
+<g transform="translate(262 150)"><g fill="#f0c04a" stroke="#8a6414" stroke-width="1.2"><ellipse cy="26" rx="18" ry="5"/><ellipse cy="20" rx="18" ry="5"/><ellipse cy="14" rx="18" ry="5"/><ellipse cy="8" rx="18" ry="5"/></g>
+ <path d="M0 4 V-18" stroke="#3f7a3a" stroke-width="2.4"/><path d="M0 -12 c-12 -4 -16 -14 -14 -18 c8 0 14 6 14 18 z M0 -16 c10 -6 16 -4 18 0 c-6 6 -14 6 -18 0 z" fill="#6fb05e" stroke="#3f7a3a" stroke-width="1.2"><animateTransform attributeName="transform" type="rotate" values="-4 0 0;4 0 0;-4 0 0" dur="3.4s" repeatCount="indefinite"/></path></g>
+<g fill="#fff6c9"><circle cx="230" cy="60" r="2"><animate attributeName="cy" values="60;50;60" dur="4s" repeatCount="indefinite"/></circle><circle cx="260" cy="90" r="1.6"><animate attributeName="cy" values="90;80;90" dur="3.2s" repeatCount="indefinite"/></circle></g></svg>
               <h3>ESG Investment Recommender</h3>
               <p>Helps student investors match portfolios to their values. Clusters 722 public companies on ESG ratings and returns with K-Means + PCA, built on 8 merged datasets (27K+ rows).</p>
             <ul class="paper-tags mono"><li>python</li><li>scikit-learn</li><li>pandas</li></ul>
