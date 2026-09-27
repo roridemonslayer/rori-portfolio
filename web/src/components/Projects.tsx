@@ -63,6 +63,7 @@ export default function Projects() {
           if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1));
           touchX.current = null;
         }}>
+        <div className="show-main">
         <div className="show-stage">
           <div className="show-track" style={{ transform: `translateX(-${i * 100}%)` }}>
             {PROJECTS.map((proj, k) => (
@@ -86,6 +87,7 @@ export default function Projects() {
             <a href={p.link} target="_blank" rel="noopener">github →</a>
           </div>
         </article>
+        </div>
 
         <div className="show-dots" role="tablist" aria-label="Choose a project">
           {PROJECTS.map((proj, k) => (
