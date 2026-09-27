@@ -648,3 +648,30 @@ body.night .bulb:nth-of-type(3n) { box-shadow: 0 0 14px 5px rgba(150, 220, 170, 
   .collage li { width: 150px; }
 }
 @media (prefers-reduced-motion: reduce) { .hang, .bulb { animation: none; } }
+
+/* about page: experience, projects, community */
+.done { list-style: none; margin: 0; padding: 12px 32px; }
+.done li { display: grid; grid-template-columns: 130px 40px 1fr; gap: 18px; align-items: start; padding: 20px 0; border-top: 1px solid var(--line-mid); }
+.done li:first-child { border-top: 0; }
+.done-when { padding-top: 10px; font-size: 12px; color: var(--muted); }
+.done-logo { width: 40px; height: 40px; box-sizing: border-box; padding: 5px; border-radius: 10px; background: #fff; border: 1.5px solid var(--line-strong); object-fit: contain; }
+.done b { font-size: 18px; }
+.done-co { color: var(--muted); }
+.done p { margin: 4px 0 0; font: 18px/1.55 'EB Garamond', Georgia, serif; }
+.built { list-style: none; margin: 0 0 18px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+.built a { display: flex; flex-direction: column; gap: 6px; height: 100%; box-sizing: border-box; padding: 22px 24px; color: var(--ink); transition: transform 0.25s, box-shadow 0.25s; }
+.built a:hover { transform: translateY(-4px); box-shadow: 4px 4px 0 var(--ember); color: var(--ink); }
+.built-kind { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ember); }
+.built b { font-size: 20px; }
+.built-line { font: italic 17px/1.4 'EB Garamond', Georgia, serif; color: var(--muted); }
+.about-link { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper-glass); font-size: 13px; }
+.beyond { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.beyond .sheet-lite { padding: 24px 28px; }
+.beyond b { font-size: 19px; }
+.beyond p { margin: 6px 0 0; font: 18px/1.55 'EB Garamond', Georgia, serif; }
+@media (max-width: 820px) {
+  .done { padding: 6px 18px; }
+  .done li { grid-template-columns: 40px 1fr; gap: 6px 14px; }
+  .done-when { grid-column: 1 / -1; padding: 0; }
+  .beyond { grid-template-columns: 1fr; }
+}
