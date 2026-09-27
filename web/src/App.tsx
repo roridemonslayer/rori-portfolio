@@ -2,7 +2,7 @@ import { useCallback, useRef } from "react";
 import AboutTeaser from "./components/AboutTeaser";
 import Contact from "./components/Contact";
 import Experience from "./components/Experience";
-import FittingRoom from "./components/FittingRoom";
+import Fits from "./components/Fits";
 import Hero from "./components/Hero";
 import Projects from "./components/Projects";
 import Shell from "./components/Shell";
@@ -21,7 +21,7 @@ export default function App() {
       {/* about → writing share one frosted sheet, so text stays readable over the painting */}
       <div className="sheet">
         <AboutTeaser />
-        <FittingRoom />
+        <Fits />
         <Writing />
       </div>
       <Contact onChat={() => chat.current()} />
