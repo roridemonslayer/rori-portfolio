@@ -237,13 +237,13 @@
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent), linear-gradient(180deg, transparent, #000 6%, #000 94%, transparent);
     -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent), linear-gradient(180deg, transparent, #000 6%, #000 94%, transparent); mask-composite: intersect;
   }
-  .xp-head { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-bottom: 80px; }
-  .xp-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; font: 500 13px 'IBM Plex Mono', monospace; letter-spacing: 0.16em; color: var(--ink); }
-  .xp-eyebrow::before { content: ""; width: 54px; height: 1.5px; background: var(--ink); }
+  .xp-head { display: flex; flex-direction: column; align-items: center; gap: 22px; margin-bottom: 80px; text-align: center; }
+  .xp-eyebrow { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 14px; font: 500 13px 'IBM Plex Mono', monospace; letter-spacing: 0.16em; color: var(--ink); }
+  .xp-eyebrow::before, .xp-eyebrow::after { content: ""; width: 54px; height: 1.5px; background: var(--ink); }
   .xp-eyebrow .mark { color: var(--ember); }
   .xp-head h2 { margin: 0; font-size: clamp(48px, 6vw, 76px); font-weight: 700; line-height: 0.95; letter-spacing: -0.01em; }
   .xp-head h2, .xp-eyebrow, .xp-intro, .tl-when .date { text-shadow: 0 0 2px var(--paper), 0 0 12px var(--paper), 0 0 24px color-mix(in srgb, var(--paper) 70%, transparent); }
-  .xp-intro { margin: 0; font: italic 21px/1.55 'EB Garamond', Georgia, serif; color: var(--muted); max-width: 520px; }
+  .xp-intro { margin: 0 auto; font: italic 21px/1.55 'EB Garamond', Georgia, serif; color: var(--muted); max-width: 520px; }
 
   .tl { --rail: 18px; --p: 0; position: relative; }
   .tl-list { list-style: none; margin: 0; padding: 0; }
@@ -461,7 +461,7 @@
     .section { padding: 10px 16px 70px; }
     .sheet { margin: 0 16px 60px; padding-top: 32px; }
     .sheet .section { padding: 0 20px 60px; }
-    .xp-head { grid-template-columns: 1fr; gap: 20px; margin-bottom: 50px; }
+    .xp-head { gap: 16px; margin-bottom: 50px; }
     .xp-intro { font-size: 18px; }
     .tl { --rail: 12px; }
     .tl-item { grid-template-columns: 1fr; gap: 14px; padding: 0 0 50px 40px; }
