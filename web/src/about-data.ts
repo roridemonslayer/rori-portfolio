@@ -7,7 +7,7 @@ import { LINKS } from "./data";
 export const OVERVIEW = [
   "I'm a full-time student at NYIT, majoring in computer science with a minor in AI.",
   "The work I love most is backend and full-stack: APIs, databases, search, the parts that make an app actually work.",
-  "Outside of tech, I'm really into fashion. Some of my fits are right below.",
+  "Outside of tech, I'm really into fashion.",
 ];
 
 export const FITS = ["fit1.jpg", "fit2.jpg", "fit3.jpg"]; // in web/public/assets/
