@@ -2,7 +2,7 @@
 
 export const LINKS = {
   github: "https://github.com/roridemonslayer",
-  linkedin: "https://linkedin.com/in/deborah-olaniyi",
+  linkedin: "https://www.linkedin.com/in/deborah-olaniyi-707015293/",
   spotify: "https://open.spotify.com/user/31j6fiekffwrtm3d4ijmiff4546u",
   email: "olaniyideborah63@gmail.com",
 };

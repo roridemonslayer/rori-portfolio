@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { prefersReducedMotion, store } from "../lib";
+import { prefersReducedMotion } from "../lib";
 import Backdrop from "./Backdrop";
 import Chat from "./Chat";
 import Controls from "./Controls";
@@ -7,8 +7,8 @@ import Loader from "./Loader";
 import Music from "./Music";
 import SootGame from "./SootGame";
 
-/* sections slide up and settle in, staggered by their data-reveal index */
-function useReveals() {
+/* sections slide up and settle in, staggered by their data-reveal index; re-run when the page swaps */
+function useReveals(page?: string) {
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>("[data-reveal]");
     if (!("IntersectionObserver" in window) || prefersReducedMotion()) {
@@ -27,18 +27,18 @@ function useReveals() {
     }, { threshold: 0, rootMargin: "0px 0px -12% 0px" });
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, []);
+  }, [page]);
 }
 
 /* everything both pages share: painted backdrop, day/night, music, chat and the soot climb game */
-export default function Shell({ children, loader = false, onChatReady }: { children: ReactNode; loader?: boolean; onChatReady?: (open: () => void) => void }) {
-  const [night, setNight] = useState(() => store.get("rori-mode") === "night");
+export default function Shell({ children, page, loader = false, onChatReady }: { children: ReactNode; page?: string; loader?: boolean; onChatReady?: (open: () => void) => void }) {
+  const [night, setNight] = useState(true); // every visit opens on Howl's castle at night; the toggle lasts for the visit
   const [chatOpen, setChatOpen] = useState(false);
   const [gameOpen, setGameOpen] = useState(false);
-  useReveals();
+  useReveals(page);
 
   useEffect(() => { document.body.classList.toggle("night", night); }, [night]);
-  const toggleNight = () => setNight((n) => { store.set("rori-mode", n ? "day" : "night"); return !n; });
+  const toggleNight = () => setNight((n) => !n);
   const openChat = useCallback(() => setChatOpen(true), []);
   const closeChat = useCallback(() => setChatOpen(false), []);
   const openGame = useCallback(() => { setChatOpen(false); setGameOpen(true); }, []);
