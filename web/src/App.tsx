@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import AboutTeaser from "./components/AboutTeaser";
 import Contact from "./components/Contact";
 import Experience from "./components/Experience";
@@ -15,6 +16,7 @@ import About from "./pages/About";
 type Page = "home" | "about";
 const pageOf = (path: string): Page => (path.replace(/\/+$/, "") === "/about" ? "about" : "home");
 const TITLES: Record<Page, string> = { home: "Rori Olaniyi", about: "About · Rori Olaniyi" };
+const PATHS: Record<Page, string> = { home: "/", about: "/about" };
 
 function Home({ onChat }: { onChat: () => void }) {
   return (
@@ -72,6 +74,8 @@ export default function App() {
   return (
     <Shell page={page} loader={firstPage.current === "home"} onChatReady={onChatReady}>
       {page === "about" ? <About /> : <Home onChat={() => chat.current()} />}
+      {/* visitor counts in Vercel's dashboard; told the page directly, so switching pages counts as a view */}
+      <Analytics route={PATHS[page]} path={PATHS[page]} />
     </Shell>
   );
 }
