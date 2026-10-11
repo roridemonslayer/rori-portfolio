@@ -1,10 +1,7 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { LINKS } from "../data";
-import EmailMe from "./EmailMe";
 
 export default function Contact({ onChat }: { onChat: () => void }) {
-  const [mailOpen, setMailOpen] = useState(false);
-  const closeMail = useCallback(() => setMailOpen(false), []);
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try { await navigator.clipboard.writeText(LINKS.email); } catch {
@@ -23,7 +20,6 @@ export default function Contact({ onChat }: { onChat: () => void }) {
           <h2 id="contact-t">The door opens to a different place every time<span style={{ color: "var(--ember)" }}>.</span> Knock anyway.</h2>
           <div className="contact-links">
             <button type="button" className="text-me" onClick={onChat}>💬 text_me</button>
-            <button type="button" className="email-me" onClick={() => setMailOpen(true)}>✉ email_me</button>
             <a href={LINKS.book} className="book-me" target="_blank" rel="noopener">📅 book_a_chat</a>
             <a href={LINKS.github} target="_blank" rel="noopener">github</a>
             <a href={LINKS.linkedin} target="_blank" rel="noopener">linkedin</a>
@@ -37,7 +33,6 @@ export default function Contact({ onChat }: { onChat: () => void }) {
             </button>
           </div>
         </div>
-        <EmailMe open={mailOpen} onClose={closeMail} />
       </section>
       <footer className="foot mono">
         <span>© {new Date().getFullYear()} rori olaniyi — made with a little magic</span>
