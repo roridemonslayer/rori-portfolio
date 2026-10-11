@@ -24,6 +24,7 @@ export default function Contact({ onChat }: { onChat: () => void }) {
           <div className="contact-links">
             <button type="button" className="text-me" onClick={onChat}>💬 text_me</button>
             <button type="button" className="email-me" onClick={() => setMailOpen(true)}>✉ email_me</button>
+            <a href={LINKS.book} className="book-me" target="_blank" rel="noopener">📅 book_a_chat</a>
             <a href={LINKS.github} target="_blank" rel="noopener">github</a>
             <a href={LINKS.linkedin} target="_blank" rel="noopener">linkedin</a>
             <a href={LINKS.spotify} target="_blank" rel="noopener"><span className="green-dot" />what i'm listening to</a>
