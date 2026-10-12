@@ -14,6 +14,7 @@ export type Article = {
   title: string;
   date: string;
   minutes: number;
+  status?: string; // e.g. "work in progress", shown next to the date
   summary: string;
   links: { label: string; href: string }[];
   blocks: Block[];
@@ -25,8 +26,9 @@ export const ARTICLES: Article[] = [
     title: "what 'admpchordin' taught me about search",
     date: "october 12, 2026",
     minutes: 6,
+    status: "work in progress",
     summary:
-      "my first article! i built a test bench that grades search engines on real research papers, learned what recall, mrr and ndcg actually measure, and watched my own from-scratch hnsw engine hold up at 98% of exact search.",
+      "my first article, and a work in progress! i'm building a test bench that grades search engines on real research papers, learning what recall, mrr and ndcg actually measure, and watching my own from-scratch hnsw engine hold up at 98% of exact search so far.",
     links: [
       { label: "kestrel on github", href: "https://github.com/roridemonslayer/kestrel" },
       { label: "my vector search engine", href: "https://github.com/roridemonslayer/vector-search-engine" },
@@ -40,7 +42,7 @@ export const ARTICLES: Article[] = [
       },
       {
         kind: "p",
-        text: "so i built kestrel. it's a test bench for search. you pick a dataset, run every query through a few different retrievers, and see which one puts the right answers at the top, measured with the same metrics researchers use.",
+        text: "so i started building kestrel. it's a test bench for search: you pick a dataset, run every query through a few different retrievers, and see which one puts the right answers at the top, measured with the same metrics researchers use. it's very much a work in progress, and this is me writing down where i'm at so far.",
       },
       { kind: "img", src: "/writing/kestrel/leaderboard.jpg", alt: "kestrel leaderboard comparing retrievers", caption: "the leaderboard: every retriever, scored on the same 300 queries." },
 
@@ -75,7 +77,7 @@ export const ARTICLES: Article[] = [
       },
       { kind: "code", text: "dcg  = 0 + 1/log2(3) + 1/log2(4) = 1.131   # relevant docs at ranks 2 and 3\nidcg = 1/log2(2) + 1/log2(3)     = 1.631   # same docs at ranks 1 and 2\nndcg = 1.131 / 1.631             = 0.693" },
 
-      { kind: "h", text: "results" },
+      { kind: "h", text: "results so far" },
       {
         kind: "table",
         head: ["retriever", "recall@10", "mrr@10", "ndcg@10"],
@@ -91,7 +93,7 @@ export const ARTICLES: Article[] = [
       },
       {
         kind: "p",
-        text: "hybrid wins on every quality metric, and the reason is the most interesting thing i learned. keyword search and embeddings fail on different queries, so combining them covers each other's blind spots.",
+        text: "hybrid wins on every quality metric so far, and the reason is the most interesting thing i've learned. keyword search and embeddings fail on different queries, so combining them covers each other's blind spots.",
       },
 
       { kind: "h", text: "where keyword search breaks" },
@@ -113,7 +115,7 @@ export const ARTICLES: Article[] = [
       },
       {
         kind: "p",
-        text: "here it barely helped (0.689 → 0.691) and made every search about 45 times slower. the model was trained on web search questions, not scientific claims, so it mostly agreed with what hybrid already had. i'm keeping that result in, because \"the popular technique didn't help on my data\" is a real finding too.",
+        text: "here it barely helped (0.689 → 0.691) and made every search about 45 times slower. the model was trained on web search questions, not scientific claims, so it mostly agreed with what hybrid already had. i'm keeping that result in, because \"the popular technique didn't help on my data\" is a real finding too. i still want to figure out why, and whether a reranker trained on science would change it.",
       },
 
       { kind: "h", text: "plugging in my own engine" },
@@ -127,10 +129,10 @@ export const ARTICLES: Article[] = [
       },
       {
         kind: "p",
-        text: "then i plugged it into kestrel as a retriever, on real research papers. it scored 0.637 ndcg@10 against 0.648 for exact search on the same embeddings. that's 98% of exact quality from an index i wrote line by line. it's slower than numpy here because it's pure python, but seeing my own graph hold up on real data was the best part of this whole project.",
+        text: "then i plugged it into kestrel as a retriever, on real research papers. it scored 0.637 ndcg@10 against 0.648 for exact search on the same embeddings. that's 98% of exact quality from an index i wrote line by line. it's slower than numpy here because it's pure python, and making it faster is next on my list, but seeing my own graph hold up on real data has been the best part so far.",
       },
 
-      { kind: "h", text: "what i took away" },
+      { kind: "h", text: "what i've learned so far" },
       {
         kind: "list",
         items: [
@@ -142,7 +144,20 @@ export const ARTICLES: Article[] = [
       },
       {
         kind: "p",
-        text: "kestrel is also the start of a bigger shared retrieval layer. next i want to build an image search demo and a voice agent on top of the same code. if you're into search and retrieval too, i'd love to talk about it.",
+        text: "honestly i'm still figuring a lot of this out. here's what i'm working on next:",
+      },
+      {
+        kind: "list",
+        items: [
+          "figuring out why reranking didn't help, and trying a reranker trained on scientific text instead of web search.",
+          "making my hnsw engine faster without giving up the from-scratch part (and giving each layer its own neighbor list, like the paper does).",
+          "testing on more datasets. on nfcorpus, where each question has dozens of relevant papers, every method scores much lower, and i want to understand why.",
+          "using kestrel as the shared search layer for an image search demo and a voice agent.",
+        ],
+      },
+      {
+        kind: "p",
+        text: "if you're into search and retrieval too, or you see something i got wrong, i'd genuinely love to hear from you. i'll keep writing as i go.",
       },
     ],
   },

@@ -361,6 +361,7 @@ body.night .tl-soot img { filter: drop-shadow(0 0 8px rgba(255, 240, 190, 0.55))
 .writing-card h3 { margin: 10px 0 12px; font-size: 30px; line-height: 1.1; letter-spacing: -0.01em; }
 .writing-card p { margin: 0 0 18px; font: 18px/1.5 'EB Garamond', Georgia, serif; }
 .writing-card-cta { font-size: 13px; color: var(--ember); }
+.wip { color: var(--ember); }
 @media (max-width: 760px) {
   .writing-card.sheet-lite { grid-template-columns: 1fr; }
   .writing-card img { min-height: 0; aspect-ratio: 1200 / 628; border-right: none; border-bottom: 1.5px solid var(--line-strong); }

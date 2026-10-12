@@ -13,7 +13,7 @@ export default function Writing() {
         {ARTICLES.map((a) => (
           <a className="post post-live" key={a.slug} href={`/writing/${a.slug}`}>
             <span className="title">{a.title}</span>
-            <span className="status mono">{a.date} · {a.minutes} min read →</span>
+            <span className="status mono">{a.status ? `${a.status} · ` : ""}{a.date} →</span>
           </a>
         ))}
         {POSTS.map((t) => <div className="post" key={t}><span className="title">{t}</span><span className="status mono">draft — coming soon</span></div>)}

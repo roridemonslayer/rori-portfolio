@@ -47,7 +47,7 @@ export default function Article({ slug }: { slug: string }) {
       <article className="sheet-lite article">
         <div className="xp-eyebrow"><span className="mark" aria-hidden="true">✦</span>WRITING</div>
         <h1>{article.title}</h1>
-        <div className="article-meta mono">{article.date} · {article.minutes} min read</div>
+        <div className="article-meta mono">{article.date} · {article.minutes} min read{article.status && <span className="wip"> · {article.status}</span>}</div>
         {article.blocks.map((block, i) => <Piece key={i} block={block} />)}
         <div className="article-links">
           {article.links.map((l) => <a key={l.href} href={l.href} target="_blank" rel="noopener">{l.label} ↗</a>)}

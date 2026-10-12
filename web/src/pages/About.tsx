@@ -32,7 +32,7 @@ export default function About() {
             <a className="writing-card sheet-lite" key={a.slug} href={`/writing/${a.slug}`}>
               <img src={`/writing/${a.slug}/og.jpg`} alt="" loading="lazy" />
               <div className="writing-card-body">
-                <div className="mono writing-card-meta">{a.date} · {a.minutes} min read</div>
+                <div className="mono writing-card-meta">{a.date} · {a.minutes} min read{a.status && <span className="wip"> · {a.status}</span>}</div>
                 <h3>{a.title}</h3>
                 <p>{a.summary}</p>
                 <span className="mono writing-card-cta">read it →</span>
