@@ -50,7 +50,7 @@ export const ARTICLES: Article[] = [
       },
       {
         kind: "p",
-        text: "one thing to know: right now kestrel only runs on scifact, so it's really only good at science questions. ask it something about cooking and it'll still hand you research abstracts. more datasets are on my list, which is part of why this is still a work in progress.",
+        text: "one thing to know: right now kestrel only runs on scifact, so it's really only good at science questions. ask it something about cooking and it'll still hand you research abstracts. that's what i'm working on right now: pulling in more datasets (more on that at the end), which is part of why this is still a work in progress.",
       },
       { kind: "p", text: "then i compared three ways of searching:" },
       {
@@ -153,7 +153,8 @@ export const ARTICLES: Article[] = [
         items: [
           "figuring out why reranking didn't help, and trying a reranker trained on scientific text instead of web search.",
           "making my hnsw engine faster without giving up the from-scratch part (and giving each layer its own neighbor list, like the paper does).",
-          "adding more datasets so it isn't just science questions. i've started on nfcorpus (nutrition and medicine), where each question has dozens of relevant papers and every method scores much lower, and i want to understand why.",
+          "more data, so it isn't just science questions. i'm planning to pull more datasets from hugging face, which hosts the whole beir collection: finance questions (fiqa), covid research (trec-covid), duplicate questions from quora, and more. each one comes with its own human answer key, so the scores stay real. i've already started with nfcorpus (nutrition and medicine), where every method scores way lower, and i want to understand why.",
+          "eventually, training too: fine-tuning the embedding model on some of that data to see if a model that's seen these kinds of questions beats one that hasn't.",
           "using kestrel as the shared search layer for an image search demo and a voice agent.",
         ],
       },
