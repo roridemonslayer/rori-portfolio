@@ -1,4 +1,3 @@
-import { POSTS } from "../data";
 import { ARTICLES } from "../writing-data";
 
 export default function Writing() {
@@ -16,7 +15,6 @@ export default function Writing() {
             <span className="status mono">{a.status ? `${a.status} · ` : ""}{a.date} →</span>
           </a>
         ))}
-        {POSTS.map((t) => <div className="post" key={t}><span className="title">{t}</span><span className="status mono">draft — coming soon</span></div>)}
       </div>
     </section>
   );

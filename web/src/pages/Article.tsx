@@ -49,9 +49,11 @@ export default function Article({ slug }: { slug: string }) {
         <h1>{article.title}</h1>
         <div className="article-meta mono">{article.date} · {article.minutes} min read{article.status && <span className="wip"> · {article.status}</span>}</div>
         {article.blocks.map((block, i) => <Piece key={i} block={block} />)}
-        <div className="article-links">
-          {article.links.map((l) => <a key={l.href} href={l.href} target="_blank" rel="noopener">{l.label} ↗</a>)}
-        </div>
+        {article.links.length > 0 && (
+          <div className="article-links">
+            {article.links.map((l) => <a key={l.href} href={l.href} target="_blank" rel="noopener">{l.label} ↗</a>)}
+          </div>
+        )}
       </article>
     </main>
   );

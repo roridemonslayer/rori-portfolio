@@ -29,10 +29,7 @@ export const ARTICLES: Article[] = [
     status: "work in progress",
     summary:
       "my first article, and a work in progress! i'm building a test bench that grades search engines on real research papers, learning what recall, mrr and ndcg actually measure, and watching my own from-scratch hnsw engine hold up at 98% of exact search so far.",
-    links: [
-      { label: "kestrel on github", href: "https://github.com/roridemonslayer/kestrel" },
-      { label: "my vector search engine", href: "https://github.com/roridemonslayer/vector-search-engine" },
-    ],
+    links: [], // repo links stay off until the project is further along
     blocks: [
       { kind: "p", text: "hi, hello, welcome! if you're reading this, thank you for being here. this is my first time ever writing an article, so bear with me 🌱" },
       { kind: "p", text: "lately i've been really into search and retrieval. not just using it, but how it actually works under the hood." },
@@ -46,10 +43,14 @@ export const ARTICLES: Article[] = [
       },
       { kind: "img", src: "/writing/kestrel/leaderboard.jpg", alt: "kestrel leaderboard comparing retrievers", caption: "the leaderboard: every retriever, scored on the same 300 queries." },
 
-      { kind: "h", text: "the setup" },
+      { kind: "h", text: "300 claims, 5,183 abstracts, one answer key" },
       {
         kind: "p",
         text: "i used scifact, a public dataset of about 5,000 scientific abstracts and 300 claims like \"vitamin d deficiency is linked to depression.\" for each claim, real people marked which papers actually support or refute it. those human judgments are the answer key, and they're what make real scoring possible.",
+      },
+      {
+        kind: "p",
+        text: "one thing to know: right now kestrel only runs on scifact, so it's really only good at science questions. ask it something about cooking and it'll still hand you research abstracts. more datasets are on my list, which is part of why this is still a work in progress.",
       },
       { kind: "p", text: "then i compared three ways of searching:" },
       {
@@ -61,7 +62,7 @@ export const ARTICLES: Article[] = [
         ],
       },
 
-      { kind: "h", text: "the metrics (the part i actually wanted to understand)" },
+      { kind: "h", text: "grading the graders: recall, mrr, ndcg" },
       { kind: "p", text: "every metric asks the same question in a slightly different way: did the retriever put the relevant papers near the top?" },
       {
         kind: "list",
@@ -77,7 +78,7 @@ export const ARTICLES: Article[] = [
       },
       { kind: "code", text: "dcg  = 0 + 1/log2(3) + 1/log2(4) = 1.131   # relevant docs at ranks 2 and 3\nidcg = 1/log2(2) + 1/log2(3)     = 1.631   # same docs at ranks 1 and 2\nndcg = 1.131 / 1.631             = 0.693" },
 
-      { kind: "h", text: "results so far" },
+      { kind: "h", text: "the scoreboard (so far)" },
       {
         kind: "table",
         head: ["retriever", "recall@10", "mrr@10", "ndcg@10"],
@@ -96,7 +97,7 @@ export const ARTICLES: Article[] = [
         text: "hybrid wins on every quality metric so far, and the reason is the most interesting thing i've learned. keyword search and embeddings fail on different queries, so combining them covers each other's blind spots.",
       },
 
-      { kind: "h", text: "where keyword search breaks" },
+      { kind: "h", text: "the admpchordin problem" },
       {
         kind: "p",
         text: "kestrel has a query explorer that finds the queries where one method wins and another fails. one of the best examples:",
@@ -108,7 +109,7 @@ export const ARTICLES: Article[] = [
       },
       { kind: "img", src: "/writing/kestrel/explorer.jpg", alt: "query explorer showing bm25 missing a paper that dense search ranks first", caption: "same query, three retrievers. the highlighted result is the paper a human marked relevant." },
 
-      { kind: "h", text: "a result that surprised me" },
+      { kind: "h", text: "the reranker that barely reranked" },
       {
         kind: "p",
         text: "i also tried reranking: taking hybrid's top 50 and re-scoring them with a cross-encoder, a model that reads the query and each paper together. everyone says this is how you get the best quality.",
@@ -118,7 +119,7 @@ export const ARTICLES: Article[] = [
         text: "here it barely helped (0.689 → 0.691) and made every search about 45 times slower. the model was trained on web search questions, not scientific claims, so it mostly agreed with what hybrid already had. i'm keeping that result in, because \"the popular technique didn't help on my data\" is a real finding too. i still want to figure out why, and whether a reranker trained on science would change it.",
       },
 
-      { kind: "h", text: "plugging in my own engine" },
+      { kind: "h", text: "3% → 97.6%: fixing my own hnsw" },
       {
         kind: "p",
         text: "this summer i built a vector search engine from scratch in pure python, with no numpy and no faiss, to understand what vector databases do. it uses hnsw, the layered graph index that a lot of vector databases are built on. its weak spot was recall: it found only about 3% of the true top 5.",
@@ -132,7 +133,7 @@ export const ARTICLES: Article[] = [
         text: "then i plugged it into kestrel as a retriever, on real research papers. it scored 0.637 ndcg@10 against 0.648 for exact search on the same embeddings. that's 98% of exact quality from an index i wrote line by line. it's slower than numpy here because it's pure python, and making it faster is next on my list, but seeing my own graph hold up on real data has been the best part so far.",
       },
 
-      { kind: "h", text: "what i've learned so far" },
+      { kind: "h", text: "notes to self (so far)" },
       {
         kind: "list",
         items: [
@@ -142,6 +143,7 @@ export const ARTICLES: Article[] = [
           "check your setup against a known number before you trust any result.",
         ],
       },
+      { kind: "h", text: "still in the lab" },
       {
         kind: "p",
         text: "honestly i'm still figuring a lot of this out. here's what i'm working on next:",
@@ -151,7 +153,7 @@ export const ARTICLES: Article[] = [
         items: [
           "figuring out why reranking didn't help, and trying a reranker trained on scientific text instead of web search.",
           "making my hnsw engine faster without giving up the from-scratch part (and giving each layer its own neighbor list, like the paper does).",
-          "testing on more datasets. on nfcorpus, where each question has dozens of relevant papers, every method scores much lower, and i want to understand why.",
+          "adding more datasets so it isn't just science questions. i've started on nfcorpus (nutrition and medicine), where each question has dozens of relevant papers and every method scores much lower, and i want to understand why.",
           "using kestrel as the shared search layer for an image search demo and a voice agent.",
         ],
       },
