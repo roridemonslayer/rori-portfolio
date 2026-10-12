@@ -1,5 +1,6 @@
 import { INTERESTS, OVERVIEW, STORY } from "../about-data";
 import LightStrip from "../components/LightStrip";
+import { ARTICLES } from "../writing-data";
 
 export default function About() {
   return (
@@ -20,6 +21,23 @@ export default function About() {
               <h3>{part.label}</h3>
               {part.paras.map((t) => <p key={t}>{t}</p>)}
             </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="about-block" aria-labelledby="writing-t" data-reveal="0">
+        <h2 id="writing-t" className="about-h">my writing</h2>
+        <div className="writing-grid">
+          {ARTICLES.map((a) => (
+            <a className="writing-card sheet-lite" key={a.slug} href={`/writing/${a.slug}`}>
+              <img src={`/writing/${a.slug}/og.jpg`} alt="" loading="lazy" />
+              <div className="writing-card-body">
+                <div className="mono writing-card-meta">{a.date} · {a.minutes} min read</div>
+                <h3>{a.title}</h3>
+                <p>{a.summary}</p>
+                <span className="mono writing-card-cta">read it →</span>
+              </div>
+            </a>
           ))}
         </div>
       </section>

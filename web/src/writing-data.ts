@@ -22,16 +22,17 @@ export type Article = {
 export const ARTICLES: Article[] = [
   {
     slug: "kestrel",
-    title: "i built a test bench for search to understand how retrieval actually works",
+    title: "what 'admpchordin' taught me about search",
     date: "october 12, 2026",
     minutes: 6,
     summary:
-      "bm25 vs embeddings vs hybrid on real research papers, the metrics that score them, and my own from-scratch hnsw engine holding up at 98% of exact search.",
+      "my first article! i built a test bench that grades search engines on real research papers, learned what recall, mrr and ndcg actually measure, and watched my own from-scratch hnsw engine hold up at 98% of exact search.",
     links: [
       { label: "kestrel on github", href: "https://github.com/roridemonslayer/kestrel" },
       { label: "my vector search engine", href: "https://github.com/roridemonslayer/vector-search-engine" },
     ],
     blocks: [
+      { kind: "p", text: "hi, hello, welcome! if you're reading this, thank you for being here. this is my first time ever writing an article, so bear with me 🌱" },
       { kind: "p", text: "lately i've been really into search and retrieval. not just using it, but how it actually works under the hood." },
       {
         kind: "p",
