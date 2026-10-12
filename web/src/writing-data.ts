@@ -23,7 +23,7 @@ export type Article = {
 export const ARTICLES: Article[] = [
   {
     slug: "kestrel",
-    title: "ndcg@10 and other things i'm still figuring out",
+    title: "all about kestrel!!",
     date: "october 12, 2026",
     minutes: 5,
     status: "work in progress",
@@ -58,7 +58,7 @@ export const ARTICLES: Article[] = [
       },
       {
         kind: "p",
-        text: "and it grades them with the same metrics researchers use. the one in the title, ndcg@10, gives a result more points the higher it ranks, then scales it so a perfect ranking scores exactly 1.0. i wrote the metrics in plain python so i could actually see how they work step by step.",
+        text: "and it grades them with the same metrics researchers use. my favorite, ndcg@10, gives a result more points the higher it ranks, then scales it so a perfect ranking scores exactly 1.0. i wrote the metrics in plain python so i could actually see how they work step by step.",
       },
       {
         kind: "p",
