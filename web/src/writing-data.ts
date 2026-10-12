@@ -23,7 +23,7 @@ export type Article = {
 export const ARTICLES: Article[] = [
   {
     slug: "kestrel",
-    title: "what 'admpchordin' taught me about search",
+    title: "ndcg@10 and other things i'm still figuring out",
     date: "october 12, 2026",
     minutes: 6,
     status: "work in progress",
