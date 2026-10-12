@@ -10,13 +10,21 @@ import Shell from "./components/Shell";
 import Stack from "./components/Stack";
 import Writing from "./components/Writing";
 import About from "./pages/About";
+import Article from "./pages/Article";
+import { articleBySlug } from "./writing-data";
 
 /* two pages, one app: moving between / and /about/ swaps the content in place instead of
    reloading, so the Shell (and the song playing in it) keeps going across the switch */
-type Page = "home" | "about";
-const pageOf = (path: string): Page => (path.replace(/\/+$/, "") === "/about" ? "about" : "home");
-const TITLES: Record<Page, string> = { home: "Rori Olaniyi", about: "About · Rori Olaniyi" };
-const PATHS: Record<Page, string> = { home: "/", about: "/about" };
+type Page = "home" | "about" | `writing/${string}`;
+const pageOf = (path: string): Page => {
+  const clean = path.replace(/\/+$/, "");
+  if (clean === "/about") return "about";
+  const post = clean.match(/^\/writing\/([a-z0-9-]+)$/);
+  return post && articleBySlug(post[1]) ? `writing/${post[1]}` : "home";
+};
+const titleOf = (page: Page) =>
+  page === "home" ? "Rori Olaniyi" : page === "about" ? "About · Rori Olaniyi" : `${articleBySlug(page.slice(8))?.title} · Rori Olaniyi`;
+const pathOf = (page: Page) => (page === "home" ? "/" : `/${page}`);
 
 function Home({ onChat }: { onChat: () => void }) {
   return (
@@ -50,7 +58,7 @@ export default function App() {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const a = (e.target as Element).closest?.("a");
       if (!a || a.target || a.hasAttribute("download") || a.origin !== location.origin) return;
-      if (a.pathname === location.pathname || (a.pathname !== "/" && pageOf(a.pathname) !== "about")) return;
+      if (a.pathname === location.pathname || (a.pathname !== "/" && pageOf(a.pathname) === "home")) return;
       e.preventDefault();
       history.replaceState({ scroll: scrollY }, "");
       history.pushState({ scroll: 0 }, "", a.pathname);
@@ -67,15 +75,15 @@ export default function App() {
   }, []);
 
   useLayoutEffect(() => {
-    document.title = TITLES[page];
+    document.title = titleOf(page);
     if (restoreTo.current !== null) { scrollTo(0, restoreTo.current); restoreTo.current = null; }
   }, [page]);
 
   return (
     <Shell page={page} loader={firstPage.current === "home"} onChatReady={onChatReady}>
-      {page === "about" ? <About /> : <Home onChat={() => chat.current()} />}
+      {page === "about" ? <About /> : page.startsWith("writing/") ? <Article slug={page.slice(8)} /> : <Home onChat={() => chat.current()} />}
       {/* visitor counts in Vercel's dashboard; told the page directly, so switching pages counts as a view */}
-      <Analytics route={PATHS[page]} path={PATHS[page]} />
+      <Analytics route={pathOf(page)} path={pathOf(page)} />
     </Shell>
   );
 }

@@ -7,7 +7,13 @@ export default defineConfig({
   build: {
     // three.js is its own lazy chunk (only fetched near the fitting room), so its size is expected
     chunkSizeWarningLimit: 800,
-    // two pages: the main page and /about/
-    rolldownOptions: { input: { main: resolve(__dirname, "index.html"), about: resolve(__dirname, "about/index.html") } },
+    // the main page, /about/, and one page per article (each has its own link-preview tags)
+    rolldownOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        about: resolve(__dirname, "about/index.html"),
+        kestrel: resolve(__dirname, "writing/kestrel/index.html"),
+      },
+    },
   },
 });
