@@ -24,7 +24,7 @@ function Piece({ block }: { block: Block }) {
         <div className="table-wrap">
           <table>
             <thead><tr>{block.head.map((h) => <th key={h}>{h}</th>)}</tr></thead>
-            <tbody>{block.rows.map((row) => <tr key={row[0]}>{row.map((cell, i) => <td key={i}>{cell}</td>)}</tr>)}</tbody>
+            <tbody>{block.rows.map((row, r) => <tr key={row[0]} className={r === block.highlight ? "hl" : undefined}>{row.map((cell, i) => <td key={i}>{cell}</td>)}</tr>)}</tbody>
           </table>
         </div>
       );

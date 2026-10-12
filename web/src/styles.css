@@ -388,7 +388,7 @@ body.night .tl-soot img { filter: drop-shadow(0 0 8px rgba(255, 240, 190, 0.55))
 .article table { width: 100%; border-collapse: collapse; font: 15px 'IBM Plex Mono', monospace; }
 .article th, .article td { padding: 9px 12px; border-bottom: 1px solid var(--line-mid); text-align: left; }
 .article th { color: var(--faint); font-weight: 500; }
-.article tbody tr:first-child td { color: var(--ember); font-weight: 600; }
+.article tbody tr.hl td { color: var(--ember); font-weight: 600; }
 .article-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; padding-top: 24px; border-top: 1.5px solid var(--line-strong); }
 .article-links a { padding: 10px 18px; border: 1.5px solid var(--line-strong); border-radius: 999px; font: 13px 'IBM Plex Mono', monospace; color: var(--ink); text-decoration: none; }
 .article-links a:hover { border-color: var(--ember); color: var(--ember); }
