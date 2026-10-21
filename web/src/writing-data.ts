@@ -23,10 +23,9 @@ export type Article = {
 export const ARTICLES: Article[] = [
   {
     slug: "eighteen",
-    title: "18, a junior, and learning to stay a while",
+    title: "a work in progress",
     date: "october 20, 2026",
     minutes: 5,
-    status: "a work in progress",
     summary:
       "on starting college at 16, being an 18-year-old junior, feeling proud and behind at the same time, and what i want to carry into 19. plus some advice for anyone else who started college young.",
     links: [],
