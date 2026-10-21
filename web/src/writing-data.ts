@@ -26,56 +26,23 @@ export const ARTICLES: Article[] = [
     title: "18, a junior, and learning to stay a while",
     date: "october 20, 2026",
     minutes: 5,
+    status: "a work in progress",
     summary:
-      "on starting junior year at 18, feeling proud and behind at the same time, and what i want to carry into 19. plus some advice for anyone else who started college young.",
+      "on starting college at 16, being an 18-year-old junior, feeling proud and behind at the same time, and what i want to carry into 19. plus some advice for anyone else who started college young.",
     links: [],
     blocks: [
-      { kind: "p", text: "hi again! this one's a little different from my last article. no benchmarks, no tables. just me, being 18, being a junior in college, and trying to make sense of what that's been like. it's been an experience, to say the least 🌱" },
-
-      { kind: "h", text: "the short version" },
-      {
-        kind: "p",
-        text: "i started college young, which means most of the people around me are a few years older than me. i'm 18 and already a junior, and in a lot of rooms i'm the youngest person there. some days that feels like a superpower. other days it feels like i'm still figuring out things everyone else already knows.",
-      },
-
-      { kind: "h", text: "sophomore me vs. junior me" },
-      {
-        kind: "p",
-        text: "sophomore year was about catching up. i was learning how to be a college student, how to apply for things, how to talk to recruiters, how to even explain what i wanted to do. a lot of it was just showing up and saying yes, even when i wasn't sure i belonged.",
-      },
-      {
-        kind: "p",
-        text: "junior year is different. this past summer i interned at liberty mutual and shipped real things that real people used. i'm heading to datadog this winter. i'm leading nsbe on campus. i taught python to students around the world through stanford's code in place. when i write it all down like that, i barely recognize the version of me from two years ago.",
-      },
-      {
-        kind: "p",
-        text: "but the biggest change isn't on my resume. it's that i stopped waiting to feel ready. at this age, you get thrown into rooms fast, and you learn things fast because you have to. nobody hands you a manual. you figure it out as you go, and somehow you do.",
-      },
-
-      { kind: "h", text: "the weird duality" },
-      {
-        kind: "p",
-        text: "here's the part i don't talk about much. i'm genuinely proud of where i am. i've done a lot for my age, and i know that. and at the exact same time, i deal with a lot of imposter syndrome. i'll look at what i've done and still feel like it's not enough, like i could be doing more, like i'm somehow behind.",
-      },
-      { kind: "quote", text: "proud of how far i've come, and convinced i should be further. both at once." },
-      {
-        kind: "p",
-        text: "recruiting season makes this louder. everyone's posting their interviews and offers, and it's so easy to hold your whole journey up against someone else's highlight reel. i catch myself doing it all the time. but someone else's timeline was never the measure of mine. i'm 18. i'm early, not late.",
-      },
-      {
-        kind: "p",
-        text: "and honestly, i don't think the wanting more is a bad thing. i want to be in certain rooms. i want to get to certain places. that drive is a big part of why i've gotten this far. the problem is when wanting more turns into never stopping long enough to notice what i already have.",
-      },
-
-      { kind: "h", text: "what i'm taking into 19" },
-      {
-        kind: "p",
-        text: "going into 19, i want to give myself more room. room to make mistakes. room to evolve. room to change my mind about what i want. and room to actually be happy about where i am, instead of always looking at the next thing and the next thing and the next thing.",
-      },
-      {
-        kind: "p",
-        text: "so this is my new rule: when i finish something, i let myself stay there a while. okay, i did this. let me relish it. let me accept it. let me be happy in it. let me be grateful for it. and then, when i'm ready, i'll move on to the next thing i'm passionate about. not before.",
-      },
+      { kind: "p", text: "hi again! this one's a little different from my last article. no benchmarks, no tables, just me talking about life for a bit." },
+      { kind: "p", text: "so, for those of you who don't know, i'm 18, somehow already a junior in college, and honestly, it's been a lot. not necessarily in a bad way, but definitely in a way that's made me think about a lot of things lately. 🌱" },
+      { kind: "p", text: "for context, i started college at 16, which in itself came with a lot of challenges. i struggled with fitting into the college scene socially, and it took me a while to really understand what it meant to immerse myself in this new environment. i was surrounded by people who were older than me, at different stages of their lives, and sometimes it felt like i was trying to catch up to experiences i hadn't even had yet." },
+      { kind: "p", text: "it's funny because sometimes i feel like i have everything figured out, and then other times i'm reminded that i'm literally just 18. i'm still learning how to navigate college, friendships, my career, and honestly, just growing up in general." },
+      { kind: "p", text: "in a lot of rooms, i'm the youngest person there. some days that feels like a superpower, but other days it feels like a curse. especially when you feel like your voice isn't being taken seriously simply because you're younger. it's a weird feeling, knowing that you're capable of contributing something meaningful but still feeling like you have to prove yourself a little more just to be heard." },
+      { kind: "p", text: "i think one of the weirdest parts about being ahead academically is feeling like you have to be ahead in every other part of your life too. like somehow i should already know exactly what i'm doing, where i'm going, and who i want to be." },
+      { kind: "p", text: "and i'm slowly realizing that doesn't have to be the case." },
+      { kind: "p", text: "here's the part i don't talk about much. i'm genuinely proud of where i am. i've done a lot for my age, and i know that. and at the exact same time, i deal with a lot of imposter syndrome. i'll look at what i've done and still feel like it's not enough, like i could be doing more or that i'm somehow behind." },
+      { kind: "p", text: "recruiting season makes this louder. everyone's posting their interviews and offers, and it's so easy to hold your whole journey up against someone else's highlight reel. i catch myself doing it all the time. but someone else's timeline was never the measure of mine." },
+      { kind: "p", text: "and honestly, i don't think the wanting more is a bad thing. i want to be in certain rooms. i want to get to certain places. that drive is a big part of why i've gotten this far. the problem is when wanting more turns into never stopping long enough to notice what i already have." },
+      { kind: "p", text: "going into 19, i want to give myself more room. room to be able to make mistakes. room to evolve. room to change my mind about what i want. and room to actually be happy about where i am, instead of always looking at the next thing and the next thing and the next thing." },
+      { kind: "p", text: "so this is my new rule: when i finish something, i let myself stay there a while and allow myself to be happy in the things i'm doing." },
 
       { kind: "h", text: "if you started young too" },
       { kind: "p", text: "if you're also the youngest person in the room, here's what i wish someone had told me:" },
@@ -90,14 +57,8 @@ export const ARTICLES: Article[] = [
           "find your people. the friends and mentors who are rooting for you make the hard weeks so much lighter.",
         ],
       },
-      {
-        kind: "p",
-        text: "it's not easy. starting young means learning a lot, fast, and sometimes alone. but you're doing better than you think you are. i'm trying to believe that about myself too ✨",
-      },
-      {
-        kind: "p",
-        text: "thank you for reading this one. if you started college young, or you're feeling that same proud-but-behind thing right now, i'd genuinely love to hear from you.",
-      },
+      { kind: "p", text: "it's not easy.. but you're doing better than you think you are. i'm trying to believe that about myself too ✨" },
+      { kind: "p", text: "thank you for reading this one. if you started college young, or you're feeling that same proud-but-behind thing right now, i'd genuinely love to hear from you." },
     ],
   },
   {
