@@ -13,6 +13,7 @@ export default defineConfig({
         main: resolve(__dirname, "index.html"),
         about: resolve(__dirname, "about/index.html"),
         kestrel: resolve(__dirname, "writing/kestrel/index.html"),
+        eighteen: resolve(__dirname, "writing/eighteen/index.html"),
       },
     },
   },

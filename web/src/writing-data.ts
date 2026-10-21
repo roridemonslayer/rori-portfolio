@@ -22,6 +22,85 @@ export type Article = {
 
 export const ARTICLES: Article[] = [
   {
+    slug: "eighteen",
+    title: "18, a junior, and learning to stay a while",
+    date: "october 20, 2026",
+    minutes: 5,
+    summary:
+      "on starting junior year at 18, feeling proud and behind at the same time, and what i want to carry into 19. plus some advice for anyone else who started college young.",
+    links: [],
+    blocks: [
+      { kind: "p", text: "hi again! this one's a little different from my last article. no benchmarks, no tables. just me, being 18, being a junior in college, and trying to make sense of what that's been like. it's been an experience, to say the least 🌱" },
+
+      { kind: "h", text: "the short version" },
+      {
+        kind: "p",
+        text: "i started college young, which means most of the people around me are a few years older than me. i'm 18 and already a junior, and in a lot of rooms i'm the youngest person there. some days that feels like a superpower. other days it feels like i'm still figuring out things everyone else already knows.",
+      },
+
+      { kind: "h", text: "sophomore me vs. junior me" },
+      {
+        kind: "p",
+        text: "sophomore year was about catching up. i was learning how to be a college student, how to apply for things, how to talk to recruiters, how to even explain what i wanted to do. a lot of it was just showing up and saying yes, even when i wasn't sure i belonged.",
+      },
+      {
+        kind: "p",
+        text: "junior year is different. this past summer i interned at liberty mutual and shipped real things that real people used. i'm heading to datadog this winter. i'm leading nsbe on campus. i taught python to students around the world through stanford's code in place. when i write it all down like that, i barely recognize the version of me from two years ago.",
+      },
+      {
+        kind: "p",
+        text: "but the biggest change isn't on my resume. it's that i stopped waiting to feel ready. at this age, you get thrown into rooms fast, and you learn things fast because you have to. nobody hands you a manual. you figure it out as you go, and somehow you do.",
+      },
+
+      { kind: "h", text: "the weird duality" },
+      {
+        kind: "p",
+        text: "here's the part i don't talk about much. i'm genuinely proud of where i am. i've done a lot for my age, and i know that. and at the exact same time, i deal with a lot of imposter syndrome. i'll look at what i've done and still feel like it's not enough, like i could be doing more, like i'm somehow behind.",
+      },
+      { kind: "quote", text: "proud of how far i've come, and convinced i should be further. both at once." },
+      {
+        kind: "p",
+        text: "recruiting season makes this louder. everyone's posting their interviews and offers, and it's so easy to hold your whole journey up against someone else's highlight reel. i catch myself doing it all the time. but someone else's timeline was never the measure of mine. i'm 18. i'm early, not late.",
+      },
+      {
+        kind: "p",
+        text: "and honestly, i don't think the wanting more is a bad thing. i want to be in certain rooms. i want to get to certain places. that drive is a big part of why i've gotten this far. the problem is when wanting more turns into never stopping long enough to notice what i already have.",
+      },
+
+      { kind: "h", text: "what i'm taking into 19" },
+      {
+        kind: "p",
+        text: "going into 19, i want to give myself more room. room to make mistakes. room to evolve. room to change my mind about what i want. and room to actually be happy about where i am, instead of always looking at the next thing and the next thing and the next thing.",
+      },
+      {
+        kind: "p",
+        text: "so this is my new rule: when i finish something, i let myself stay there a while. okay, i did this. let me relish it. let me accept it. let me be happy in it. let me be grateful for it. and then, when i'm ready, i'll move on to the next thing i'm passionate about. not before.",
+      },
+
+      { kind: "h", text: "if you started young too" },
+      { kind: "p", text: "if you're also the youngest person in the room, here's what i wish someone had told me:" },
+      {
+        kind: "list",
+        items: [
+          "you belong in the room. you got there for a reason, even if you can't see the reason yet.",
+          "you're allowed to not know things. asking questions isn't a sign you're behind, it's how you catch up fast.",
+          "stop measuring your chapter 2 against someone else's chapter 10. you're running on a different clock, and yours started earlier.",
+          "celebrate the small wins out loud. write them down. you'll forget how far you've come otherwise.",
+          "rest is part of the work. you don't have to earn a break by burning out first.",
+          "find your people. the friends and mentors who are rooting for you make the hard weeks so much lighter.",
+        ],
+      },
+      {
+        kind: "p",
+        text: "it's not easy. starting young means learning a lot, fast, and sometimes alone. but you're doing better than you think you are. i'm trying to believe that about myself too ✨",
+      },
+      {
+        kind: "p",
+        text: "thank you for reading this one. if you started college young, or you're feeling that same proud-but-behind thing right now, i'd genuinely love to hear from you.",
+      },
+    ],
+  },
+  {
     slug: "kestrel",
     title: "all about kestrel!!",
     date: "october 12, 2026",
